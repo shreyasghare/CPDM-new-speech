@@ -1,0 +1,19 @@
+<div id="multilevelStepsDiv">
+    <mat-accordion>
+        <ng-container *ngIf="multilevelSteps">
+            <div *ngFor="let menuObject of multilevelSteps.data">
+                <div *ngIf="menuObject.heading != '' && menuObject.heading != null">
+                    <label>{{menuObject.heading}} ------------</label>
+                </div>
+                <div *ngFor="let menuStack of menuObject.menuStack">
+                    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title (click)="menuItemSelected(menuStack.menu, {title: 'NA'})">{{menuStack.menu.title}}</mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <p tabindex="0" *ngFor="let subMenu of menuStack.subMenu"><a (click)="menuItemSelected(menuStack.menu, subMenu, modalSize)">{{subMenu.title}}</a></p>
+                    </mat-expansion-panel>
+                </div>
+            </div>
+        </ng-container>
+    </mat-accordion>
+</div>

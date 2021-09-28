@@ -1,0 +1,69 @@
+<ng-container *ngIf="csdlPlanExecuteData || isSiError; else spinner">
+    <div class="planExecuteContainer" *ngIf="!isSiError && csdlPlanExecuteData as data">
+        <div class="planExecuteContainer__title"> Security Readiness Details</div>
+        <div class="planExecuteContainer__body mt-1">
+            <div>
+                <div>CSDL ID:</div><div>{{data.project_id ? data.project_id : '-'}}</div>
+            </div>
+            <div>
+                <div>SI Project Name:</div><div>{{data.project_name}}</div>
+            </div>
+            <div>
+                <div>First Customer Ship Target Date:</div>
+                <div>{{data.project_dates && data.project_dates.fcs_target_date
+                        ? data.project_dates.fcs_target_date : 'NA'}}</div>
+            </div>
+            <div>
+                <div>Current Security Readiness Plan (SRP) Status:</div><div>{{data.srp_status ? data.srp_status : 'NA'}}</div>
+            </div>
+            <div [ngClass]="isStopShipNotApproved ? 'stop-ship-notApproved' : 'stop-ship-approved flex-center-vertical'">
+                <div>Stop Ship:</div>
+                <div class="flex-center-vertical">
+                    <div *ngIf="isStopShipNotApproved === undefined; else stopShipData">NA</div>               
+                    <ng-template #stopShipData>
+                        <div>
+                            <div>project <span [ngClass]="isStopShipNotApproved ? 'text-red' : 'text-green'">
+                                {{isStopShipNotApproved ? 'not approved' : 'approved'}}</span> to ship</div>
+                            <div *ngIf="isStopShipNotApproved" class="text-xsmall">⌛<span class="text-italic text-black">Wait  for the approval</span></div>
+                        </div>
+                        <div class="pl-2 flex"><img src={{imgSrc}} /></div>
+                    </ng-template>
+                </div>
+            </div>
+            <div>
+                <div>Product Security Baseline (PSB) Compliance Score:</div>
+                <div>{{data.psb_compliance_fcs_score ? data.psb_compliance_fcs_score : 'NA'}}</div>
+            </div>
+            <div>
+                <div>Critical Product Security Baseline (PSB) Gap:</div>
+                <div>{{data.non_compliant_critical_psb ? data.non_compliant_critical_psb : 'NA'}}</div>
+            </div>
+            <div>
+                <div>Accountable Executive:</div>
+                <div>{{data.accountable_executive && data.accountable_executive.email ? data.accountable_executive.email : 'NA'}}</div>
+            </div>
+        </div> 
+        <div class="planExecuteContainer__footer mt-1" *ngIf="data.src && data.src.src && data.src.src.srp_link">
+            Manage your projects in <a href={{data.src.src.srp_link}} target="_blank">Security Insights (SI)</a>
+        </div> 
+    </div>
+    <div class="planExecuteContainer" *ngIf="!csdlPlanExecuteData && isSiError">
+        <div class="planExecuteContainer__title"> Security Readiness Details</div>
+        <div class="planExecuteContainer__error-msg flex mt-1">
+            <div class="flex"><img class="ml-1" src="assets\images\csdl\svg\alert-triangle.svg"/></div>
+            <span class="text-italic ml-1">
+                Oops! We can't fetch details from the Security Insights (SI) at this moment. Please come back after some time.
+            </span>
+        </div>
+        <div class="planExecuteContainer__body mt-1">
+            <div *ngFor="let key of planExecuteDetailsKeys">
+                <div>{{key}}:</div><div>-</div>
+            </div>
+        </div>
+    </div>
+</ng-container>
+<ng-template #spinner>
+    <div class="absolute-center">
+        <cui-spinner color="default" label="Loading"></cui-spinner>
+    </div>
+</ng-template>

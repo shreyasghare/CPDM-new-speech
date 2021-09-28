@@ -1,0 +1,81 @@
+<div class="main" *ngIf="isDataAvailable; else spinner">
+    <div class="main__content">
+        <ng-container *appHasRole="[role.pm, role.engSox, role.BUController]">
+            <app-holding-status *ngIf="!isFmvAssessmentRequired && !fmvComment" [statusIcon]="fmvStatus.fmvAssessmentNotRequired.icon"
+                    [status]="fmvStatus.fmvAssessmentNotRequired.status" [message]="fmvStatus.fmvAssessmentNotRequired.message.otherRole">
+            </app-holding-status>
+            <app-holding-status *ngIf="fmvComment" [statusIcon]="fmvStatus.fmvSkipped.icon"
+                    [status]="fmvStatus.fmvSkipped.status" [message]="fmvStatus.fmvSkipped.message">
+            </app-holding-status>
+            <div *ngIf="fmvComment" class="fmvComment">
+                <div class="text-bold text-italic">Revenue Recognition Team's comments:</div>
+                <span>{{fmvComment}}</span>
+            </div>
+            <app-holding-status *ngIf="isFmvAssessmentRequired && !isFMVStepAssessed && !fmvComment" [statusIcon]="fmvStatus.waiting.icon"
+                [status]="fmvStatus.waiting.status" [message]="fmvStatus.waiting.message">
+            </app-holding-status>
+            <ng-container *appHasRole="[role.pm, role.BUController]">
+            <div *ngIf="isFmvAssessmentRequired && !isFMVStepAssessed && !fmvComment" class="inprogressrolemsg">
+                <div>This project may be committed prior to the completion of the FMV Assessment</div>
+            </div>
+        </ng-container>
+        </ng-container>
+        <ng-container *appHasRole="[role.pm, role.engSox, role.BUController]">
+            <app-holding-status *ngIf="isFmvUploaded && isFmvAssessmentRequired && isFMVStepAssessed" [statusIcon]="fmvStatus.completed.icon"
+                [status]="fmvStatus.completed.status" [message]="fmvStatus.completed.message">
+            </app-holding-status>
+        </ng-container>
+        <ng-container *appHasRole="[role.revRecPO]">
+            <app-holding-status *ngIf="!isFmvAssessmentRequired" [statusIcon]="fmvStatus.fmvAssessmentNotRequired.icon"
+                [status]="fmvStatus.fmvAssessmentNotRequired.status" [message]="fmvStatus.fmvAssessmentNotRequired.message.revRecPO">
+            </app-holding-status>
+            <div class="fmvScreen__container mt-2">
+                <div class="fmvScreen__container--header">
+                    <div class="flex" [class.disabled]="isFmvNotApplicableChecked">
+                        <span class="icon-upload icon-medium download-icon"></span>
+                        <h5 class="ml-2">Please upload FMV document</h5>
+                    </div>
+                    <div *ngIf="isFmvAssessmentRequired">
+                        <mat-checkbox  color="primary" (change)="onChecked($event)" [checked]="isFmvNotApplicableChecked"
+                    [disabled]="revRecData.fmvNotApplicable || revRecData.fmvAssessment || customDropzoneState.showLoader">
+                        </mat-checkbox>
+                        <span class="ml-1" [class.disabled]="revRecData.fmvAssessment">FMV not applicable</span>
+                    </div>
+                </div>
+                <!-- <div [class.disabled]="isFMVStepAssessed"> -->
+                <div>
+                    <div *ngIf="isFmvNotApplicableChecked || revRecData.fmvNotApplicable; else dropzone">
+                        <div class="fmvScreen__container--comment">
+                            <span class="ml-1">Checking the box requires a comment <span *ngIf="!fmvComment" class="text-danger">*</span></span>
+                        </div>
+                        <div class="form-group base-margin-bottom">
+                            <div class="form-group__text">
+                                <textarea rows="8" [readonly]=""
+                                    placeholder="Write here.."
+                                    [(ngModel)]="fmvComment"
+                                    (ngModelChange)="getComment($event)"
+                                    [disabled]="revRecData.fmvNotApplicable"
+                                    [required]="true"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <ng-template #dropzone>
+                        <div class="fmvScreen__container--dropzone">
+                            <custom-dropzone (onUploadClicked)="onUploadClicked($event)" [docCentralObj]="docCentralObj"
+                                [componentState]="customDropzoneState"></custom-dropzone>
+                        </div>
+                    </ng-template>
+                    <div class="fmvScreen__container--submit mt-2" *ngIf="isFmvAssessmentRequired">
+                        <button class="btn btn--success" 
+                            [disabled]="!isSubmitBtnEnabled" (click)="onSubmit()">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>
+<ng-template #spinner>
+    <div class="flex-center full-height">
+        <cui-spinner color="default" label="Loading"></cui-spinner>
+    </div>
+</ng-template>

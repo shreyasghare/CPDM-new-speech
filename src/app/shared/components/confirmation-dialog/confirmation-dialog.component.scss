@@ -1,0 +1,35 @@
+.confirm-popup{
+    &__header {
+        display: flex;
+        justify-content: space-between;
+
+        &--text {
+            width: 100%;
+        }
+
+        .close {
+            font-size: 2rem;
+            cursor: pointer;
+        }
+    }
+    &__content {
+
+        &__btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+ 
+            &--cancel {
+                margin-right: 2rem;
+            }
+        }
+    }
+}
+.confirm-text {
+    font-size: 17px;
+    line-height: 3rem;
+}
+
+.modal__title {
+    font-size: 25px;
+}

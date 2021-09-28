@@ -1,0 +1,43 @@
+<ng-container *ngIf="!showSpinner || isTpsdLinkError; else spinner">
+    <ng-container *ngIf="!isTpsdLinkError; else tpsdLinkError">
+        <div class="complete_container">
+            <div class="complete_container__body">
+                <div class="complete_container__body--icon">
+                    <div class="flex"><img class="tick-icon" src="assets/images/icons/svg/tick-inside-circle.svg"></div>
+                </div>
+                <div class="complete_container__body--details">
+                    <div>
+                        <p>The TPSCRM Process is complete</p>
+                    </div>
+                    <div class="flex">
+                        <div class="mt-1"><img src={{imgSrc}} /></div>
+                        <div class="status__note">
+                            <div class="text-italic">
+                                Note: To see more details, go to
+                                <a [ngClass]="tpsUrl? '': 'unavailableText'" href="{{tpsUrl}}" target="_blank">TPSCRM</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="approvedDetailsObject.state && approvedDetailsObject.comments !== null"
+                        class="comment_note mt-2 flex text-italic text-large">
+                        <span class="text-bold pr-1">Explanation comment: </span>
+                        {{approvedDetailsObject.comments}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+    <ng-template #tpsdLinkError>
+        <div class="error-msg flex mt-1">
+            <div class="flex"><img class="ml-1" src="assets\images\csdl\svg\alert-triangle.svg" /></div>
+            <span class="text-italic ml-1">
+                This TPSCRM ID is not yet linked with a product. Please complete step 1 and try again.
+            </span>
+        </div>
+    </ng-template>
+</ng-container>
+<ng-template #spinner>
+    <div class="absolute-center">
+        <cui-spinner color="default" label="Loading"></cui-spinner>
+    </div>
+</ng-template>

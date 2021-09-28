@@ -1,0 +1,16 @@
+.custom-header {
+    display: flex;
+    justify-content: space-between;
+
+    &__name{
+        width: 100%;
+        font-size: 18px;
+        // text-align: center;
+        color: #525151;
+        // font-weight: bold;
+    }
+}
+
+.modal__title {
+    font-size: 24px;
+}

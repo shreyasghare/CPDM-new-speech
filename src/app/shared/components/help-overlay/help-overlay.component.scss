@@ -1,0 +1,61 @@
+
+.tabContainer {
+    height: 100%;
+
+    &__body-modal-large {
+        height: 78%;  
+    }
+
+    &__body-modal-normal {
+        height: 73%;
+    }
+
+    &__body-modal-large, &__body-modal-normal {
+        &--content {
+            max-height: 41vh;
+        }
+    }
+
+    &__footer {
+        display: flex;
+        justify-content: center;
+        padding: 1rem;
+    }
+}
+.closeBtnContainer {
+    height: 10%;
+}
+.btnBlock{
+    display: block;
+    width: 100%;
+    border: 1px solid #6c757d9e;
+    background-color: #fff;
+    color: #858585;
+    padding: 3%;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.custom-flex{
+    justify-content: flex-end;
+    align-items: center;
+    height: 3rem;
+}
+
+.custom-min-height{   
+    overflow-y: auto; 
+}
+
+.headerCss{
+    display: flex;
+    justify-content: space-between;
+}
+.closeBtnContainer{
+    margin-bottom: 0;
+    text-align: center !important;
+}
+
+.custom-padding {
+    padding: 2rem 2rem 0rem 0rem;
+}

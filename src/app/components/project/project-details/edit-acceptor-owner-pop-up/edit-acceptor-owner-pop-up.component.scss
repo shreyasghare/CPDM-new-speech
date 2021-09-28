@@ -1,0 +1,93 @@
+.acceptorOwnerModelHeaderDiv{
+    padding: 3%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.acceptorOwnerSaveBtn{
+    position: absolute;
+    right: 3%;
+    top: 0%;
+}
+
+#acceptorOwnerButtonContainer{
+    padding: 3%;
+
+    .row {
+        display: flex;
+        justify-content: space-between;
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+}
+
+#acceptorOwnerSearchContainer{
+    padding: 1% 3%;
+    .button_container {
+        display: flex;
+        justify-content: space-between;
+    
+        .form-group:first-child {
+            flex-grow: 1;
+        }
+        
+        .form-group:nth-child(2), .loading-dots {
+            margin: 0;
+            button.btn {
+                margin: 6px 0px 0 30px;
+            }
+        }
+    }
+    
+}
+
+#userSearchInput{
+    min-height: 30px !important;
+    padding: 2% 3% !important;
+}
+
+.userTab{
+    margin: 1%;
+    background-color: #fff !important;
+}
+.removeUserIcon{
+    cursor: pointer;
+}
+
+.userListHeader{
+    left: 2%;
+    position: absolute;
+    top: 12%;
+    color: #858585;
+}
+
+#acceptorOwnerList{
+    margin: 0% 3%;
+    background-color: #f2f2f2;
+
+    span:nth-child(3) {
+        margin-left: -0.5rem !important;
+    }
+}
+.mat-slide-toggle-text{
+    padding: 1%;
+    align-items: center;
+}
+
+.autoComplete-matInput{
+    width: 70%;
+}                             
+
+/* Change label color on focused */
+::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+    color: #017cad !important;
+}
+  
+/* underline border color on focused */
+::ng-deep .mat-focused .mat-form-field-underline .mat-form-field-ripple{
+    background-color: #017cad !important;
+}
+
+.icon-exit {
+    padding-left: 5px !important;
+}

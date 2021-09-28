@@ -1,0 +1,93 @@
+.engagement-form{
+    margin-top: 1rem;
+    &__header{
+        display: flex;
+        justify-content: space-between;
+    }
+    &__container{
+        padding: 2rem;
+        height: 75vh;
+        overflow-y: scroll;
+        border-top: 1px solid black;
+        border-bottom: 1px solid black;
+        &__question{
+            font-size: 1.8rem;
+            text-align:left!important;
+    
+            .divider{
+                position: relative;
+                text-align: center;
+                border-top: 1px solid #dfdfdf;
+                margin: 0 0 20px 0;
+            }
+
+            ol {
+                padding: 0 0 0 25px;
+                li {
+                    margin-bottom: 1rem;
+                    &.required-field:before {
+                        content:"*";
+                        color:red;
+                        height: 1rem;
+                        width: 1rem;
+                        background-color: rgb(255, 1, 1);
+                        border-radius: 50%;
+                        display: inline-block;
+                        margin: 0 35px 0 -45px;
+                        line-height: 14px;
+                    }
+                }
+            }
+
+            .warning-text {
+                display: flex;
+                align-items: flex-end;
+                font-size: 12px;
+                color: darkgoldenrod;
+
+                .icon-info.icon-small:before {
+                    color: darkgoldenrod;
+                }
+            }
+
+            .mat-form-field {
+                font-family: "CiscoSans", "Arial", sans-serif;
+                input {
+                    color: #000;
+                    font-size: 1.8rem;
+                }
+            }
+
+            .icon-info {
+                vertical-align: text-bottom;
+            }
+
+            .nppmNotifyButton {
+                align-items: center;
+                display: flex;
+                margin: auto;
+            }
+
+            .additionalInfoHeader{
+                font-weight: bold;
+            }
+            
+            .sEEMNotificationTextContainer{
+                border-right: 1px solid #dfdfdf;
+            }
+        }
+    }
+    &__footer {
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+.read-only {
+    background-color: #bfbfbf;
+    padding: 6px 7px 2px 7px;
+    color: #636363;
+}
+.textField{
+    width: 30%;
+}

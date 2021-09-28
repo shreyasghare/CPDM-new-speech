@@ -1,0 +1,123 @@
+.questionnaireContainer{
+    background: #fff;
+}
+
+.questionnaireContainer > div {
+    font-size: 14px;
+    padding: 0.5rem;
+    color: #000;
+}
+
+.optionSpacing{
+    padding: 0rem 1rem;
+}
+
+.headerText{
+    color: #000;
+    padding: 5px 0;
+}
+
+.subQuestion{
+    margin-left: 1.5rem;
+    &__userSearch{
+        width: 100%;
+    }
+}
+
+.required-field {
+    height: 1rem;
+    width: 1rem;
+    background-color: rgb(255, 1, 1);
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 4px;
+}
+
+.custom-size{
+    color: #58585b;
+}
+
+.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+button.disabled{
+    opacity: 0.75 !important;
+}
+.checklist-icon{
+    height: 4rem;
+    width: 4rem;
+    opacity: 0.50;
+}
+
+.submitScreen {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction:column;
+    padding: 2rem 0.7rem 0 0.7rem;
+    width:100%;
+    &__container {
+        background-color: #c6c7ca; 
+        width: 98%;
+
+    &--questionnaire-state {
+        font-size: 1.8rem;
+
+        .icon-small {
+            margin-top: -3px;
+        }
+    }    
+
+    &__custom-dropzone-div {
+        background-color: #c6c7ca;
+    } 
+    
+    .custom-padding{
+        padding: 2rem 2rem 0 2rem;
+    }
+        }
+        &__btn {
+            cursor: pointer;
+        }
+    
+    }
+
+img.icon {
+    width: 14px;
+    opacity: 0.5;
+    color: #9e9ea2;
+}
+
+span.text-muted.ml-1 {
+    font-style: italic;
+    margin-top: 0.5rem;
+}
+
+.submitBtnContainer{
+    align-self: flex-end;
+    margin: 1rem 1.5rem 0 0;
+}
+
+.read-only {
+    background-color: #bfbfbf;
+    padding: 6px 7px 2px 7px;
+    color: #636363;
+   }
+
+.main{
+    display: flex;
+    flex-direction: column;
+    width: 85%;
+    margin: auto;
+    //justify-content: space-evenly;
+    justify-content: space-around;
+}
+
+.additionalInfoHeader{
+    font-weight: bold;
+}
+
+hr {
+    margin: 5px;
+}

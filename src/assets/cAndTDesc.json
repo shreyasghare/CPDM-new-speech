@@ -1,0 +1,71 @@
+[
+    {
+    "generalCompliances": [
+    {
+    "_id": "5d513a984dd6fffa132b1a5b",
+    "name": "Accessibility",
+    "description": "The Accessibility directive sets forth Cisco’s governing compliance with governmental laws and regulations and customer driven requirements for software and hardware products, and services, to be accessible to people with disabilities.  This directive applies to all Cisco products, from design to sale to post-sales support.\nApplicability:"
+
+    },
+    {
+    "_id": "5d513aab4dd6fffa132b1a7d",
+    "name": "Export Compliance",
+    "description": " of accessibility.3. Prior to FCSRR or initial orderability, work with the Accessibility team to create the VPAT if required.4. If the product is legally required to be accessible, the Accessibility team will help to address the issues in future releases."
+    },
+    {
+    "_id": "5d513ac74dd6fffa132b1a95",
+    "name": "Open Source Software",
+    "description": "GC3 Jurisdictional laws that apply to Cisco’s communications offers"
+    },
+    {
+    "_id": "5d513ad94dd6fffa132b1ab4",
+    "name": "Revenue Recognition",
+    "description": "GC4 Jurisdictional laws that apply to Cisco’s communications offers"
+    },
+    {
+    "_id": "5d513ae64dd6fffa132b1abf",
+    "name": "Security",
+    "description": "GC5 Jurisdictional laws that apply to Cisco’s communications offers"
+    },
+    {
+    "_id": "5d513af34dd6fffa132b1acc",
+    "name": "Smart Licensing",
+    "description": "GC6 Jurisdictional laws that apply to Cisco’s communications offers"
+    }
+    ],
+    "additionalRequirements": [
+    {
+    "_id": "5d513b694dd6fffa132b1b4a",
+    "name": "Communications Regulation Assessment",
+    "description": "AR1 Jurisdictional laws that apply to Cisco’s communications offers"
+    },
+    {
+    "_id": "5d513b934dd6fffa132b1b86",
+    "name": "End of Life (EOL)",
+    "description": "AR2 EOL commits can be done separately or using the Thin Layer (see the EOL Overview slide in the backup)"
+    },
+    {
+    "_id": "5d513ba14dd6fffa132b1b94",
+    "name": "Globalization",
+    "description": "AR3 Internationalization of new code and gap analysis implementation plan for legacy code"
+    },
+    {
+    "_id": "5d513bd74dd6fffa132b1bde",
+    "name": "Hardware Core Regulatory",
+    "description": "AR4 For HW: Product Safety, EMC, Telecom, Energy Efficiency, Wi-Fi, Over The Air (OTA) regulations and  Country compliance requirements/priorities"
+    }
+    ],
+    "technicalBestPractices": [
+    {
+    "_id": "5d513c224dd6fffa132b1c24",
+    "name1": "IPV6",
+    "description": "TP1 Internationalization of new code and gap analysis implementation plan for legacy code"
+    },
+    {
+    "_id": "5d513c3c4dd6fffa132b1c49",
+    "name": "Yang standard",
+    "description": "TP2 Internationalization of new code and gap analysis implementation plan for legacy code"
+    }
+    ]
+    }
+]

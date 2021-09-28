@@ -1,0 +1,250 @@
+<div class="tpsd-create-link">
+    <form class="tpsd-create-link__content" [formGroup]="createTPSDForm" >
+        <div class="tpsd-create-link__content--text">
+            <p>Link your Product/Release to the TPSCRM Ecosystem by answering few questions</p>
+        </div>
+        <app-holding-status [statusIcon]="'notes'" [status]="'Product Information'">
+            <div>
+                <p> 
+                    <span class="mandatory-field" [ngStyle]="{'visibility': createTPSDForm.value.isProductOnTpsEcosysSelect ? 'hidden'  : 'visible'}"></span>
+                    1. Is your Product on TPSCRM Ecosystem?
+                </p>
+                <div class="tpsd-create-link__productInfo1 container  row ml-2">
+                    <div class="form-group">
+                        <span>
+                            <label class="radio optionSpacing">
+                                <input
+                                    type="radio"
+                                    value="yes"
+                                    formControlName="isProductOnTpsEcosysSelect">
+                                <span class="radio__input"> </span>
+                                <span class="radio__label">Yes</span>
+                            </label>
+                            <label class="radio">
+                                <input
+                                    type="radio"
+                                    value="no"
+                                    formControlName="isProductOnTpsEcosysSelect">
+                                <span class="radio__input"></span>
+                                <span class="radio__label">No</span>
+                            </label>
+                        </span>
+                    </div>
+                </div>
+                <p class="text-secondary ml-2 text-italic" *ngIf="createTPSDForm.value.isProductOnTpsEcosysSelect === 'no'">NOTE: A new product and associated release will be created in TPSCRM Ecosystem</p>
+                <ng-container *ngIf="createTPSDForm.value.isProductOnTpsEcosysSelect === 'yes'">
+                    <p>
+                        <span class="mandatory-field" [ngStyle]="{'visibility': createTPSDForm.value.coronaProdName ? 'hidden'  : 'visible'}"></span>
+                        2. Enter your TPSCRM Product Name
+                    </p>
+                    <p class="text-secondary ml-3 text-italic" *ngIf="!isProjectLinked">NOTE: The product name provided must be an exact match to the product in TPSCRM. To look up the product name in TPSCRM, please click <u><a class="text-link" [href]="tpsComplianceUrl" target="_blank">here</a></u>.</p>
+                    <div class="form-group">
+                        <div class="form-group__text tpsd-create-link__input-field">
+                            <input type="text" formControlName="coronaProdName" [matAutocomplete]="auto1" placeholder="Search">
+                            <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="selectMatOption($event.option.value, 'coronaProdName')">
+                                <mat-option *ngFor="let caronaProducts of caronaProductsList" [value]="caronaProducts">
+                                    {{ caronaProducts}}
+                                </mat-option>
+                            </mat-autocomplete>
+                            <div *ngIf="loadingData" class="loading-dots" aria-label="Loading, please wait...">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="createTPSDForm.value.isProductOnTpsEcosysSelect === 'no'">
+                    <p>
+                        <span class="mandatory-field" [ngStyle]="{'visibility': createTPSDForm.value.coronaProdName ? 'hidden'  : 'visible'}"></span>
+                        2. Enter Product Name
+                    </p>
+                    <div class="form-group">
+                        <div class="form-group__text tpsd-create-link__input-field">
+                            <input
+                                type="text"
+                                formControlName="coronaProdName"
+                                placeholder="Enter Product Name">
+                        </div>
+                    </div>
+                </ng-container>
+            </div>    
+        </app-holding-status>
+
+        <ng-container *ngIf="showReleaseInfo">
+            <app-holding-status [statusIcon]="'files'" [status]="'Release Information'" class="mt-2">
+                <ng-container *ngIf="createTPSDForm.value.isProductOnTpsEcosysSelect === 'yes'">
+                    <p>
+                        <span class="mandatory-field" [ngStyle]="{'visibility': createTPSDForm.value.isExistingOrNewReleaseSelect ? 'hidden'  : 'visible'}"></span>
+                        3. Is it an Existing Release or a New Release?
+                    </p>
+                    <div class="tpsd-create-link__productInfo1 container row">
+                        <div class="form-group">
+                            <span>
+                                <label class="radio optionSpacing">
+                                    <input type="radio" value="existing"
+                                    formControlName="isExistingOrNewReleaseSelect">
+                                    <span class="radio__input"> </span>
+                                    <span class="radio__label hidden-xs">Existing</span>
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" value="new"
+                                    formControlName="isExistingOrNewReleaseSelect">
+                                    <span class="radio__input"></span>
+                                    <span class="radio__label hidden-xs">New</span>
+                                </label>
+                            </span>
+                        </div>
+                    </div>
+                </ng-container>
+                <div *ngIf="createTPSDForm.value.isExistingOrNewReleaseSelect === 'existing' && createTPSDForm.value.isProductOnTpsEcosysSelect === 'yes'">
+                    <div class="form-group base-margin-bottom mt-1">
+                        <p class="mt-1">
+                            <span class="mandatory-field" [ngStyle]="{'visibility': createTPSDForm.value.releasedVersionList || isProjectLinked ? 'hidden' : 'visible'}"></span>
+                            4. Select Release
+                        </p>
+                        <div *ngIf="!isProjectLinked" class="form-group__text">
+                            <cui-select
+                                class="ml-2"
+                                placeholder="Select"
+                                [items]="resProductRelease"
+                                [compressed]="false"
+                                [empty]="false"
+                                optionsKey="version"
+                                optionsValue="version"
+                                formControlName="releasedVersionList"></cui-select>
+                        </div>
+                        <div *ngIf="isProjectLinked" class="form-group__text tpsd-create-link__input-field">
+                            <input
+                                type="text"
+                                formControlName="releaseVersionText">
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="createTPSDForm.value.isExistingOrNewReleaseSelect === 'new' && createTPSDForm.value.isProductOnTpsEcosysSelect === 'yes'">
+                    <ng-container *ngIf="!isProjectLinked">
+                        <p class="text-secondary ml-2 mt-1"><em>Note: <span class="icon-step-next"></span> To create a new release for this product, please <u><a class="text-link" [href]="tpsComplianceProductUrl" target="_blank">go to TPSCRM</a></u></em></p>
+                        <p class="text-secondary ml-6"><em><span class="icon-step-next"></span> After creating a release, click <span class="text-weight-700">Refresh<i class='icon-refresh'></i></span> to update the release options</em></p>
+                    </ng-container>
+                    <div *ngIf="createTPSDForm.value.isProductOnTpsEcosysSelect === 'yes'" class="form-group base-margin-bottom mt-1">
+                        <p>
+                            <span class="mandatory-field" [ngStyle]="{'visibility': createTPSDForm.value.releasedVersionList || isProjectLinked ? 'hidden' : 'visible'}"></span>
+                            4. Select Release
+                        </p>
+                        <div class="tpsd-create-link__release-list">
+                            <div *ngIf="!isProjectLinked" class="form-group__text ml-2">
+                                <cui-select
+                                    placeholder="Select"
+                                    [items]="resProductRelease"
+                                    [compressed]="false"
+                                    [empty]="false"
+                                    optionsKey="version"
+                                    optionsValue="version"
+                                    formControlName="releasedVersionList"></cui-select>
+                            </div>
+                            <div *ngIf="isProjectLinked" class="form-group__text tpsd-create-link__input-field">
+                                <input
+                                    type="text"
+                                    formControlName="releaseVersionText">
+                            </div>
+                            <span *ngIf="!isProjectLinked && !isReleaseDataRequested" class="text-weight-700 text-link ml-1 mt-1 cursor-pointer" (click)="getLatestReleaseVersionOnRefresh()"><em><u>Refresh</u><i class='icon-refresh'></i></em></span>
+                            <div *ngIf="isReleaseDataRequested" class="loading-dots ml-1 mt-1" aria-label="Loading, please wait...">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <ng-container *ngIf="createTPSDForm.value.isProductOnTpsEcosysSelect === 'no' && showReleaseInfo">
+                    <p>
+                        <span class="mandatory-field" [ngStyle]="{'visibility': createTPSDForm.value.releaseVersionText ? 'hidden'  : 'visible'}"></span>
+                        3. Enter Release Version
+                    </p>
+                    <div class="form-group">
+                        <div class="form-group__text tpsd-create-link__input-field">
+                            <input id="release-version" type="text" formControlName="releaseVersionText"
+                            placeholder="Enter Version"> 
+                        </div>
+                    </div>
+                    <p class="ml-1">
+                        4. Enter CSDL ID
+                    </p>
+                    <div class="form-group">
+                        <div class="form-group__text tpsd-create-link__input-field">
+                            <input id="csdl-id" type="text" formControlName="csdlId"
+                            placeholder="Enter CSDL ID"> 
+                        </div>
+                    </div>
+                </ng-container>
+                <div class="pull-right mr-5 mt-2" *ngIf="!isProjectLinked && !createTPSDForm.invalid">
+                    <button type="button" class="btn btn--primary" [disabled]="createTPSDForm.invalid"
+                    (click)="linkTpsdDetails()">
+                        Link details
+                    </button>
+                </div>
+                <div class="pull-right mr-5 mt-2" *ngIf="isProjectLinked">
+                    <span> <strong>Project details linked</strong><span class="icon-check-outline ml-1"></span></span>
+                </div>
+            </app-holding-status>
+        </ng-container>
+
+        <ng-container *ngIf="createTPSDForm.value.isProductOnTpsEcosysSelect === 'yes' && !isReleaseVersionAvailable">
+            <app-holding-status [statusIcon]="'files'" [status]="'Release Information'" class="mt-2">
+                    <ng-container *ngIf="!isProjectLinked">
+                        <p class="text-secondary ml-2 mt-1"><em>Note: <span class="icon-step-next"></span> To create a new release for this product, please <u><a class="text-link" [href]="tpsComplianceProductUrl" target="_blank">go to TPSCRM</a></u></em></p>
+                        <p class="text-secondary ml-6"><em><span class="icon-step-next"></span> After creating a release, click <span class="text-weight-700">Refresh<i class='icon-refresh'></i></span> to update the release options</em></p>
+                    </ng-container>
+                    <div class="form-group base-margin-bottom mt-1">
+                        <p>
+                            <span class="mandatory-field" [ngStyle]="{'visibility': isProjectLinked ? 'hidden'  : 'visible'}"></span>
+                            3. Select Release
+                        </p>
+                        <div class="tpsd-create-link__release-list">
+                            <div *ngIf="!isProjectLinked" class="form-group__text ml-2">
+                                <cui-select
+                                    placeholder="Select"
+                                    [items]="resProductRelease"
+                                    [compressed]="false"
+                                    [empty]="false"
+                                    optionsKey="version"
+                                    optionsValue="version"
+                                    formControlName="releasedVersionList"></cui-select>
+                            </div>
+                            <div *ngIf="isProjectLinked" class="form-group__text tpsd-create-link__input-field">
+                                <input
+                                    type="text"
+                                    formControlName="releaseVersionText">
+                            </div>
+                            <span id="refresh-btn" *ngIf="!isProjectLinked && !isReleaseDataRequested" class="text-weight-700 text-link ml-1 mt-1 cursor-pointer" (click)="getLatestReleaseVersionOnRefresh()"><em><u>Refresh</u><i class='icon-refresh'></i></em></span>
+                            <div *ngIf="isReleaseDataRequested" class="loading-dots ml-1 mt-1" aria-label="Loading, please wait...">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </div>
+                    </div>
+                    <ng-container *ngIf="versionReleaseLength">
+                        <p class="text-secondary refresh-note">TPSCRM is creating a new release. Please wait for 1-2 minutes and '<span class="text-weight-700">Refresh<i class='icon-refresh'></i></span>' again</p>
+                    </ng-container>
+
+                <div class="pull-right mr-5 mt-2" *ngIf="!isProjectLinked && !createTPSDForm.invalid">
+                    <button type="button" class="btn btn--primary" [disabled]="createTPSDForm.invalid"
+                    (click)="linkTpsdDetails()">
+                        Link details
+                    </button>
+                </div>
+                <div class="pull-right mr-5 mt-2" *ngIf="isProjectLinked">
+                    <span> <strong>Project details linked</strong><span class="icon-check-outline ml-1"></span></span>
+                </div>
+            </app-holding-status>
+        </ng-container>
+
+    </form>
+    <ng-container *ngIf="showLoader">
+        <div class="flex-center full-height csdl-project-loader">
+            <cui-spinner color="default" label="Loading"></cui-spinner>
+        </div>
+    </ng-container>
+</div>

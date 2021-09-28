@@ -1,0 +1,66 @@
+.acceptorOwnerModelHeaderDiv{
+    display: flex;
+    justify-content: space-between;
+    padding: 3%;
+}
+
+.icon-close {
+    font-size: large;
+    cursor: pointer;
+    color: #868585;
+}
+
+.saveBtn{
+    color: #fff !important;
+    background-color: #858585 !important;
+}
+.btnBlock{
+    display: block;
+    width: 100%;
+    border: 1px solid #6c757d9e;
+    background-color: #fff;
+    color: #858585;
+    padding: 3%;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.acceptorOwnerSaveBtn{
+    position: absolute;
+    right: 3%;
+    top: 0%;
+}
+
+#acceptorOwnerButtonContainer{
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 0px 0px 0px;
+}
+
+// #remarkTextBoxContainer > div{
+//     padding: 3%;
+// }
+
+p{
+    margin: 0;
+}
+
+.commentForm{
+    padding: 3rem;
+
+    & > div:nth-child(2){
+        width: 30%;
+    }
+}
+
+#userCommentPara{
+    text-align: left;
+    max-height: 12rem;
+    word-break: break-all;
+    overflow-y: auto;
+}
+
+.cursorNotAllowed{
+    cursor: not-allowed;
+}

@@ -1,0 +1,26 @@
+<div class="custom-dialog">
+    <div class="custom-dialog__header">
+        <h3>Confirm action</h3>
+        <span (click)="dialogRef.close(false)" class="icon-close"></span>
+    </div>
+    <div class="custom-dialog__body">
+        <div *ngIf="!data.isPmScreen" class="modal__body pl-1 pr-1">
+            <p class="modal__body--text">The ADR Checklist has been finished. Approve, or Reject with a comment.</p>
+            <textarea id="adrApproveRejectComments" [(ngModel)]="comment"
+                (ngModelChange)="descriptionChanged($event)"
+                placeholder="Write your comment here" class="textarea" rows="4" autocomplete="off"
+                [style.border]="isInvalid ? '1px solid red': '1px solid gray'"></textarea>
+            <span>Note: A comment is required in case of Rejection</span>
+        </div>
+        <div *ngIf="data.isPmScreen" class="modal__body ml-1">
+            <p class="modal__body--text">The status of applicable ADR items have been selected. Submit to Policy Owner
+                for
+                review.</p>
+        </div>
+    </div>
+
+    <div class="custom-dialog__footer">
+        <button class="btn btn--danger" (click)="onReject()">Reject</button>
+        <button class="btn btn--success" (click)="onApprove()">Approve</button>
+    </div>
+</div>

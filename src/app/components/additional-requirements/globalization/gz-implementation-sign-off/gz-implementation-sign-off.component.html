@@ -1,0 +1,48 @@
+<div class="impl-sign-off full-height flex-center-horizontal pt-4">
+    <div class="impl-sign-off__body" [ngClass]="{ 'flex-center-vertical': currentRole === role.pm && !isVisible?.pm }">
+        <ng-container *ngIf="currentRole === role.pm && !isVisible?.pm">
+            <app-holding-status [statusIcon]="waitHoldingMsg.statusIcon" [status]="waitHoldingMsg.status"></app-holding-status>
+        </ng-container>
+        <ng-container *ngIf="currentRole === role.pm && isVisible?.pm || currentRole === role.globalizationPO && isVisible?.po">
+            <app-holding-status [statusIcon]="checklistHoldingMsg.statusIcon" [status]="checklistHoldingMsg.status">
+                <div class="impl-sign-off__checklist mt-2">
+                    <mat-list-item *ngFor="let item of serviceRequestList">
+                        <mat-checkbox
+                            [ngClass]="{'pl-3': item.uniqueKey === 'userInterface' || item.uniqueKey === 'onlineHelp' || item.uniqueKey === 'techDocuments'}"
+                            [(ngModel)]="item.selected"
+                            (ngModelChange)="onServiceRequestListChange(item)"
+                            [disabled]="currentRole === role.pm || currentRole === role.globalizationPO && !isEditable?.po">{{item.name}}</mat-checkbox>
+                    </mat-list-item>
+                </div>
+            </app-holding-status>
+            <div class="mt-2" *ngIf="docCentralObj.edcsID || isEditable.po">
+                <app-holding-status [statusIcon]="documentationHoldingMsg.statusIcon" [status]="documentationHoldingMsg.status">
+                    <div class="impl-sign-off__custom-dropzone-div">
+                        <custom-dropzone
+                            (onUploadClicked)="onUploadClicked($event)"
+                            [docCentralObj]="docCentralObj"
+                            [componentState]="customDropzoneState"></custom-dropzone>
+                    </div>
+                </app-holding-status>
+            </div>
+            <div class="mt-2">
+                <app-holding-status *ngIf="isEditable.po" [statusIcon]="newCommentsHoldingMsg.statusIcon" [status]="newCommentsHoldingMsg.status">
+                    <div class="form-group base-margin-bottom">
+                        <div class="form-group__text">
+                            <textarea rows="3" placeholder="Type here" [(ngModel)]="poComment"></textarea>
+                        </div>
+                    </div>
+                </app-holding-status>
+                <app-holding-status *ngIf="!isEditable.po && poCommentsHoldingMsg.message" [statusIcon]="poCommentsHoldingMsg.statusIcon" [status]="poCommentsHoldingMsg.status" [message]="poCommentsHoldingMsg.message"></app-holding-status>
+            </div>
+            <div class="text-right py-2" *ngIf="isEditable.po">
+                <button class="btn btn--primary" (click)="submit()">Submit</button>
+            </div>
+        </ng-container>
+    </div>
+</div>
+<ng-container *ngIf="showLoader">
+    <div class="flex-center full-height overlay">
+        <cui-spinner color="default" label="Loading"></cui-spinner>
+    </div>
+</ng-container>

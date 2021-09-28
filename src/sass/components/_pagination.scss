@@ -1,0 +1,112 @@
+// Pagination Styles start--------------------------------------------------------
+.pagination{
+    list-style:none;
+  }
+  
+  .cui{
+  
+      .pagination{ 
+        
+          & {
+              padding: 0;
+              display: flex;
+          }
+          
+          &>li>a {
+              display: flex;
+              align-items: center;
+              border: 1px solid transparent;
+              border-radius: 2px;
+              height: 35px;
+              padding: 0 12px;
+          }
+          
+          &>li>a:active,&>li>a:focus,&>li>a:hover,&>li>a:visited {
+              text-decoration: none
+          }
+          
+          &>li>a:focus,&>li>a:hover {
+              color: #007493;
+              box-shadow: inset 0 0 0 1px #017cad
+          }
+          
+          &>li>a.disabled {
+              color: #58585b
+          }
+          
+          &>li+li {
+              margin-left: 5px
+          }
+          
+          &>li .icon-more {
+              height: 100%;
+              display: flex;
+              align-items: center;
+              padding: 0 10px
+          }
+          
+          &>li.active>a {
+            //   color: #fff;
+            //   border-color: #017cad;
+            //   background-color: #017cad
+              border-color: --cui-theme-primary;
+              background-color: --cui-theme-primary;
+          }
+          
+          &>li.active>a:hover {
+            //   color: #fff
+          }
+          
+          &--bordered>li>a {
+              border: 1px solid #dfdfdf;
+          }
+          
+          &--bordered>li>a.disabled {
+              background-color: rgba(0,0,0,.05);
+              border-color: transparent
+          }
+          
+          &--bordered>li+li {
+              margin-left: -1px
+          }
+          
+          &--bordered>li:first-child {
+              margin-right: 5px
+          }
+          
+          &--bordered>li:last-child {
+              margin-left: 5px
+          }
+          
+          &--small>li>a {
+              height: 30px;
+              padding: 0 10px
+          }
+          
+          &--medium>li>a {
+              height: 35px;
+              padding: 0 12px
+          }
+          
+          &--large>li>a {
+              height: 40px;
+              padding: 0 15px
+          }
+          
+  
+      }
+  
+      & &--animated .pagination>li>a:focus,& &--animated .pagination>li>a:hover {
+          transition: box-shadow .25s
+      }
+      
+      & &--animated .pagination>li.active>a {
+          transition: background-color .25s
+      }
+       
+      .base-margin-right {
+          height: 0;
+      }
+  }
+  
+  // Pagination Styles end-------------------------------------------------------------

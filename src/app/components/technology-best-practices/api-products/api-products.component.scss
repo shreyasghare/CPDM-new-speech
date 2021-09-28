@@ -1,0 +1,17 @@
+.apiProducts-left-pane {
+    width: 20%;
+    height: 100%;
+
+    &__sidebar {
+        height: 85%;
+    }
+
+    &__reinitiate-section {
+        align-items: center; 
+        height: 15%;
+
+        .icon-cursor {
+            cursor: pointer;
+        }
+    }
+}

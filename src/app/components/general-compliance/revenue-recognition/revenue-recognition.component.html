@@ -1,0 +1,60 @@
+<div class="container-fluid">
+    <div class="top-bar">
+        <div class="top-bar__navigation">
+            <h6 class="section"> <a routerLink="/home">Home</a>
+                <span class="icon-small icon-chevron-right"></span><a routerLink="/project/{{projectId}}"
+                    *appHasRole="[role.pm]">{{projectName}}</a><span
+                    *appHasRole="[role.accessibilityPO, role.revRecPO, role.BUController, role.engSox]">{{projectName}}</span>
+                <span class="icon-small icon-chevron-right"></span>Revenue Recognition</h6>
+        </div>
+        <div class="top-bar__button">
+            <button class="btn btn--secondary" (click)="openComponentModal()">Overview</button>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="row">
+            <div class="revenue-recognition" style="width:20%">
+                <p class="text-large text-center text-bold">Revenue Recognition
+                    <span *ngIf="betaFlag===true"><sup class="betaTag qtr-padding-top text-normal">BETA</sup></span>
+                </p>
+                <process-sidebar [sidebarData]="sidebarData" (onSidebarSwitch)="switchSidebarTab($event)" (onInfoClick)="showModal($event)">
+                </process-sidebar>
+                <div class="flex-center-horizontal left-pane-rinitiate" *appHasRole="[role.pm]">
+                    <button *ngIf="showReinitiateBtn" class="btn btn--dark reinitiate" (click)="onReinitiate()"> Update </button>
+                   
+                </div>
+                <div class="flex-center-horizontal" *ngIf="showReinitiateBtn"> RCL/PID-List</div>
+               
+            </div>
+            <div class="general-compliance__right-pane">
+                <div class="general-compliance--view">
+                    <div class="general-compliance--view__content">
+                        <div class="dynamic-component">
+                            <!-- all other components -->
+                            <rcl-pid-submit *ngIf="sidebarData[0].isActive"></rcl-pid-submit>
+                            <rcl-pid-approve *ngIf="sidebarData[1].isActive"></rcl-pid-approve>
+                            <fmv-assessment *ngIf="sidebarData[2].isActive"></fmv-assessment>
+                            <complete *ngIf="sidebarData[3].isActive"></complete>
+                            <!-- end  -->
+                        </div>
+                        <div class="general-compliance--view__content--footer">
+                            <div class="previousBtn">
+                                <button *ngIf="!sidebarData[0].isActive"
+                                    class="btn btn--secondary" [class.disabled]="disablePreviousBtn"
+                                    (click)="onPreviousClick()"><span class="icon-arrow-up-tail mr-1"></span>{{sideBar.getStepName('previous')}}
+                                </button>
+                            </div>
+                            <div class="nextBtn"> 
+                                <button *ngIf="!sidebarData[3].isActive"
+                                    class="btn btn--secondary" [class.disabled]="disableNextBtn"
+                                    (click)="onNextClick()">{{sideBar.getStepName('next')}}<span class="icon-arrow-down-tail ml-1"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

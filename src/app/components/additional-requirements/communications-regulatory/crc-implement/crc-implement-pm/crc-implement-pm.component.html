@@ -1,0 +1,250 @@
+<ng-container  *appHasRole="[role.pm]">
+    <div *ngIf="implementationStatus === 'notRequired'" class="flex full-height flex-center-vertical flex-center-horizontal"> 
+        <div class="holdingScreenContainer">
+            <app-holding-status [statusIcon]="naHoldingMsg.statusIcon" [status]="naHoldingMsg.status">
+                <div class="mt-2" [innerHTML]="naHoldingMsg.message"></div>
+            </app-holding-status>        
+        </div>       
+    </div>
+    <div *ngIf="implementationStatus === 'rejected'" class="mb-1">
+        <div class="pMimplementation">
+            <div class="pMimplementation__container">
+                <app-holding-status [statusIcon]="'cancel'" [status]="'Regulatory Compliance Team rejected the Implementation report'"  >
+                    <div>
+                        <span>
+                            Please review the feedback comments and re-submit the implementation report
+                        </span>
+                    </div>
+                </app-holding-status>
+            </div>
+        </div>
+        <div class="pMimplementation">
+            <div class="pMimplementation__container" *ngIf="poComments && poComments.length > 0">
+                <app-holding-status [statusIcon]="'chat'" [status]="'Comments from the Regulatory Compliance Team'"  >
+                    <div *ngFor="let element of poComments; let i=index">
+                        <div *ngIf="!element.commentForIdentify">
+                            <div class="row">
+                                <div class="rightBorder"><span class="m-1" [ngClass]="{'status-approved': element.status === 'approved', 'status-rejected' : element.status === 'rejected' }">{{element.status}}</span></div>
+                                <div class="rightBorder"><span class="m-1">Commented by</span>&nbsp;<span class=" highlight__user mr-1"><i>{{element.commentedBy}}</i></span></div>                
+                                <div><span class="m-1 highlight__date"><i>On&nbsp;{{element.commentedOn | date:'dd MMM y'}}</i></span></div>
+                            </div>
+                            <span class="{{!element.comment ? 'text-gray-600' : ''}}">{{element.comment ? element.comment : 'NA'}}</span>
+                            <hr *ngIf="poComments.length > 1 && i < poComments.length - 1">
+                        </div>                        
+                    </div>                
+                </app-holding-status> 
+            </div> 
+        </div>
+    </div>
+    <div *ngIf="!implementationStatus || implementationStatus === 'rejected'">        
+        <div class="implementation__navbar">
+            <app-navigation-tabs [customTabs]="customTab" (tabChanged)="onTabChanged($event)"></app-navigation-tabs>
+        </div>
+        <div class="main">        
+            <div class="crc_implementation__container"  *ngIf="populateDetails">
+                <div class="crc_implementation__container--header">
+                    <div class="crc_implementation__container--action">Choose Implementation method
+                        <span class="icon-info icon-small"
+                        [matTooltipClass]="'tooltipForInfo'"
+                        [matTooltip]="getTooltipDesc('Choose Implementation Method')"
+                        matTooltipPosition="after"></span>
+                    </div>
+                    <div class="crc_implementation__container--action">
+                        <label class="radio"
+                            [ngClass]="{'disabled': disableImplementationMethod.manual || populateBacklogStatus.isPopulating}">
+                            <input type="radio" name="implMethod" [(ngModel)]="selectedImplMethod" value="manual">
+                            <span class="radio__input"></span>
+                            <span class="radio__label hidden-xs">Manual</span>
+                        </label>
+                        <label class="radio"
+                            [ngClass]="{'disabled': disableImplementationMethod.pushToRepo || populateBacklogStatus.isPopulating}">
+                            <input type="radio" name="implMethod" [(ngModel)]="selectedImplMethod" value="pushToRepo">
+                            <span class="radio__input"></span>
+                            <span class="radio__label hidden-xs">Push to repository</span>
+                        </label>
+                    </div>
+                </div>
+                <ng-container *ngIf="selectedImplMethod=='manual'">
+                    <app-manual-implementation [templates]="templates" (downloadTemplate)="onDownloadTemplate($event)"
+                        [isTaskComplete]="isManualTaskComplete" (taskComplete)="onCompleteManualImplTask($event)"
+                        [enableAdditionalFields]="">
+                    </app-manual-implementation>
+                </ng-container>
+                <ng-container *ngIf="selectedImplMethod=='pushToRepo' && communicationsRegulatoryDetails">
+                    <app-push-to-repository [implementationDetails]="modifiedCommRegObj"
+                        [repositories]="repositories" [populateBacklogStatus]="populateBacklogStatus"
+                        (populate)="populateBacklog($event)" [enableAdditionalFields]="">
+                    </app-push-to-repository>
+                </ng-container>
+            </div>
+        
+            <div class="pMSendimpl"  *ngIf="sendImplDetails">
+                <div class="pMSendimpl__container">
+                    <div class="pMSendimpl__container--header">
+                        Please fill in implementation details
+                    </div>
+                    <div>
+                        <div class="pMSendimpl__container--body" *ngIf="!communicationsRegulatoryDetails.implement.isManualImplement">
+                            <div class="implReportworkspace">
+                                <div>
+                                    <label for="features-implemented">Repository workspace path:</label><br/>
+                                </div>
+                                <div>
+                                    <span class="ml-1 workSpacePath" *ngIf="workspacePath"><i>{{workspacePath}}</i></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <form [formGroup]="implementationDetailsForm">
+                                <div class="pMSendimpl__container--body">                                    
+                                    <div class="flex">
+                                        <div>
+                                            <label for="features-implemented">Features implemented:</label><br/>
+                                        </div>
+                                        <div>
+                                            <textarea id="features-implemented" class="textarea ml-1" rows="4" cols="50" placeholder="Write here"
+                                            formControlName="features" autocomplete="off" required></textarea>
+                                        </div>                                                
+                                    </div>
+                                    <div class="flex">
+                                        <div>
+                                            <label for="defects-fixed">Defects fixed:</label><br/>
+                                        </div>
+                                        <div>
+                                            <textarea id="defects-fixed" class="textarea ml-1" rows="4" cols="50" placeholder="Write here"
+                                            formControlName="defects" autocomplete="off" required></textarea>
+                                        </div>                                                
+                                    </div>
+                                </div>
+                            </form>
+                        </div> 
+                    </div>     
+                </div>
+            </div>
+            <div class="implementNavButtonSection">
+
+                <div class="navBtnContainer" *ngIf = "isNextBtn" >
+                    <button class="btn btn--primary ml-1"(click)="sendToPO($event)" [disabled]="disableNextBtn"
+                        [ngClass]="isNextBtn?'btn--primary':'btn--success'">Next
+                        <span *ngIf="isNextBtn" class="icon-arrow-right-tail"></span>
+                    </button>
+                </div>
+
+                <div class="implNavBtnContainer" *ngIf = "!isNextBtn" >
+                    <div>
+                        <button class="btn btn--primary mr-1" (click)="previousTab()" [ngClass]="{'hide-button': isNextBtn}"><span class="icon-arrow-left-tail"></span> Previous</button>
+                    </div>                    
+
+                    <div class="sendImplReportBtn">
+                        <span *ngIf="!isNextBtn" >Send implementation report to the RCT team</span>
+                        <button class="btn btn--primary ml-1" *ngIf="!isNextBtn" (click)="updateImplStatus()" [disabled]="!implementationDetailsForm.valid || implReportPopulating">{{sendBtnText}}
+                        </button>
+                    </div>
+                </div>
+                
+                            
+                
+                <!-- -->
+                
+            </div>
+            <!-- <div class="navBtnContainer notifyText" *ngIf="sendImplDetails"> NOTE: RCT team will be notified </div> -->
+        </div>    
+    </div>
+
+    <div *ngIf="implementationStatus === 'submit'" class="flex flex-column full-height flex-center-horizontal" >  
+        <div class="main">
+            <div class="pMimplementation">
+                <div class="pMimplementation__container">
+                    <app-holding-status [statusIcon]="'wait'" [status]="'Implementation report submitted for review'">
+                        <div class="mt-1"><span>The PO team will review the recommendations and provide acknowledgement</span></div>
+                        <div *ngIf="!communicationsRegulatoryDetails.implement.isManualImplement">
+                            <button class="btn btn--primary mt-1" (click)="onViewBacklog()" >View backlog </button>
+                        </div>
+                    </app-holding-status>
+                </div>
+            </div>
+
+            <div class="manualImplTemplate mt-1" *ngIf="communicationsRegulatoryDetails.implement.isManualImplement">
+                <div class="manual-implementation__action">
+                    <mat-form-field class="mr-1">
+                        <mat-label>Select Template</mat-label>
+                        <mat-select [(ngModel)]="selectedTemplate">
+                            <mat-option value="">No Selection</mat-option>
+                            <mat-option *ngFor="let element of templates" [value]="element.value">{{element.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <a class="btn btn--primary" (click)="onDownloadTemplate({ selectedTemplate: selectedTemplate, selectedLanguage: ''})"
+                        [class.disabled]="!selectedTemplate">Download <span class="icon-download"></span></a>
+                </div>
+            </div>
+        </div>
+        <div class="main mt-1">
+            <div class="pMimplementation">
+                <div class="pMimplementation__container">
+                    <div class="pMimplementation__container--border"> 
+                        <span class="pMimplementation__container--header">Implementation details</span>
+                    </div>
+                    <div>
+                        <span class="pMimplementation__container--body--header"> Requirements implemented:</span>
+                        <span class="pMimplementation__container--body implementationDetailesText ml-1 mb-1" *ngIf="requirementsImplementedDetails">{{requirementsImplementedDetails}}</span>
+                    </div>
+                    <div>
+                        <span class="pMimplementation__container--body--header">Defects fixed:</span>
+                        <span class="pMimplementation__container--body implementationDetailesText ml-1 mb-1" *ngIf="defectsFixedDetails">{{defectsFixedDetails}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="implementationStatus === 'approved'" class="flex full-height flex-center-vertical flex-center-horizontal flex-column">
+        <div class="holdingScreenContainer">
+            <app-holding-status [statusIcon]="'complete'" [status]="'Regulatory Compliance Team approved the Implementation report.'"  >
+                <div class="mt-2">
+                    <span>Requirements implemented:</span><br/>
+                    <span class="highlight__implementationDetailesText" *ngIf="requirementsImplementedDetails">{{requirementsImplementedDetails}}</span>
+                </div>
+                <div class="mt-2">
+                    <span>Defects fixed:</span><br/>
+                    <span class="highlight__implementationDetailesText" *ngIf="defectsFixedDetails">{{defectsFixedDetails}}</span>
+                </div>
+                <div *ngIf="!communicationsRegulatoryDetails.implement.isManualImplement">
+                    <button class="btn btn--primary ml-1" (click)="onViewBacklog()">View backlog </button>
+                </div>
+            </app-holding-status>        
+        </div> 
+        <div class="manualImplTemplate__approve mt-1" *ngIf="communicationsRegulatoryDetails.implement.isManualImplement">
+            <div class="manual-implementation__action">
+                <mat-form-field class="mr-1">
+                    <mat-label>Select Template</mat-label>
+                    <mat-select [(ngModel)]="selectedTemplate">
+                        <mat-option value="">No Selection</mat-option>
+                        <mat-option *ngFor="let element of templates" [value]="element.value">{{element.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <a class="btn btn--primary" (click)="onDownloadTemplate({ selectedTemplate: selectedTemplate, selectedLanguage: ''})"
+                    [class.disabled]="!selectedTemplate">Download <span class="icon-download"></span></a>
+            </div>
+        </div>
+
+        <div class="holdingScreenContainer mt-1" *ngIf="poComments && poComments.length > 0">
+            <app-holding-status [statusIcon]="'chat'" [status]="'Comments from the Regulatory Compliance Team'"  >
+                <div *ngFor="let element of poComments; let i=index">
+                    <div *ngIf="!element.commentForIdentify">
+                        <div class="row">
+                            <div class="rightBorder"><span class="m-1" [ngClass]="{'status-approved': element.status === 'approved', 'status-rejected' : element.status === 'rejected' }">{{element.status}}</span></div>
+                            <div class="rightBorder"><span class="m-1">Commented by</span>&nbsp;<span class=" highlight__user mr-1"><i>{{element.commentedBy}}</i></span></div>                
+                            <div><span class="m-1 highlight__date"><i>On&nbsp;{{element.commentedOn | date:'dd MMM y'}}</i></span></div>
+                        </div>
+                        <span class="{{!element.comment ? 'text-gray-600' : ''}}">{{element.comment ? element.comment : 'NA'}}</span>
+                        <hr *ngIf="poComments.length > 1 && i < poComments.length - 1">
+                    </div>                    
+                </div>                
+            </app-holding-status>        
+        </div>
+
+    </div>
+</ng-container>

@@ -1,0 +1,12 @@
+<ng-container *ngIf="true; else spinner">
+    <div class="ec-complete full-height flex-center-vertical flex-center-horizontal">
+        <div class="ec-complete__body">
+            <app-holding-status [statusIcon]="completeStatus.icon" [status]="completeStatus.status" [message]="completeStatus.message"></app-holding-status>
+        </div>
+    </div>
+</ng-container>
+<ng-template #spinner>
+    <div class="absolute-center">
+        <cui-spinner color="default" label="Loading"></cui-spinner>
+    </div>
+</ng-template>

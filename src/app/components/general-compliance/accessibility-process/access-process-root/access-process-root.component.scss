@@ -1,0 +1,343 @@
+
+
+.adr-approve {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: #39393b;
+    padding: 2rem 4rem;
+    height: 100%;
+    
+    & > div{
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+        width: 54%;
+        padding: 1rem 2rem;
+
+        h2{
+            font-weight: 500;
+            color: gray;
+            margin-top: 1rem;
+            text-align: center;
+        }
+    }
+
+    &__approve-section {
+        background-color: #c6c7ca;
+        // height: 25rem;
+        // width: 50%; 
+        height:50%;
+        width:60% !important;
+
+        .adr-approve-icon{
+            width: 35px;
+            opacity: 0.5;
+             margin-top: 2rem;
+        }
+    } 
+
+    &__comment-section{
+        margin-top: 2rem;
+        background-color: #c6c7ca;
+        height: auto;
+        width: 50%;
+
+    }
+
+}
+
+.adr-revise-block {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+    width: 100%; 
+
+    &__revise-section {
+        background-color: #c6c7ca;
+        height: 25%;
+        width: 60%; 
+        padding: 0.25rem;
+
+        .adr-revise-icon{
+            height: 5rem;
+            width: 5rem;
+            opacity: 0.2;
+            margin-top: 2rem;
+            margin-left: 2rem;
+            
+        }
+
+        h2 {
+            margin-top: -4rem;
+            margin-left: 9rem;
+        }
+        p {
+            margin-left: 9rem;
+            margin-top: 1rem;
+        }
+
+    } 
+
+    &__button-section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+// If adr-reject class is not used then remove this code
+.adr-reject {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: #39393b;
+    padding: 2rem 4rem;
+    height: 100%;
+    
+    & > div{
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+        width: 54%;
+        height: 41%;
+        padding: 1rem 2rem;
+
+        h2{
+            font-weight: 500;
+            color: gray;
+            margin-top: 1rem;
+            text-align: center;
+        }
+    }
+
+    &__reject-section {
+        margin-top: 3px;
+        background-color: #c6c7ca;
+        height: 40%;
+        width: 50%; 
+
+        .adr-reject-icon{
+            width: 35px;
+            opacity: 0.5;
+          
+        }
+    } 
+
+    &__comment-header {
+        margin-top: 3rem;
+        background-color: #7f7f86;
+        height: 3rem !important;;
+        width: 50%;
+        padding: 1rem !important;
+        align-items: initial !important; 
+    }
+
+    &__comment-section{
+        background-color: #c6c7ca;
+        margin-top: 1rem;
+        height: 20%;
+        width: 50%;
+    }
+
+    &__button-section{
+        margin-top: 1rem;
+        cursor: pointer;
+
+    }
+}
+
+.adr-reject-block {
+    height: 100%;
+    width: 100%; 
+
+    &__reject-section {
+       // margin-top: 1px;
+        // background-color: #c6c7ca;
+        // height: 20%;
+        // width: 100%; 
+        // padding: 0.25rem;
+        // margin: auto;
+
+        width: 100%;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem 3rem;
+        background-color: #c6c7ca;
+        margin: auto;
+
+        .adr-reject-icon{
+           // height: 5rem;
+            width: 35px;
+            opacity: 0.5;
+            margin-top: 0.5rem;
+            margin-left: 2rem;
+            
+            .filter-red{
+                filter: invert(15%) sepia(86%) saturate(6225%) hue-rotate(2deg) brightness(101%) contrast(122%);
+            }
+        }
+
+        h3 {
+            margin-top: -4rem;
+            margin-left: 9rem;
+        }
+        p {
+            margin-left: 9rem;
+            margin-top: -0rem;
+        }
+    }
+
+    &__comment-header {
+        margin-top: 3rem;
+        background-color: #b6b9bb;
+        height: 3rem !important;;
+        width: 100%;
+        padding: 1rem !important; 
+    }
+    &__comment-section {
+        background-color: white;
+        //height: 60% !important;
+        height: 40vh !important;
+        width: 100%; 
+        overflow-y: scroll;
+        padding: 1rem !important;
+        
+        .comment-block {
+            height: 30% !important;
+            width: 100%;
+            display: flex;
+            margin-top: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid lightgray;
+
+            .adrCommentStatus {
+                background-color: #c6c7ca;
+                color: white;
+                display: block;
+                height: 5.5rem;
+                width: 11.5rem;
+                margin-left: 1rem;
+                margin-top: 1rem;
+                border-radius: 1rem;
+                
+                p {
+                    color: black;
+                    margin: 0 !important;
+                    padding-left: 1rem !important;
+                    padding-top: 0.25rem;
+                    font-size: 82%;
+                    height: 1.5rem;
+                }
+            }
+
+            p {
+                margin-left: 4rem;
+                margin-top: 1rem;;
+            }
+        }
+    }
+    &__button-section{
+        margin-top: 1rem;
+        text-align: center;
+        cursor: pointer;
+    }
+}
+
+.adr-items-identification-status {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70vh;
+    & > p {
+        background-color:  #c6c7ca;
+        word-wrap: break-word;
+        height: 7rem;
+        width: 55%;
+        border: 1px solid gray;
+        padding: 1.3rem 1rem;
+        line-height: 1.7;
+    }
+}
+
+.hide-previous-button {
+    opacity: 0;
+    pointer-events: none;
+}
+.modalContent {
+    height:auto; 
+    overflow-y: auto;
+}
+div#info-helper.modal__body {
+    text-align:left;
+}
+.modalHeader{
+    font-size: 18px;
+}
+a.modal__close {
+    margin-top: -5px;
+    .icon-close {
+        font-size: medium;
+        color: #58585b;
+    }
+}
+
+// ADR Not Available
+.custom-modal {
+    height: 60vh;
+    width: 40vw;
+    position: absolute;
+    background-color: white;
+    top: calc(50% - 1vh); // half of width
+    left: calc(50% - 20vw);
+    
+    &__header {
+        background-color: #39393B;
+        color: white;
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__body {
+        padding: 0 0.5rem;
+        thead {
+            background-color: #f2f2f2;
+            th {
+                padding: 1rem;
+            }
+        }
+        
+        tbody > tr > td {
+            padding: 0.5rem;
+            padding-left: 1rem;
+        }
+        
+    }    
+    
+    &__footer {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1rem;
+    }
+}
+.modelCloseBtn{
+    color: #fff;
+    font-size: 14px;
+    font-family: "CiscoSans", "Arial", sans-serif;
+    font-weight: inherit;
+    background-color: transparent;
+    border: none;
+}
+
+.modalContent {
+    height: auto; 
+    overflow-y: auto;
+}

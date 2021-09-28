@@ -1,0 +1,24 @@
+.plan {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  
+    &__content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      &__serviceability-recommendations {
+        width: 90%;
+  
+        &--status {
+          font-size: 1.7rem;
+        }
+      }
+  
+      &__what-is-serviceability {
+        width: 90%;
+      }
+    }
+  }
+  

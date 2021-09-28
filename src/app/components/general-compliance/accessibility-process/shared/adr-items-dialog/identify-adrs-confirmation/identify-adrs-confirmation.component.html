@@ -1,0 +1,18 @@
+<div class="custom-dialog">
+    <div class="custom-dialog__header">
+        <h3>{{data.showApprovalScreen || data.adrsPresent ? 'Confirm action' : 'No ADR item selected'}}</h3>
+        <span (click)="dialogRef.close(false)" class="icon-close"></span>
+    </div>
+    <div class="custom-dialog__body">
+        <p *ngIf="data.showApprovalScreen; else adrs">The status of applicable ADR items have been selected. Submit to Policy Owner for review.</p>
+        <ng-template #adrs>
+            <p *ngIf="data.adrsPresent">Click Yes to confirm the identification of all the applicable ADR items</p>
+          <p *ngIf="!data.adrsPresent">In order to proceed, select at least one ADR item as Applicable</p>
+        </ng-template>
+    </div>
+
+    <div class="custom-dialog__footer">
+        <button class="btn btn--primary"  (click)="onNo()">{{data.adrsPresent ? 'No' : 'Okay'}}</button>
+        <button class="btn btn--primary" (click)="onYes()" *ngIf="data.adrsPresent" (click)="onYes()">{{data.adrsPresent ? 'Yes, Submit' : 'Yes'}}</button>
+    </div>
+</div>

@@ -1,0 +1,20 @@
+.acceptorOwnerModelHeaderDiv{
+    &__header{
+        display: flex;
+        justify-content: space-between;
+        .icon-close{
+            cursor: pointer;
+        }
+    }
+}
+
+#acceptorOwnerButtonContainer{
+    display: flex;
+    justify-content: space-between;
+}
+
+.err-msg {
+    float: right;
+    color: red;
+    margin-bottom: 0.5rem;
+}

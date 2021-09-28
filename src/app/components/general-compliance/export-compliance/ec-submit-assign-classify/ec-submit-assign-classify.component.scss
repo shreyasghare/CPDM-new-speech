@@ -1,0 +1,17 @@
+.ec-submit-assign-classify {
+    &__body {
+        width: 90%;
+    }
+    &__heading {
+        font-weight: 400;
+    }
+    &__content {
+        background-color: #c6c7ca;
+        ul {
+            list-style: none;
+            li {
+                line-height: 3.5;
+            }
+        }
+    }
+}

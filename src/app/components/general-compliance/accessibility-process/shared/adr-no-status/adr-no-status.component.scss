@@ -1,0 +1,20 @@
+.custom-modal {
+    max-height: 52vh;
+    p {
+        text-align: center 
+    }
+    &__body{
+        padding: 0 0.5rem;
+        margin: 1rem;
+    }
+
+    &__footer {
+        margin-top: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    h6 {
+        color: #fff !important;
+    }
+}    

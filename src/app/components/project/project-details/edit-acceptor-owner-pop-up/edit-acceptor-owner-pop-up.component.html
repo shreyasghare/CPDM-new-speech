@@ -1,0 +1,81 @@
+<div>
+    <div class="acceptorOwnerModelHeaderDiv">
+        <div class="modal__header">
+            <div class="modal__title" *ngIf="owner"><span *ngIf="!typeView">Add </span>Owners for {{projectObj.name}}</div>
+            <div class="modal__title" *ngIf="acceptor"><span *ngIf="!typeView">Add </span> Acceptors for {{projectObj.name}}</div>
+        </div>
+        <a class="modal__close" (click)="bsModalRef.hide()"><span class="icon-close icon-size-20"></span></a>
+    </div>
+    <div id="acceptorOwnerSearchContainer">
+        <!-- <mat-tab-group  animationDuration="0ms" [(selectedIndex)]="selectedMemberTypeTabIndex"  *ngIf="!typeView">
+            (selectedTabChange)="memberTypeTabChange($event)">
+            <mat-tab label="Add User">
+            </mat-tab>
+            <mat-tab label="Add Teams">
+            </mat-tab>
+        </mat-tab-group> -->
+        <div class="button_container" *ngIf="!typeView">
+            <div class="form-group" [ngClass]="errorOccurred?'form-group--error':''">
+                <!-- <div class="form-group__text">
+                    <input (keyup.enter)="onMemberAddition()" placeholder="Search" [(ngModel)]="inputValue" type="text" [readonly]="showLoader">
+                </div>
+                <div class="help-block text-danger" role="alert">
+                    <span>{{getErrorMessage}}</span>
+                </div> -->
+                <!-- <div class="row"><span class="mat-slide-toggle-text">CEC ID</span><mat-slide-toggle [(ngModel)]="matSlideToggleValue"> </mat-slide-toggle> <span class="mat-slide-toggle-text">Mailer List</span></div> -->
+                <form spellcheck="false">
+                    <mat-form-field  class="autoComplete-matInput">
+                        <input type="text" placeholder="Search..."
+                            matInput
+                            [formControl]="searchMember" 
+                            [matAutocomplete]="auto">
+                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="matOptionSelected($event.option.value)" [displayWith]="getSelectedUserName" > <!--getPosts($event.option.value)-->
+                          <mat-option *ngFor="let user of users" [value]="user">
+                            {{ user.name }} <span *ngIf="user.cecId">({{user.cecId}})</span>
+                          </mat-option>
+                        </mat-autocomplete>                        
+                    </mat-form-field>                    
+                </form>
+            </div>
+            <!--loader part -->
+            <div class="loading-dots loading-dots--muted" *ngIf="showLoader" aria-label="Loading, please wait...">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="form-group input--compressed"  *ngIf="!showLoader">
+                <button class=" btn btn--primary" [disabled]="!inputValue" (click)="onMemberAddition()">Add</button>
+            </div>
+        </div>
+        <div class="help-block text-danger" role="alert">
+            <span>{{getErrorMessage}}</span>
+        </div>
+    </div>
+    <div class="panel panel--plane panel--loose" id="acceptorOwnerList">
+        <span class="userListHeader" *ngIf="owner">List of Owners</span>
+        <span class="userListHeader" *ngIf="acceptor">List of Acceptors</span>
+        <br />
+        <span tabindex="0" class="label label--small label--dark label--bordered mr-1" [attr.data-balloon]="member.fullname"
+            *ngFor="let member of members; let i = index" data-balloon-pos="up">
+            <span class="icon-contact"></span> &nbsp;
+            <span>{{member.cecId || member.name}}</span> &nbsp;
+            <span class="icon-exit removeUserIcon" (click)="onRemove(i)" *ngIf="!typeView"></span>
+        </span>
+    </div>
+    <div id="acceptorOwnerButtonContainer">
+        <div class="row" *ngIf="!typeView">
+            <button class=" btn btn--dark" (click)="bsModalRef.hide()">Cancel</button>
+            <button class=" btn btn--secondary" [disabled]="(!members.length) && (!disableSave)" (click)="onSave()">Save</button> 
+        </div>
+        <div *ngIf="acceptorOwnerUpdateSatus" class="help-block text-danger" role="alert">
+            <span *ngIf="acceptor">Unable to update Acceptors</span>
+            <span *ngIf="owner">Unable to update Owners</span>
+        </div>
+    </div> 
+    <div class="overlay" *ngIf="loadingAcceptorOwner"></div>
+</div>
+<div *ngIf="loadingAcceptorOwner">
+    <div  id="cuiLoaderContainer" class="absolute-center">
+        <cui-spinner color="default" label="Loading"></cui-spinner> 
+    </div>
+</div>

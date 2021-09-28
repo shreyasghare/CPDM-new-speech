@@ -1,0 +1,29 @@
+<div class="container">
+  <div *ngIf="projectName">
+    <h6 class="section">
+        <a id="nav-home" routerLink="/home">Home</a> <span class="icon-small icon-chevron-right"></span>
+        {{ projectName }} <span><span class="icon-small icon-chevron-right"></span> Edit profile</span> 
+    </h6>
+    <h3>Edit Profile</h3>
+    <div class="divider"></div>
+  </div>
+  <div class="input">
+    <div class="input__form">
+      <app-create-project-form saveNextButton="Save" (getProName)="getProName($event)" [createProject]="false" [projectId]="projectId"></app-create-project-form>
+    </div>
+  </div>
+</div>
+
+<!-- CUI Spinner -->
+<ng-template #spinner>
+  <div  id="cuiLoaderContainer" class="absolute-center">
+    <cui-spinner color="default" label="Loading"></cui-spinner> 
+</div>
+</ng-template>
+<!-- End CUI Spinner -->
+
+<!-- app footer -->
+<!-- <div class="footer__fixed">
+  <app-footer></app-footer>
+</div> -->
+<!-- end app footer -->

@@ -1,0 +1,179 @@
+<div class="m-2" *ngIf="currentRole === 'PM' || (currentRole === 'globalizationPO' && hasRequirements)">
+    <div class="implementation__navbar mb-2">
+        <app-navigation-tabs [customTabs]="customTab" (tabChanged)="switchToNextTab($event)"></app-navigation-tabs>
+    </div>
+    <form [formGroup]="defineStrategyForm" *ngIf="defineStratgyScreen">
+        <app-holding-status [statusIcon]="gobalisationAppHolding.icon" [status]="gobalisationAppHolding.status">
+            <div class="form-group">
+                <label class="radio optionSpacing">
+                    <input type="radio" value="newOffering" (change)="removeMandatory($event)" formControlName="offeringSelection">
+                    <span class="radio__input"> </span>
+                    <span class="radio__label">{{gobalisationAppHolding.optionLabel.newOfferingLabel}}</span>
+                </label>
+                <div class="new-offering-text">
+                    <span>- Product Globalization (prioritize a product for Internationalization (i18n)) <span class="icon-info icon--custom-size" [matTooltip]="toolTipInfo.i18nInfoIconText" matTooltipPosition="right" [matTooltipClass]="tooltipForInfo"></span></span>
+                    <span>- Localization (l10n) <span class="icon-info icon--custom-size" [matTooltip]="toolTipInfo.i10nInfoIconText" matTooltipPosition="right" [matTooltipClass]="tooltipForInfo"></span></span>
+                    <span>- Localization Acceptance Testing (LAT) <span class="icon-info icon--custom-size" [matTooltip]="toolTipInfo.lATInfoIconText" matTooltipPosition="right" [matTooltipClass]="tooltipForInfo"></span></span>
+                </div>
+
+                <label class="radio optionSpacing">
+                    <input type="radio" value="existingOffering" (change)="removeMandatory($event)" formControlName="offeringSelection">
+                    <span class="radio__input"></span>
+                    <span class="radio__label">{{gobalisationAppHolding.optionLabel.changeOfferingLabel}}</span>
+                </label>
+                <div class="ml-3" [innerHTML]="gobalisationAppHolding.optionLabel.changeOfferingText"></div>
+            </div>
+        </app-holding-status>
+        <p class="mt-2 mb-2 ml-2 text-italic" [innerHTML]="gobalisationAppHolding.noteText"></p>
+        <app-holding-status class="mb-2" [statusIcon]="'notes'" [status]="'Product Details'">
+            <div>
+                <div><span class="mandatory-field" [ngStyle]="{'visibility': defineStrategyForm.value.productName ? 'hidden'  : 'visible'}"></span>1. Enter Product Name</div>
+                <div class="form-group">
+                    <div class="form-group__text input-fileds">
+                        <input type="text" formControlName="productName" placeholder="Enter">
+                    </div>
+                </div>
+                <div><span class="mandatory-field" [ngStyle]="{'visibility': defineStrategyForm.value.productVersion ? 'hidden'  : 'visible'}"></span>2. Enter Product Version</div>
+                <div class="form-group">
+                    <div class="form-group__text input-fileds">
+                        <input type="text" formControlName="productVersion" placeholder="Enter">
+                    </div>
+                </div>
+                <div><span class="mandatory-field" [ngStyle]="{'visibility': (defineStrategyForm.value.expectedDeliveryDate && defineStrategyForm.value.expectedDeliveryDate !== 'noSelection') ? 'hidden'  : 'visible'}"></span>3. Expected Delivery Date</div>
+                <div class="form-group__text input-fileds">
+                    <cui-select
+                        placeholder="Select Quarter"
+                        [items]="expectedDeliveryDates"
+                        [compressed]="false"
+                        [empty]="false"
+                        optionsKey="label"
+                        optionsValue="value"
+                        formControlName="expectedDeliveryDate">
+                    </cui-select>
+                </div>
+            </div>    
+        </app-holding-status>
+        <div class="mt-2 footer-button">
+            <span class="text-link text-italic mr-4">
+                Completing the mandatory questions enables the 'Next' button
+            </span>
+            <button (click)="saveStrategyObject()" [disabled]="currentRole === 'globalizationPO' || defineStrategyForm.invalid || defineStrategyForm.value.expectedDeliveryDate === 'noSelection'"
+                    class="btn btn--primary">Next</button>
+        </div>
+    </form>
+
+    <form [formGroup]="serviceSelectionForm" *ngIf="serviceRequestScreen">
+        <app-holding-status class="mb-2" [statusIcon]="serviceReqAppHolding.serviceSelectionStatus.icon" [status]="serviceReqAppHolding.serviceSelectionStatus.status"
+        [message]="serviceReqAppHolding.serviceSelectionStatus.message">
+            <div class="form-group">
+                <div class="mt-2 mb-2">
+                    <label class="radio ml-2 mr-3">
+                        <input type="radio" value="turnKeyService" (change)="onServiceSelectionChange($event)" formControlName="serviceSelection">
+                        <span class="radio__input"> </span>
+                        <span class="radio__label">Turn Key Service
+                            <span class="icon-info icon--custom-size" [matTooltip]="toolTipInfo.turnKeyInfoText" matTooltipPosition="right" [matTooltipClass]="'tooltipForInfo'"></span>
+                        </span>
+                    </label>
+                    <label class="radio">
+                        <input type="radio" value="individualServiceRequest" (change)="onServiceSelectionChange($event)" formControlName="serviceSelection">
+                        <span class="radio__input"></span>
+                        <span class="radio__label">Individual Service Request</span>
+                    </label>
+                </div>
+                <div *ngIf="isServiceSelectionSelected">
+                    <div class="border-line"></div>
+                    <div class="mb-2" >
+                        <mat-list-item *ngFor="let item of checkboxList">
+                            <mat-checkbox [ngClass]= "{'ml-3':item.intermediate}" formControlName="{{item.value}}" [disabled]="item.disabled"
+                            (change)="saveServiceSelectionList($event,item.value)" [checked] = "true">{{ item.name }}</mat-checkbox>
+                            <label *ngIf="item.infoIcon">
+                                <span class="icon-info icon--custom-size" [matTooltip]="toolTipInfo.lATInfoIconText" matTooltipPosition="right" [matTooltipClass]="'tooltipForInfo'"></span>
+                            </label>
+                        </mat-list-item>
+                    </div>
+                    <div [innerHTML]="serviceReqAppHolding.messageNote"></div>
+                </div>
+                
+            </div>
+        </app-holding-status>
+        <div class="mt-3" >
+            <app-holding-status [statusIcon]="serviceReqAppHolding.questionnaireMsgs.icon" [status]="serviceReqAppHolding.questionnaireMsgs.status">
+                <div class="mt-2">
+                    <button (click)="openServiceQuestionnaireModel()" class="btn btn--primary">Add Details</button>
+                </div>
+            </app-holding-status>
+        </div>
+        
+        <div class="mt-3 footer-button2">
+            <button (click)="switchToStrategyTab()" class="btn btn--primary">Previous</button>
+            <span class="text-link text-italic footer-note">
+                Completing the mandatory questions enables the 'Next' button
+            </span>
+            <button (click)="switchToRequirementCheckListTab()" class="btn btn--primary" [disabled]="!serviceSelectionQuestionnaireStatus || !ServiceSelectionOption">Next</button>
+        </div>
+    </form>
+
+    <div *ngIf="requirementCheckListScreen">
+        <div *ngIf="requChecklistStatus !== 'Completed'">
+            <app-holding-status [statusIcon]="reqChkListAppHolding.reqChkListHolding.icon" [status]="reqChkListAppHolding.reqChkListHolding.status">
+                <button class="btn btn--primary mt-1 mb-1" (click)="openReqChecKListModel(addCheckListButton)">{{ addCheckListButton }}</button>
+                <span class="ml-4 mt-1 mb-1" *ngIf="addCheckListButton !== 'Start'">
+                    <span [ngClass]="checklistSectionObj.checklistSection.completedFlag? 'icon-check-outline icon-small':'icon-exclamation-triangle icon-small'"> </span>
+                    {{ checkListStatusMsg }}
+                </span>
+            </app-holding-status>
+            <div class="mt-3 mb-2" >
+                <app-holding-status [statusIcon]="reqChkListAppHolding.pmCommentsHolding.icon" [status]="reqChkListAppHolding.pmCommentsHolding.status">
+                    <div class="form-group base-margin-bottom">
+                        <div class="form-group__text">
+                            <textarea rows="3" placeholder="Type here" [(ngModel)]="pmSubmitComment" ></textarea>
+                        </div>
+                    </div>
+                </app-holding-status>
+            </div>
+            <div class="mt-3 footer-button2">
+                <button (click)="switchToServiceReqTab()" class="btn btn--primary">Previous</button>
+                <span class="text-link text-italic footer-note2">
+                    Completing the mandatory questions enables the 'Submit' button
+                </span>
+                <button (click)="onSaveRequirements($event)" [disabled]= "!checklistSectionObj.checklistSection.completedFlag" class="btn btn--primary">Submit</button>
+            </div>
+        </div>
+        <div *ngIf="requChecklistStatus === 'Completed'">
+            <app-holding-status [statusIcon]="reqChkListAppHolding.reqChkListSubmit.icon" [status]="reqChkListAppHolding.reqChkListSubmit.status">                
+                <div>
+                    <span class="ml-4 mt-1 mb-1" [innerHtml]= "reqChkListAppHolding.reqChkListSubmit.text">
+                    </span>
+                </div>                
+                <button class="btn btn--primary mt-1 mb-1" (click)="openReqChecKListModel(addCheckListButton)">{{ addCheckListButton }}</button>
+            </app-holding-status>
+            <div class="mt-3 mb-2" >
+                <app-holding-status [statusIcon]="reqChkListAppHolding.pmCommentsSubmit.icon" [status]="reqChkListAppHolding.pmCommentsSubmit.status">                    
+                    <div *ngFor="let element of checklistSectionObj.pmcomments; let i=index">
+                        <p>
+                            Comment by: <span class="text-link text-italic">{{element.cecId}}</span>
+                            <span class="text-gray-600"> | <span class="text-italic">On {{element.timestamp | date:'dd MMM y'}}</span></span><br>
+                            <span class="{{!element.text ? 'text-gray-600' : ''}}">{{element.text ? element.text : 'NA'}}</span>
+                        </p>
+                        <hr *ngIf="checklistSectionObj.pmcomments.length > 1 && i < checklistSectionObj.pmcomments.length - 1">
+                    </div>
+                </app-holding-status>
+            </div>            
+        </div>
+
+    </div>
+</div>
+
+<div class="poWaitingScreen" *ngIf="currentRole === 'globalizationPO' && !hasRequirements">
+    <app-holding-status [statusIcon]="globalizationPoWaitStatus.icon" [status]="globalizationPoWaitStatus.status"></app-holding-status>
+</div>
+
+<ng-container *ngIf="isSpinner">
+    <div class="overlay">
+      <div class="absolute-center"><cui-spinner></cui-spinner></div>
+    </div>
+</ng-container>
+
+
+    
+    

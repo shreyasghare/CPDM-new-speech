@@ -1,0 +1,68 @@
+<ng-container *ngIf="apiResponseReady; else spinner">
+<div class="main" *ngIf="isPMscreen; else poScreen ">
+    <!-- prepare VPAT - PM -- start -->
+    <div id="pmProgress"  class="prepareVpat" *ngIf="preparingVpat">
+        <div class="prepareVpat__container">
+            <div><img src="assets\images\icons\svg\file.svg" class="file-icon"/></div>
+            <div class="prepareVpat__container--header"> <h1>Preparing VPAT</h1></div>
+            <div class="prepareVpat__container--body">
+                <p>The Accessibility Team is preparing the VPAT. The document will be available when the Prepare VPAT step is complete.</p>
+            </div>
+        </div>
+    </div>
+    <!-- prepare VPAT - PM -- end -->
+    <!-- review complete - PM -- start -->
+    <div id="pmComplete"  class="prepareVpat" *ngIf="reviewComplete">
+        <app-holding-status [statusIcon]="'complete'" [status]="'VPAT review is complete'" [message]= "''">
+            <div> <p>The review document  <b>{{docCentralObj.fileName ? this.docCentralObj.fileName : ''}}</b>
+                <span *ngIf="docCentralObj.fileName"> and </span> is uploaded and marked as ready.</p>
+              <i> <a (click)="downloadFile('docCentral')" class="edcsLink">{{docCentralObj.edcsID}}</a></i></div>
+        </app-holding-status>
+        </div>
+ 
+    <!-- review complete - PM -- end -->
+</div>
+
+<ng-template #poScreen>
+    <div class="prepareVpat-PO">
+        <div class="prepareVpat-PO__container">
+            <div class="prepareVpat-PO__container--download">
+                <p>The VPAT document is ready to be downloaded to be completed.</p>
+                <a class="btn btn--primary" [class.disabled]="!isDownloadEnabled" (click)="downloadFile('node')" download>Download <span class="icon-download"></span></a>
+            </div>
+        </div>
+        <div class="prepareVpat-PO__container mt-2">
+                <div class="prepareVpat-PO__container--section">
+                    <p>Once the VPAT document is completed, upload the VPAT <b>word</b> document</p>
+                </div>
+        </div>
+         <div class="custom-dropzone-div ">
+                    <custom-dropzone (onUploadClicked)="onUploadClicked('word', $event)" 
+                    [componentState]="componentState" 
+                    [docCentralObj]="docCentralObj"
+                    ></custom-dropzone>
+                    <!-- (setComponentStateWhileRemoving)="handleWordComponentStateWhileRemoving($event)"
+                    (setComponentStateWhileSelecting)="handleWordComponentStateWhileSelecting($event)" -->
+                </div>
+         <!-- <div class="prepareVpat-PO__container mt-2">
+                <div class="prepareVpat-PO__container--download text-center">
+                    <p>Upload the <b>pdf</b> version of the VPAT document</p>
+                </div>
+        </div>
+         <div class="custom-dropzone-div">
+                <custom-dropzone (onUploadClicked)="onUploadClicked('pdf', $event)" 
+                [componentState]="pdfComponentState" 
+                [docCentralObj]="docCentralPDFObj"
+                (setComponentStateWhileRemoving)="handlepdfComponentStateWhileRemoving($event)"
+                (setComponentStateWhileSelecting)="handlepdfComponentStateWhileSelecting($event)"></custom-dropzone>
+         </div> -->
+         <button class="btn btn--success mt-3" (click)="onSubmitClicked()" [disabled]="isSubmitBtnDisabled">Submit</button>         
+    </div>
+</ng-template>
+</ng-container>
+ <ng-template #spinner>
+    <div class="absolute-center" style="margin-left: 100px;">
+        <cui-spinner color="default" label="Loading"></cui-spinner>
+    </div>
+  </ng-template>
+<cui-modal></cui-modal>

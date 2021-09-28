@@ -1,0 +1,65 @@
+<!-- <div *ngIf="false" class="rev-rec-holding-status">
+    <app-holding-status style="width: 70%;" *ngIf="false" [statusIcon]="'review'" [status]="'Awaiting FMV document'" [message]="'Revenue Recognition team will upload the FMV document'"></app-holding-status>
+    <app-holding-status style="width: 70%;" *ngIf="false" [statusIcon]="'complete'" [status]="'Completed'" [message]="'The Revenue Recognition compliance process is complete. Thank you for working with the Project Manager and the Revenue Recognition Team. Below are the details and associated documentation.'"></app-holding-status>
+</div> -->
+<div class="main" *ngIf="apiResponseReady; else spinner">
+     <!--PM Screen Start-->    
+    <div class="rev-rec-complete">
+        <ng-template [appHasRole]="[role.pm, role.engSox, role.BUController]">
+            <app-holding-status [statusIcon]="'complete'" [status]="'Completed'" [message]="'The Revenue Recognition compliance process is complete. Thank you for working with the BU Controller and Revenue Recognition Team. Below are the details and associated documentation.​'"></app-holding-status>
+        </ng-template>
+        <ng-template [appHasRole]="[role.revRecPO]">
+            <div class="rrScreen">
+                <app-holding-status [statusIcon]="'complete'" [status]="'Completed'" [message]="'The Revenue Recognition compliance process is complete. Thank you for working with the Project Manager and the BU Controller. Below are the details and associated documentation.'"></app-holding-status>  
+                <br/>
+                <div class="upload-btn-wrapper">
+                    <button class="btn btn--primary file-upload-button" [disabled]="isUploadBtnDisabled">
+                        <input type="file" #fileInput (change)="onUploadClicked(fileInput)" />
+                    </button>
+                </div>
+            </div>
+        </ng-template>                 
+        <div class="documents-list-container mt-2" >
+            <div class="responsive-table">
+                <table class="table--custom">
+                    <thead [ngClass]="{'mac--os':isMacOs}">
+                        <tr>
+                           <th>Document name</th>
+                           <th>EDCS number</th>
+                           <th>Upload date</th>
+                           <th>Update Document</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let document of docCentralLinks; let i = index">
+                            <td>
+                                <span [title]="document.fileName" *ngIf="!hideme[i]">{{document.fileName}}</span>
+                                <div class="loading-dots loading-dots--muted progressStatusDots" [hidden]="!hideme[i]" aria-label="Loading, please wait...">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                            </td>
+                            <td><a (click)="onDownload(document.nodeRef,document.fileName)">{{document.edcsID}}</a></td>
+                            <td>{{document.uploadDate | date}}</td>
+                            <td>
+                                <ng-template [appHasRole]="[role.revRecPO]">
+                                    <button *ngIf="document.type === 'fmv' && !hideme[i]" class="ml-1 btn btn--primary file-update-button">
+                                        <input type="file" #fileInput (change)="onUpdateClicked(fileInput, document, i)" />
+                                    </button>
+                                    <span *ngIf="document.type != 'fmv'">NA</span>                                    
+                                </ng-template>
+                                <span *appHasRole="[role.pm, role.BUController, role.engSox]">NA</span>
+                            </td>
+                         </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>    
+    </div>    
+</div>
+<ng-template #spinner>
+    <div class="flex-center full-height">
+        <cui-spinner color="default" label="Loading"></cui-spinner>
+    </div>
+</ng-template>

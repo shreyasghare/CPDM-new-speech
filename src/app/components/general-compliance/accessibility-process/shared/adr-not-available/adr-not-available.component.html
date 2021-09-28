@@ -1,0 +1,47 @@
+<div class="custom-modal">
+    <div class="custom-modal__header">
+        <h6 *ngIf="objectDetails.isPmScreen">Add ADR {{objectDetails.tabClicked}} items</h6>
+        <h6 *ngIf="!objectDetails.isPmScreen">View ADR {{objectDetails.tabClicked}} items</h6>
+        <button class="pointer-cursor modelCloseBtn" (click)="modalPopupClose()"><span class="icon-close"></span></button>
+    </div>
+    <p *ngIf="!objectDetails.isPmScreen">This list of ADR items are not applicable currently</p>
+    <p *ngIf="objectDetails.isPmScreen">This list of ADR items are not applicable currently. Check the Applicable box to add to the list of applicable ADR items.</p>
+    <div class="custom-modal__body">
+        <table class="table--custom">
+            <thead>
+                <th class="text-left">ADR ID ( {{notApplicableItemsSelected.length}} / {{notApplicableItems.length}} )</th>
+                <th class="text-left">Description</th>
+                <th class="text-left" *ngIf="objectDetails.isPmScreen">
+                        <label class="checkbox">
+                        <input type="checkbox" [checked]="allAdrSelected" (change)="selectAllNaAdrs($event)">
+                        <span class="checkbox__input"></span>
+                        <span class="checkbox__label hidden-xs">Applicability</span>
+                        </label>
+                </th>
+                <th *ngIf="!objectDetails.isPmScreen">Applicability</th>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let adrItem of notApplicableItems">
+                    <td class="text-left">{{adrItem.name}}</td>
+                    <td class="text-left">{{adrItem.description}}</td>
+                    <td class="text-left" *ngIf="objectDetails.isPmScreen"><label class="checkbox">
+                                <input type="checkbox" [checked]="adrSelected" (change)="selectCheckedAdr($event, adrItem)">
+                                <span class="checkbox__input"></span>
+                                <span class="checkbox__label hidden-xs">Applicable</span>
+                                </label>
+                        </td>
+                    <td *ngIf="!objectDetails.isPmScreen">
+                                <span class="checkbox__label hidden-xs">NA</span>        
+                    </td>    
+                </tr>
+
+            </tbody>
+        </table>
+        <button class="btn btn--primary btn-close" *ngIf="!objectDetails.isPmScreen" (click)="modalPopupClose()">Close</button>
+        <div class="custom-modal__footer" *ngIf="objectDetails.isPmScreen">
+            <button class="btn btn--dark" (click)="modalPopupClose()">Cancel</button>
+            <button class="btn btn--secondary" (click)="submitSelectedAdrs()">Add</button>
+        </div>
+    </div>
+</div>

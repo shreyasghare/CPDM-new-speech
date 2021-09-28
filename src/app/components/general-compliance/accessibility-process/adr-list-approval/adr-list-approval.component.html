@@ -1,0 +1,89 @@
+<div class="adrListApproval">
+    <ng-container *ngIf="accessibilityData; else spinner">
+        <ng-container *ngIf="isPmScreen; else poScreen">
+            <div>
+                <app-holding-status [statusIcon]="listOfAdrItems.icon" [status]="listOfAdrItems.status"
+                    [message]="listOfAdrItems.message">
+                    <button (click)="openDialog()"
+                        class="btn btn--primary">{{accessibilityData?.adrStatus === 'identified' || accessibilityData?.adrStatus === 'toReSubmit' ? 'Set status' :'View'}}</button>
+                        <button (click)="resubmitChecklist()" *ngIf="accessibilityData?.adrStatus === 'rejected'"
+                        class="btn btn--primary">Re-submit checklist</button>
+                </app-holding-status>
+            </div>
+            <div *ngIf="accessibilityData?.adrStatus === 'pendingApproval' || accessibilityData?.adrStatus === 'resubmit' || accessibilityData?.lastUser === 'po' && accessibilityData?.adrStatus === 'saved'">
+                <app-holding-status [statusIcon]="adrChecklistApproval.icon" [status]="adrChecklistApproval.status"
+                    [message]="adrChecklistApproval.message">
+                </app-holding-status>
+            </div>
+        </ng-container>
+
+        <ng-template #poScreen>
+            <div *ngIf="accessibilityData?.adrStatus === 'identified' || accessibilityData?.adrStatus === 'toReSubmit'">
+                <app-holding-status [statusIcon]="puttingStatusAndComments.icon"
+                    [status]="puttingStatusAndComments.status" [message]="puttingStatusAndComments.message">
+                </app-holding-status>
+            </div>
+            <div *ngIf="accessibilityData?.adrStatus !== 'identified' && accessibilityData?.adrStatus !== 'toReSubmit' && accessibilityData?.adrStatus !== 'resubmit'">
+                <app-holding-status [statusIcon]="listOfAdrItems.icon" [status]="listOfAdrItems.status"
+                    [message]="listOfAdrItems.message">
+                    <button (click)="openDialog()" class="btn btn--primary">{{accessibilityData?.adrStatus === 'pendingApproval' ? 'Review' : 'View'}}</button>
+                </app-holding-status>
+            </div>
+            <div *ngIf="accessibilityData?.adrStatus === 'resubmit'">
+                <app-holding-status [statusIcon]="checklistRevised.icon" [status]="checklistRevised.status"
+                    [message]="''">
+                    <p>{{checklistRevised.message}}</p>
+                    <button (click)="openDialog()" class="btn btn--primary">{{'Review'}}</button>
+                </app-holding-status>
+            </div>
+        </ng-template>
+        <div *ngIf="accessibilityData?.adrStatus === 'approved' || accessibilityData?.adrStatus === 'rejected'">
+            <app-holding-status [statusIcon]="accessibilityData?.adrStatus === 'approved' ? 'complete' :  'reject'" [status]="accessibilityData?.adrStatus === 'approved' ? 'Approved' :  'Rejected'"
+                [message]="''">
+                <div *ngIf="isPmScreen">
+                    <span>Accessibility team has {{accessibilityData?.adrStatus === 'approved' ? 'approved' :'rejected'}} the ADR checklist. View the comments below {{accessibilityData?.adrStatus === 'rejected' ? 'and resubmit checklist' : ''}}
+                         <a *ngIf="accessibilityData?.adrStatus === 'approved'" (click)="donwloadAdrListApproval()">{{accessibilityData?.docCentralLinks?.adrListApproval?.edcsID}}</a></span>
+                </div>
+                <div *ngIf="!isPmScreen" class="flex">
+                    <span class="text-center half-margin-top ">{{accessibilityData?.adrStatus === 'approved' ? 'ADR checklist approved.' : 'The ADR checklist has been rejected and the Project Manager has been notified to resubmit.'}}</span>
+                    
+                    <div class="ml-1" *ngIf="accessibilityData?.adrStatus === 'approved'">
+                        <cui-loader *ngIf="showLoader; else downloadLink"></cui-loader>
+                        <button class="btn btn--primary half-margin-bottom" *ngIf="showRetry && !showLoader" (click)="generateAndUpdaload()"> Retry</button>
+                        <ng-template #downloadLink >     
+                            <a (click)="donwloadAdrListApproval()" class="half-margin-top">{{accessibilityData?.docCentralLinks?.adrListApproval?.edcsID}}</a>
+                        </ng-template>
+                    </div>
+                </div>
+            </app-holding-status>
+        </div>
+        <div class="adrListApproval__review" *ngIf="accessibilityData?.adrComment.length > 0">
+            <div class="adrListApproval__review__header">Accessibility team review</div>
+            <div class="adrListApproval__review__body" >
+                <ng-container *ngFor="let review of accessibilityData?.adrComment.slice().reverse()">
+                    <div class="adrListApproval__review__body__status-comment">
+                        <div class="adrListApproval__review__body__status-comment__status">
+                            <div class="adrListApproval__review__body__status-comment__status__header">
+                                Status
+                            </div>
+                            <div class="adrListApproval__review__body__status-comment__status__body">
+                                {{ review.isApproved ? 'Approved by' : 'Rejected by'}} {{ review.userId | titlecase }}
+                                <div>
+                                    on {{ review.timestamp | date }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="adrListApproval__review__body__status-comment__comment">
+                            Comment: {{ review.comment }}
+                        </div>    
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </ng-container>
+    <ng-template #spinner>
+        <div class="absolute-center">
+            <cui-spinner color="default" label="Loading"></cui-spinner>
+        </div>
+      </ng-template>
+</div>

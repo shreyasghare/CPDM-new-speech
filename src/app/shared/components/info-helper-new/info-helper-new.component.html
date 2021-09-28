@@ -1,0 +1,14 @@
+<div *ngIf="isDataReady; else spinner" class="pl-1 container">
+    <div class="custom-header">  
+        <div class="modal__title">{{header}}</div>
+        <span id="close" class="icon-close icon-size-20" (click)="onClose()"></span>
+    </div>
+    <div class="container__body">
+        <div class="mt-1" [innerHTML]="description"></div>
+    </div>
+</div>
+<ng-template #spinner>
+    <div class="absolute-center">
+        <cui-spinner color="default" label="Loading"></cui-spinner>
+    </div>
+</ng-template>

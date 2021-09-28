@@ -1,0 +1,29 @@
+.ipv6-plan {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  
+    &__content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100%;
+        app-holding-status {
+            &:nth-child(1) {
+                min-height: 60%;
+            }
+            &:nth-child(2) {
+                min-height: 30%;
+            }
+            width: 90%;
+        }
+
+        &__recommendations {
+            
+            &--status {
+              font-size: 1.7rem;
+            }
+          }
+    }
+}

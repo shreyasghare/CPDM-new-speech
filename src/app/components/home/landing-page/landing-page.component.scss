@@ -1,0 +1,117 @@
+.icon-trash, .icon-pencil{
+    border: 1px solid;
+    border-color: #9e9ea2;
+    border-radius: .5rem;
+    padding: 0.3rem ;
+}
+
+.full-screen {
+    width: 100%;
+} 
+
+div > div.base-margin-top > a{
+    margin-left: 0.8%;
+}
+
+div > div.cui > div > cui-table > div > table > tbody > tr > td> div{
+    background-color: green;    
+}
+
+div > div.cui > div > cui-table > div > table > tbody > tr > td:nth-child(5) > button{
+// div.cui > div > cui-table > div > table > tbody > tr > td > button{
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+div >div.cui > div > cui-table > div > table > tbody > tr > td {//td:nth-child(5){
+    text-align: center;
+}
+div > div.cui > div > cui-table > div > table > tbody > tr > td > div > a{
+    padding: 0.5% 0;
+}
+//----------------------------------
+
+.custom__progressbar {
+    &--value {
+        width: 15%;
+        text-align: right;
+        padding-right: 15px;
+    }
+    &--bar {
+        &.pmScreen {
+            width: 50%;
+        }
+        &.poScreen {
+            width: 45%;
+        }
+        .progressbar {
+            width: 95%;
+            height: 1rem;
+            margin: 0;
+            display: inline-block;
+        }
+    }
+    &--status {
+        width: 27%;
+        padding-left: 6px;
+        white-space: normal;
+    }
+    &--value, &--bar, &--status {
+        float: left;
+    }
+}
+
+.custom--dropdown{
+    position: relative;
+    .dropdown{
+        position: absolute !important;
+        top: -1rem;
+        left: 40%;
+      
+        span{
+            transform: rotate(90deg);
+        }
+    }    
+}
+
+.project-name{
+    span{
+        margin-left:4%; 
+    }
+}
+
+.assign-members{
+    text-align: center; 
+}
+
+.label--transparent{
+    background-color: transparent;
+}
+
+.cui-search-input {
+    float: right;
+    width: 32vw;
+}
+
+.create-project-admin-search-row {
+    display: flex;
+    align-items: center;
+    height: 3rem;
+    #admin-edit-modals-imageTag {
+        max-width: 3.5rem;
+        max-height: 3.5rem;
+        margin-top: 0.6rem;
+        margin-left: 1rem;
+    }
+    cui-search {
+        position: absolute;
+        right: 0;
+        margin-right: 1.4rem;
+    }
+}
+
+.projectNameText{
+    color: #0175a2;
+    text-align: left;
+    cursor: pointer;
+}

@@ -1,0 +1,74 @@
+
+.new-offering-text {
+    display: grid;
+    margin-left: 3rem;
+    margin-bottom: 2rem;
+}
+
+::ng-deep .implementation__navbar .custom-tab__polygon {
+    height: 5.5rem;
+}
+
+.mandatory-field {
+    &::before {
+        content:"*";
+        color:red;
+    }
+}
+.input-fileds {
+    width: 25%;
+    min-width: 20rem;
+    background-color: white;
+    margin-left: 2.5rem;
+    margin-bottom: 2.5rem;
+    margin-top: 5px;
+}
+ol {
+    list-style-type: none;
+    li {
+        margin-bottom: 1.5rem;
+    }
+}
+.border-line {
+    border-top: 0.4px solid #999999;
+}
+
+.footer-button {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.footer-button2 {
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer-note {
+    margin-left: 31rem;
+    margin-top: 0.5rem;
+}
+
+.footer-note2 {
+    margin-left: 26rem;
+    margin-top: 0.5rem;
+}
+
+
+::ng-deep .mat-list-item-content {
+    margin-top: 2rem;
+}
+::ng-deep .mat-checkbox-background {
+    background-color: #ffffff;
+}
+::ng-deep .mat-checkbox-disabled.mat-checkbox-checked .mat-checkbox-background {
+    background-color: #00bceb;
+}
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+    background-color: #00bceb;
+}
+
+.poWaitingScreen {
+    display: flex;
+    justify-content: center;
+    margin-top: 10vh;
+}

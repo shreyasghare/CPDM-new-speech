@@ -1,0 +1,222 @@
+<div class="push-to-repo p-2">
+    <div class="row mb-2" *ngIf="enableAdditionalFields">
+        <div class="col text-right">
+            <label class="mr-1">Select your product language binding type:</label>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" class="custom-control-input" name="productLanguage"
+                        [(ngModel)]="selectedLanguage" value="java"
+                        [ngClass]="{'disabled': implementationDetails.implementation?.repository.productLanguage=='c'}">
+                    <label class="custom-control-label" for="langJava">Java (including Wrappers)</label>
+                    <input type="radio" class="custom-control-input ml-2" name="productLanguage"
+                        [(ngModel)]="selectedLanguage" value="c"
+                        [ngClass]="{'disabled': implementationDetails.implementation?.repository.productLanguage=='java'}">
+                    <label class="custom-control-label" for="langC">C</label>
+                    <span class="icon-info icon-small" (click)="showInfoModal({name: 'C Language'})"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-right align-center">
+            <label class="mr-1">Choose repository:</label>
+        </div>
+        <div class="col">
+            <mat-form-field>
+                <mat-label>Select an option</mat-label>
+                <mat-select [(ngModel)]="selectedRepository" (ngModelChange)="onRepositorySelection()"
+                    [disabled]="populateBacklogStatus.isBacklogPopulated">
+                    <mat-option value="">No Selection</mat-option>
+                    <mat-option *ngFor="let element of repositories" [value]="element.value">{{element.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="row" [ngClass]="populateBacklogStatus.isBacklogPopulated ? 'mt-2 mb-1' : ''"
+        *ngIf="selectedRepository=='Jira'">
+        <div class="col text-right align-center">
+            <label class="mr-1">Select Server:</label>
+        </div>
+        <div class="col">
+            <mat-form-field>
+                <mat-label>Select an option</mat-label>
+                <mat-select [(ngModel)]="selectedJiraServer" (ngModelChange)="onServerSelection()"
+                    [disabled]="populateBacklogStatus.isBacklogPopulated">
+                    <mat-option value="">No Selection</mat-option>
+                    <mat-option *ngFor="let element of serverList" [value]="element.serverURL">{{element.jiraNameURL}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col"></div>
+        <div class="col">
+            <ng-container *ngIf="!populateBacklogStatus.isBacklogPopulated">
+                <button class="btn btn--primary" [disabled]="!canLogin" (click)="loginToRepository()">
+                    <span class="spinner-border margin: 1rem 1rem;" role="status" aria-hidden="true"></span>Login
+                </button>
+                <span class="icon-info icon-small" [matTooltip]="getTooltipDesc('Login')"
+                    matTooltipPosition="after"  [matTooltipClass]="'tooltipForInfo'"  ></span>
+            </ng-container>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col text-right align-center">
+            <label>Choose workspace Path:</label>
+        </div>
+        <div class="col">
+            <div class="text-bold mb-1" *ngIf="workspacePath">{{workspacePath}}</div>
+            <button class="btn btn--primary"
+                [disabled]="!canChoose || populateBacklogStatus.isBacklogPopulated" (click)="choose()">Choose</button>
+            <span class="icon-info icon-small" [matTooltip]="getTooltipDesc('Choose Workspace')"
+                matTooltipPosition="after"  [matTooltipClass]="'tooltipForInfo'"></span>
+            <span class="loading-dots loading-dots--muted ml-1" *ngIf="selectedRepository && !isBtnReady">
+                <span></span><span></span><span></span>
+            </span>
+        </div>
+    </div>
+    <div class="row mt-2" *ngIf="enableAdditionalFields">
+        <div class="col text-right">
+            <label class="mr-1">Other details:</label>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <textarea [(ngModel)]="otherDetails" placeholder="Enter details" class="textarea" rows="3"
+                    autocomplete="off" [readonly]="populateBacklogStatus.isBacklogPopulated"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col"></div>
+        <div class="col">
+            <button class="btn btn--primary"
+                [disabled]="!workspacePath || populateBacklogStatus.isBacklogPopulated || populateBacklogStatus.isPopulating"
+                (click)="populateBacklog()">
+                Populate backlog
+            </button>
+            <span class="loading-dots loading-dots--muted ml-1" *ngIf="populateBacklogStatus.isPopulating"
+                aria-label="Loading, please wait...">
+                <span></span><span></span><span></span>
+            </span>
+            <span class="ml-1" *ngIf="!populateBacklogStatus.isPopulating && populateBacklogStatus.isBacklogPopulated">
+                <span> Done</span><img src="assets\images\icons\svg\tick-inside-circle.svg" class="success-populate"
+                    alt="Done" />
+            </span>
+        </div>
+    </div>
+    <div class="row mt-2" *ngIf="populateBacklogStatus.isBacklogPopulated">
+        <div class="col"></div>
+        <div class="col">
+            <button class="btn btn--primary" (click)="onViewBacklog()">
+                View backlog
+            </button>
+        </div>
+    </div>
+</div>
+
+<ng-template #rallyWorkspaceTemplate>
+    <div class="implementation-dialog">
+        <div class="implementation-dialog__header">
+            <div class="modal__title">Choose Workspace</div>
+            <div><span class="icon-close icon-size-20" (click)="implementationDialog.close()"></span>
+            </div>
+        </div>
+        <div class="implementation-dialog__main-content">
+            <div class="row">
+                <div class="col-4 mt-1">Choose Workspace</div>
+                <div class="col-8">
+                    <div class="loading_dots mt-1" *ngIf="!isWorkspacesPopulateDone">
+                        <cui-loader color="muted"></cui-loader>
+                    </div>
+                    <div class="form-group__text" *ngIf="isWorkspacesPopulateDone">
+                        <mat-form-field>
+                            <mat-label>Select an option</mat-label>
+                            <mat-select [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedWorkspaceId"
+                                (ngModelChange)="onWorkspaceSelection()">
+                                <mat-option *ngFor="let element of rallyWorkspaceList" [value]="element.ObjectID">
+                                    {{element._refObjectName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4 mt-1">Choose Project</div>
+                <div class="col-8">
+                    <div class="loading_dots mt-1" *ngIf="!isWorkspacesPopulateDone || !isProjectsPopulateDone">
+                        <cui-loader color="muted">
+                        </cui-loader>
+                    </div>
+                    <div class="form-group__text" *ngIf="isWorkspacesPopulateDone && isProjectsPopulateDone">
+                        <mat-form-field>
+                            <mat-label>Select an option</mat-label>
+                            <mat-select [disabled]="!selectedWorkspaceId" [ngModelOptions]="{standalone: true}"
+                                [(ngModel)]="selectedWorkspaceProjectId"
+                                (ngModelChange)="onWorkspaceProjectSelection()">
+                                <mat-option *ngFor="let element of selectedWorkspaceProjectList"
+                                    [value]="element._refObjectUUID">{{element._refObjectName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="implementation-dialog__footer">
+            <button class="btn btn--dark" (click)="implementationDialog.close()">Close</button>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #jiraProjectTemplate>
+    <div class="implementation-dialog">
+        <div class="implementation-dialog__header">
+            <div class="modal__title">Choose Project</div>
+            <span class="icon-close icon-size-20" (click)="implementationDialog.close()"></span>
+        </div>
+        <div class="implementation-dialog__main-content">
+            <div class="row">
+                <div class="col-4 mt-1">Choose Project:</div>
+                <div class="col-8">
+                    <div class="loading_dots mt-1" *ngIf="!isProjectsPopulateDone">
+                        <cui-loader color="muted"></cui-loader>
+                    </div>
+                    <div class="form-group__text" *ngIf="isProjectsPopulateDone">
+                        <mat-form-field>
+                            <mat-label>Select an option</mat-label>
+                            <mat-select [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedJiraProjectId"
+                                (ngModelChange)="onJiraProjectSelection()">
+                                <mat-option *ngFor="let element of jiraProjectList" [value]="element.key">
+                                    {{element.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4 mt-1">Choose Issue Type:</div>
+                <div class="col-8">
+                    <div class="loading_dots mt-1" *ngIf="!isIssueTypePopulatedDone">
+                        <cui-loader color="muted"></cui-loader>
+                    </div>
+                    <div class="form-group__text" *ngIf="isIssueTypePopulatedDone">
+                        <mat-form-field>
+                            <mat-label>Select an option</mat-label>
+                            <mat-select [ngModelOptions]="{standalone: true}" [disabled]="!selectedJiraProjectId"
+                                [(ngModel)]="selectedIssueType" (ngModelChange)="onIssueTypeSelection()">
+                                <mat-option *ngFor="let element of jiraIssueTypeList" [value]="element.name">
+                                    {{element.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="implementation-dialog__footer">
+            <button class="btn btn--dark" (click)="implementationDialog.close()">Close</button>
+        </div>
+    </div>
+</ng-template>

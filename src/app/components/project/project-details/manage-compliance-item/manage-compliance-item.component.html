@@ -1,0 +1,78 @@
+<!-- <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+</button> -->
+<div class="complianceModelHeaderDiv__header">
+    <div class="modal__header">
+        <div class="modal__title">Manage {{complianceTypeHeading}} Items</div>
+    </div>
+    <span class="icon-close icon-size-20" (click)="closeManagePopup()"></span>
+</div>
+<div class="responsive-table" id="complianceTableContainer" *ngIf="apiRequest; else spinner">
+    <table id="complianceTable" class="table--custom">
+        <thead [ngClass]="{'mac--os':isMacOs}">
+            <tr>
+                <th>{{complianceTableHeading}}</th>
+                <th>Applicability</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Alpha release change for US7548 & US7549 -->
+            <ng-container *ngFor="let project of manageComplianceItems">
+                <tr>
+                    <td>{{ project.name }}&nbsp;<span class="icon-info icon-small" (click)="openTooltipModal(project.name)"></span>
+                        <span *ngIf="project.betaFlag===true" class="qtr-margin-left"><sup  class="betaTag qtr-padding-top " >BETA</sup></span>
+                    </td>
+                    <td>
+                        <div class="custom-center">
+                            <label class="switch">
+                                <input type="checkbox" [(ngModel)]="project.selected" />
+                                <span class="switch__label">No</span>
+                                <span class="switch__input"></span>
+                                <span class="switch__label">Yes</span>
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+            </ng-container>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="2">
+                    <div class="row" *ngIf="addItemFlag">
+                        <div class="newComplianceItemsContainer">
+                            <cui-select id="allComplianceItemsSelect" [items]="allComplianceItems" placeholder="No selection"
+                                [compressed]="true" [(ngModel)]="newComplianceItem.name" (ngModelChange)="onSelection()"
+                                optionsKey="name" optionsValue="name"></cui-select>
+                        </div>
+                        <div class="newComplianceItemsAddContainer">
+                            <span class="icon-check" (click)="addItem()"></span>
+                            |
+                            <span class="icon-close" (click)="ignoreItem()"></span>
+                        </div>
+                        <div class="newComplianceItemsapplicabilityContainer">
+                            <label class="switch">
+                                <input type="checkbox" [(ngModel)]="newComplianceItem.selected">
+                                <span class="switch__label">No</span>
+                                <span class="switch__input"></span>
+                                <span class="switch__label">Yes</span>
+                            </label>
+                        </div>
+                    </div>
+                </td>
+
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<div class="flex flex-center-horizontal mt-1"  *ngIf="apiRequest">
+    <button class="btn btn--success" (click)="addItemMenu()" disabled>Add item <span class="icon-plus"></span></button><!-- [disabled]="addItemFlag" -->
+</div>
+<div id="manageComplianceButtonContainer" class="mt-1">
+    <button class=" btn btn--dark" (click)="closeManagePopup()">Cancel</button>
+    <button class=" btn btn--secondary" (click)="onSave()" [disabled]="!apiRequest">Save</button>
+</div>
+<ng-template #spinner>
+    <div class="flex-center full-height">
+        <cui-spinner color="default"></cui-spinner>
+    </div>
+</ng-template>

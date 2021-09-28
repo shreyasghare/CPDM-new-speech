@@ -1,0 +1,27 @@
+#custom-expandable-panel-div {
+    background-color: #495057;
+    width:20%;
+    height: 100%;
+    overflow-y: scroll;
+    padding-left: 0;
+    padding-right: 1rem;
+    p {
+        color: white;
+        text-decoration: none;
+    }
+}
+
+#content-div {
+    width:79%;
+    height: 100%;
+    // overflow-y: scroll;
+    overflow: hidden;
+    background-color: white;
+    border: 1px solid lightgray;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.noHover {
+    pointer-events: none;
+}

@@ -1,0 +1,11 @@
+<div class="ipv6-plan">
+    <div class="ipv6-plan__content">
+        <app-holding-status [statusIcon]="IPv6Status.icon" [status]="IPv6Status.status" [message]="IPv6Status.message"></app-holding-status>
+        <app-holding-status class="mt-3" [statusIcon]="recommendationsStatus.icon" [status]="recommendationsStatus.status">
+            <div class="mt-2">
+                <button class="btn btn--primary" (click)="onBegin()" [disabled]="!this.IPv6Details">{{recommendationBtnName}}</button>
+                <span *ngIf="showRecommendationStatus" class="ipv6-plan__content__recommendations--status ml-2"><span class="icon-exclamation-triangle icon-small mr-1"></span>You must set status to at least one recommendation item.</span>
+            </div>
+        </app-holding-status>
+    </div>
+</div>

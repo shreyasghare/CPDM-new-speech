@@ -1,0 +1,7 @@
+<div class="owner-labels">
+        <span class="label label--small label--dark label--bordered" 
+                *ngFor="let item of owners | slice:0:numberOfOwnersToBeShown ; let i = index">{{item.name}}</span>
+        <span tabindex="0" *ngIf="owners.length > numberOfOwnersToBeShown" class="label label--small label--dark label--bordered owner-labels__custom-polygon" 
+                [attr.data-balloon]="getOwnersNameWithBreak" 
+        data-balloon-default data-balloon-break data-balloon-pos="right">+ {{getShowMoreCount}} more</span>
+</div>

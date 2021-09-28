@@ -1,0 +1,120 @@
+{
+    "success": true,
+    "data": {
+        "header": {
+            "priority": {
+                "key": "priority",
+                "name": "Priority",
+                "selected": false
+            },
+            "uniqueIdentifiers": {
+                "key": "uniqueIdentifiers",
+                "name": "Unique Identifiers",
+                "selected": false
+            },
+            "status": {
+                "key": "status",
+                "name": "Status",
+                "selected": false
+            }
+        },
+        "rows": {
+            "priority": [
+                {
+                    "key": "recommendations.priority",
+                    "value": "High",
+                    "selected": false
+                },
+                {
+                    "key": "recommendations.priority",
+                    "value": "Low",
+                    "selected": false
+                },
+                {
+                    "key": "recommendations.priority",
+                    "value": "Medium",
+                    "selected": false
+                }
+            ],
+            "uniqueIdentifiers": [
+                {
+                    "key": "recommendations.tag",
+                    "value": "Authentication",
+                    "selected": false
+                },
+                {
+                    "key": "recommendations.tag",
+                    "value": "Authorization",
+                    "selected": false
+                },
+                {
+                    "key": "recommendations.tag",
+                    "value": "Designing",
+                    "selected": false
+                },
+                {
+                    "key": "recommendations.tag",
+                    "value": "Documentation",
+                    "selected": false
+                },
+                {
+                    "key": "recommendations.tag",
+                    "value": "Introduction",
+                    "selected": false
+                },
+                {
+                    "key": "recommendations.tag",
+                    "value": "REST-Conventions",
+                    "selected": false
+                },
+                {
+                    "key": "recommendations.tag",
+                    "value": "REST-Patterns",
+                    "selected": false
+                },
+                {
+                    "key": "recommendations.tag",
+                    "value": "REST-Style",
+                    "selected": false
+                },
+                {
+                    "key": "recommendations.tag",
+                    "value": "Security",
+                    "selected": false
+                },
+                {
+                    "key": "recommendations.tag",
+                    "value": "Versioning",
+                    "selected": false
+                }
+            ],
+            "status": [
+                {
+                    "key": "recommendations.status",
+                    "value": "Adopted",
+                    "selected": false
+                },
+                {
+                    "key": "recommendations.status",
+                    "value": "Not Selected",
+                    "selected": false
+                },
+                {
+                    "key": "recommendations.status",
+                    "value": "Not applicable",
+                    "selected": false
+                },
+                {
+                    "key": "recommendations.status",
+                    "value": "Part of backlog",
+                    "selected": false
+                },
+                {
+                    "key": "recommendations.status",
+                    "value": "Part of roadmap",
+                    "selected": false
+                }
+            ]
+        }
+    }
+}

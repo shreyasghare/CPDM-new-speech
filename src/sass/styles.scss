@@ -1,0 +1,38 @@
+/* You can add global styles to this file, and also import other style files */
+//Cisco UI library import---------------------------
+$cui-resource-path: '../../node_modules/cisco-ui/dist';
+@import '~cisco-ui/src/scss/cui-standard.scss';
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+//--------------------------------------------------
+
+//*********************IMPORTANT****************************************
+//
+//Please do not add any global styles here
+//
+//********************************************************************** 
+
+//--------------------------sass folder imports--------------------------------
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "base/utilities";
+@import "abstracts/cuiMigration";
+@import "components/pagination";
+@import "components/cuiModal";
+@import "components/angularMaterial";
+@import "components/landingPage";
+@import "components/customTable";
+@import "components/generalCompliance";
+@import "components/revenueRecognition";
+@import "components/smartLicensing";
+@import "components/tbpImplement";
+@import "components/adminPage";
+@import "components/techBestPractices";
+@import "components/additionalRequirements";
+//------------------------------------------------------------------------------
+.fa-microphone{
+    font-size: 20px;
+    padding: 1rem;
+}
+.fa-microphone-slash{
+    font-size: 20px;
+    padding: 1rem;
+}

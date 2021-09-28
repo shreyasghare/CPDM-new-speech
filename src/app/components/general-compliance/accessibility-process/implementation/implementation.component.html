@@ -1,0 +1,444 @@
+<ng-container *ngIf="isStepChangeSpinner; else spinner">
+    <div class="implementation__navbar">
+        <app-navigation-tabs [customTabs]="customTab" (tabChanged)="onTabChanged($event)" *ngIf="navTab && isPMscreen"></app-navigation-tabs>
+    </div>
+    <div class="main" *ngIf="isPMscreen; else poScreen">
+        <div class="pMimplementation"  *ngIf="populateDetails">
+            <div class="pMimplementation__container" >
+                <div class="pMimplementation__container--header">
+                    <div class="pMimplementation__container--action">
+                        Choose Implementation method
+                        <span class="icon-info icon-small"
+                        [matTooltipClass]="'tooltipForInfo'"
+                        [matTooltip]="getTooltipDesc('Choose Implementation Method')"
+                        matTooltipPosition="after"></span>
+                    </div>
+                    <div class="pMimplementation__container--action">
+                        <label class="radio">
+                            <input type="radio" name="implMethod" [(ngModel)]="selectedImplMethod" value="manual" (change)="onImplMethodChange()">
+                            <span class="radio__input"></span>
+                            <span class="radio__label hidden-xs">Manual</span>
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="implMethod" [(ngModel)]="selectedImplMethod" value="pushToRepo" (change)="onImplMethodChange()">
+                            <span class="radio__input"></span>
+                            <span class="radio__label hidden-xs">Push to repository</span>
+                        </label>
+                    </div>
+                </div>
+                <ng-container *ngIf="selectedImplMethod=='manual'">
+                    <app-manual-implementation
+                        [templates]="templates"
+                        (downloadTemplate)="onDownloadTemplate($event)"
+                        [isTaskComplete]="isManualImplTaskComplete"
+                        (taskComplete)="onCompleteManualImplTask($event)">
+                    </app-manual-implementation>
+                </ng-container>
+                <div class="row control-margin-right" *ngIf="selectedImplMethod=='pushToRepo'">
+                    <div class="container">
+                        <div class="form-group">
+                            <div class="row mt-1">
+                                <div class="col-6 pt-2 text-right">
+                                    <label for="select-repo" >Choose Repository</label>
+                                </div>
+                                <div class="col-6">
+                                    <mat-form-field>
+                                        <mat-label>Select an option</mat-label>
+                                        <mat-select [(ngModel)]="selection" [disabled]="isPopulated && !errorInPopulate" (ngModelChange)="onSelection()">
+                                            <mat-option value="No Selection">No Selection</mat-option>
+                                            <mat-option *ngFor="let element of items" [value]="element.value" >{{element.name}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="isJiraSelected">
+                                <div class="col-6 text-right pt-2">
+                                    <label for="select-repo">Select Server</label>
+                                </div>
+                                <div class="col-6">
+                                    <div style="width: 55%;">
+                                        <mat-form-field>
+                                            <mat-label>Select an option</mat-label>
+                                            <mat-select [disabled]="disableRepo" [(ngModel)]="jiraSelectedServer" (ngModelChange)="onServerSelection()">
+                                                <mat-option value="No Selection">No Selection</mat-option>
+                                                <mat-option *ngFor="let element of serverList" [value]="element.serverURL" >{{element.jiraNameURL}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6"> </div>
+                                <div class="login col-6">
+                                    <button class="btn btn--primary mr-1"
+                                        [ngClass]="!showWorkspacePath ? 'btn--primary':'btn--success'"
+                                        [disabled]="(!toLogin)" (click)="login(repoLogin)">
+                                        <span class="spinner-border margin: 1rem 1rem;" role="status"aria-hidden="true"></span>
+                                        Login
+                                    </button>
+                                    <span class="icon-info icon-small login__infoIcon" [matTooltip]="getTooltipDesc('Login')" matTooltipPosition="after"  [matTooltipClass]="'tooltipForInfo'"></span>
+                                </div>
+                                <div class="col-6"></div>
+                                <div class="col-6" style="display: flex;">
+                                    <br *ngIf="selection=='Rally'">
+                                    <button *ngIf="selection=='Rally'" class="btn btn--primary mt-1"
+                                        [disabled]="selection === undefined || selection === null || !toChoose"
+                                        (click)="chooseRallyWorkspace()">Choose Workspace</button>
+                                    <br *ngIf="selection=='Jira' ">
+                                    <button *ngIf="selection=='Jira'" class="btn btn--primary mt-1"
+                                        [disabled]="selection === undefined || selection === null || !toChoose || !jiraSelectedServer
+                                        " (click)="chooseProject(listProjects)">Choose Project</button>
+                                    <span class="icon-info icon-small" style="    margin-top: 1.5rem; margin-left: 1rem;"
+                                        *ngIf="selection === 'Jira' || selection === 'Rally'"
+                                        [matTooltip]="getTooltipDesc('Choose Workspace')"
+                                        matTooltipPosition="after"></span>
+                                </div>
+                            </div>
+                            <div class="row mt-1" *ngIf="selectedWorkspace">
+                                <div class="col-6 text-right" >
+                                    <label>Workspace Path</label>
+                                </div>
+                                <div class="col-6">
+                                    <span class="text-bold">{{selectedWorkspace}}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6"></div>
+                                <div class="col-6 flex align-center">
+                                    <button class="btn btn--primary" [disabled]="!selectedWorkspace || selection === null || !toPopulate " (click)="populateBacklog()">
+                                        Populate backlog
+                                    </button>
+                                    <div class="loading-dots loading-dots--muted mt-1 ml-1" *ngIf="showLoaderforBtn" aria-label="Loading, please wait...">
+                                        <span></span><span></span><span></span>
+                                    </div>
+                                    <div *ngIf="isPopulated && !errorInPopulate" class="successtext">
+                                        <div><span> Done</span></div>
+                                        <div><img src="assets\images\icons\svg\tick-inside-circle.svg" class="success-populate"/></div>
+                                    </div>
+                                    <span *ngIf="errorInPopulate" class="error-populate mt-1 ml-1">{{populateError}}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6"></div>
+                                <div class="col-6">
+                                    <button class="btn btn--primary" (click)="viewBacklog(viewBacklogDetails)" [disabled]="!isPopulated">
+                                        View Backlog
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pMSendimpl"  *ngIf="sendImplDetails">
+            <div class="pMSendimpl__container">
+                <div class="pMSendimpl__container--header">Please fill in implementation details</div>
+                <div class="pMSendimpl__container--body">
+                    <div class="row" *ngIf="isPopulatedByPM">
+                        <div class="col-4">{{selection}} workspace path:</div>
+                        <div class="col-8 text-bold">{{selectedWorkspace}}</div>
+                    </div>
+                    <div>
+                        <form [formGroup]="implementationDetailsForm" (ngSubmit)="sendToPO()">
+                            <div class="row control-margin-right">
+                                <div class="col-4">
+                                    <label for="features-implemented">Features implemented:</label>
+                                </div>
+                                <div class="col-8" >
+                                    <div class="form-group">
+                                        <div class="form-group__text">
+                                            <textarea id="features-implemented" class="textarea" rows="4" cols="50"
+                                                formControlName="features" autocomplete="off"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row control-margin-right">
+                                <div class="col-4">
+                                    <label for="defects-fixed">Defects fixed:</label>
+                                </div>
+                                <div class="col-8" >
+                                    <div class="form-group">
+                                        <div class="form-group__text">
+                                            <textarea id="defects-fixed" class="textarea" rows="4" cols="50"
+                                                formControlName="defects" autocomplete="off"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="pmSentStatus"  class="sendDetails" *ngIf="pmStatusFlag">
+            <app-holding-status [statusIcon]="'complete'" [status]="'Details sent'" [message]="msg">
+                <a class="btn btn--primary mt-1" (click)="viewBacklog(viewBacklogDetails)" *ngIf="isPopulatedByPM">View Backlog</a>
+            </app-holding-status>
+            <div class="row mt-1" *ngIf="isManualImplTaskComplete">
+                <div class="col">
+                    <div class="manual-implementation__action">
+                        <mat-form-field class="mr-1">
+                            <mat-label>Choose template</mat-label>
+                            <mat-select [(ngModel)]="selectedTemplate">
+                                <mat-option value="" >No Selection</mat-option>
+                                <mat-option *ngFor="let element of templates" [value]="element.value" >{{element.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <a class="btn btn--primary" (click)="onDownloadTemplate({selectedTemplate: selectedTemplate})"  [class.disabled]="!selectedTemplate">Download<span class="icon-download"></span></a>
+                    </div>
+                </div>
+            </div>
+            <div class="pOImplementation__container1 mt-2">
+                <div class="pOImplementation__container1--header">
+                    <p>Features implemented</p>
+                </div>
+                <div class="pOImplementation__container1--body">
+                    <div class="px-1 my-1">
+                        {{featuresDetails}}
+                    </div>
+                </div>
+            </div>
+            <div class="pOImplementation__container1 mt-2">
+                <div class="pOImplementation__container1--header">
+                    <p>Defects fixed</p>
+                </div>
+                <div class="pOImplementation__container1--body">
+                    <div class="px-1 my-1">
+                        {{defectsDetails}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="general-compliance--view__content--bottom--buttons" style="width:80%" *ngIf="!hideBottomButtons">
+            <button class="btn btn--primary" (click)="previousTab()" [ngClass]="{'hide-button': disablePreviousBtn}"><span class="icon-arrow-left-tail"></span> Previous</button>
+            <div>
+                <span *ngIf="sendImplDetails">Send implementation report to accessibility team</span>
+                <button class="btn btn--primary" style="margin-left:10px" (click)="sendToPO()"
+                    [ngClass]="isNextBtn?'btn--primary':'btn--success'"
+                    [disabled]="disableNextBtn">{{isNextBtn ? 'Next' : 'Send'}}
+                    <span *ngIf="isNextBtn" class="icon-arrow-right-tail"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</ng-container>
+<ng-template #poScreen>
+    <div id="implProgress" class="pOImplementation" *ngIf="implProgress">
+        <app-holding-status [statusIcon]="'implement'" [status]="'Implementation in progress'" [message]="'Project Manager will complete the implementation and the details will be sent to you.'"></app-holding-status>
+    </div>
+    <div id="implComplete" class="pOImplementation" *ngIf="viewSentDetails">
+        <app-holding-status [statusIcon]="'implement'" [status]="'Implementation complete'" [message]="'Below are the details'"></app-holding-status>
+        <div class="pOImplementation__container1 mt-2">
+            <div class="pOImplementation__container1--header">
+                <p>Features implemented</p>
+            </div>
+            <div class="pOImplementation__container1--body">
+                <div class="px-1 my-1">
+                    {{featuresDetails}}
+                </div>
+            </div>
+        </div>
+        <div class="pOImplementation__container1 mt-2">
+            <div class="pOImplementation__container1--header">
+                <p>Defects fixed</p>
+            </div>
+            <div class="pOImplementation__container1--body">
+                <div class="px-1 my-1">
+                    {{defectsDetails}}
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<ng-template #rallyWorkspace>
+    <div class="implementation-dialog">
+        <div class="implementation-dialog__header ml-1">
+            <div class="modal__title">Choose Workspace</div>
+            <div>
+                <span class="icon-close icon-medium cursor-pointer" (click)="implementationDialog.close()"></span>
+            </div>
+        </div>
+        <div class="implementation-dialog__main-content">
+            <div class="row" style="height: 6rem;">
+                <div class="col-4 mt-2">Choose Workspace:</div>
+                <div class="col-8">
+                    <div class="loading_dots mt-2" *ngIf="isWSVisible">
+                        <cui-loader color="muted"></cui-loader>
+                    </div>
+                    <div class="form-group__text" style="width: 80%;" [hidden]="isWSVisible">
+                        <mat-form-field>
+                            <mat-label>Select an option</mat-label>
+                            <mat-select  [ngModelOptions]="{standalone: true}"
+                        [(ngModel)]="rallySelectedWSId" (ngModelChange)="onRallyWSChange()" >
+                                <mat-option value="No Selection">No Selection</mat-option>
+                                <mat-option *ngFor="let element of rallyWorkspaces" [value]="element.ObjectID" >{{element._refObjectName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="height: 6rem;">
+                <div class="col-4 mt-2">Choose Project:</div>
+                <div class="col-8">
+                    <div class="loading_dots mt-2" *ngIf="isProVisible">
+                        <cui-loader   color="muted"></cui-loader>
+                    </div>
+                    <div class="form-group__text" style="width: 80%;" [hidden]="isProVisible">
+                        <mat-form-field >
+                            <mat-label>Select an option</mat-label>
+                            <mat-select  [disabled]="!rallySelectedWSId"  [ngModelOptions]="{standalone: true}"
+                                [(ngModel)]="rallySelectedProjectId" (ngModelChange)="onRallyProjectSelection()">
+                                <mat-option *ngFor="let element of rallyProjects" [value]="element._refObjectUUID">{{element._refObjectName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="implementation-dialog__footer">
+            <button   class="btn btn--primary" (click)="implementationDialog.close()">Close</button>
+        </div>
+    </div>
+</ng-template>
+<ng-template #repoLogin>
+    <a class="modal__close" (click)="cuiModalService.hide()"><span class="icon-close"></span></a>
+    <div class="modal__header"> <h4>Login to {{selection}}</h4></div>
+    <div>
+        <form [formGroup]="repoLoginForm">
+            <div class="main--body">
+                <div class="row">
+                    <div class="col-4 mt-1">Repo URL:</div>
+                    <div class="col-8">
+                        <div class="form-group input--compressed" style="width: 70%;">
+                            <div class="form-group__text">
+                                <input formControlName="repoPath" placeholder="Repo URL" autocomplete="off" type="text">
+                            </div>
+                            <div class="help-block text-danger" role="alert">
+                                <span *ngIf="repoLoginForm.get('repoPath').errors
+                                    && repoLoginForm.get('repoPath').dirty
+                                    && repoLoginForm.get('repoPath').errors.invalidUrl">Invalid URL</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4 mt-1">API Token:</div>
+                    <div class="col-8">
+                        <div class="form-group input--compressed" style="width: 70%;">
+                            <div class="form-group__text">
+                                <input formControlName="apiToken" placeholder="API Token"  autocomplete="off" type="text">
+                            </div>
+                            <div class="help-block text-danger" role="alert">
+                                <span *ngIf="repoLoginForm.get('apiToken').errors
+                                    && repoLoginForm.get('apiToken').dirty
+                                    && repoLoginForm.get('apiToken').errors.invalidToken">Invalid API token</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button type="submit" [disabled]="repoLoginForm.invalid" class="btn btn--primary">Login</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-template>
+<ng-template #showImplementationDetails>
+    <a class="modal__close" (click)="cuiModalService.hide()"><span class="icon-close"></span></a>
+    <div class="modal__header"> <h4>Implementation Details</h4></div>
+    <div class="modal__body">
+        <div class="modal__body--content">
+            <div class="row" *ngIf="selection=='Jira'">
+                <th class="col-6"> </th>
+                <th class="col-6"></th>
+            </div>
+            <table  *ngFor="let f of jiraTktInfo; let i = index;" class="row">
+                <td class="col-6"> Feature #{{i+1}}</td>
+                <td class="col-6"><a [attr.href]="f.url" target="_blank">{{  f.key }}</a></td>
+            </table>
+            <div class="row">
+                <div class="col-6">Defects Fixed:</div>
+                <div class="col-6">{{defectsDetails}}</div>
+            </div>
+            <div class="row">
+                <div class="col-6">Features implemented:</div>
+                <div class="col-6">{{featuresDetails}}</div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<ng-template #listProjects>
+    <div class="implementation-dialog">
+        <div class="implementation-dialog__header ml-1">
+            <h4>Choose Project from {{selection}}</h4>
+            <span class="icon-close icon-medium cursor-pointer" (click)="jiraWorkspaceDialog.close()"></span>
+        </div>
+        <div class="implementation-dialog__main-content">
+            <form [formGroup]="projectList">
+                <div class="row">
+                    <div class="col-4 mt-1">Choose Project:</div>
+                    <div class="col-8">
+                        <div class="loading_dots mt-1" *ngIf="isProVisible">
+                            <cui-loader color="muted"></cui-loader>
+                        </div>
+                        <div class="form-group__text" [hidden]="isProVisible">
+                            <mat-form-field>
+                                <mat-label>Select an option</mat-label>
+                                <mat-select  [ngModelOptions]="{standalone: true}"
+                                [(ngModel)]="jiraSelectedProject" (ngModelChange)="onProjectSelection()" >
+                                    <mat-option value="No Selection">No Selection</mat-option>
+                                    <mat-option *ngFor="let element of jiraProjects" [value]="element.key" >{{element.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4 mt-1">Choose Issue Type:</div>
+                    <div class="col-8">
+                        <div class="loading_dots mt-1"  *ngIf="isIssueType">
+                            <cui-loader color="muted"></cui-loader>
+                        </div>
+                        <div class="form-group__text" [hidden]="isIssueType">
+                            <mat-form-field>
+                                <mat-label>Select an option</mat-label>
+                                <mat-select  [ngModelOptions]="{standalone: true}" [disabled]="!jiraSelectedProject || jiraSelectedProject==='No Selection'"
+                                    [(ngModel)]="jiraSelectedIType" (ngModelChange)="onITypeSelection()" >
+                                    <mat-option *ngFor="let element of jiraIssueTypes" [value]="element.name" >{{element.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="implementation-dialog__footer">
+            <button class="btn btn--primary" (click)="jiraWorkspaceDialog.close()">Close</button>
+        </div>
+    </div>
+</ng-template>
+<ng-template #spinner>
+    <div class="flex-center main-spinner">
+        <cui-spinner color="default" label="Loading"></cui-spinner>
+    </div>
+</ng-template>
+
+<ng-template #viewBacklogDetails>
+    <a class="modal__close" (click)="cuiModalService.hide()"><span class="icon-close"></span></a>
+    <div class="modal__header"> <h4> Backlog Details </h4></div>
+    <div class="main--body ">
+        <div class="row">
+            <th class="col-6"> Feature# </th>
+            <th class="col-6"> Feature name </th>
+        </div>
+        <table *ngFor="let f of jiraTktInfo; let i = index;" class="row">
+            <td class="col-6">{{i+1}}</td>
+            <td class="col-6"><a [attr.href]="f.url" target="_blank">{{  f.key }}</a></td>
+        </table>
+    </div>
+    <div class="text-center">
+        <button  class="btn btn--primary mt-2" (click)="cuiModalService.hide()">Close</button>
+    </div>
+</ng-template>

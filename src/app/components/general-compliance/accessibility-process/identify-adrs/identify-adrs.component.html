@@ -1,0 +1,38 @@
+<div class="identifyAdr">
+    <ng-container *ngIf="accessibilityData; else spinner">
+        <ng-container *ngIf="isPmScreen; else poScreen">
+            <div>
+                <app-holding-status [statusIcon]="listOfAdrItems.icon" [status]="listOfAdrItems.status"
+                    [message]="listOfAdrItems.message">
+                    <button (click)="openDialog()"
+                        class="btn btn--primary">{{accessibilityData?.adrStatus === 'started' ? 'Identify' : 'View' }}</button>
+                </app-holding-status>
+            </div>
+            <div *ngIf="accessibilityData?.adrStatus !== 'started' && accessibilityData?.adrStatus !== 'saved'">
+                <app-holding-status [statusIcon]="adrItemIdentified.icon" [status]="adrItemIdentified.status"
+                    [message]="adrItemIdentified.message">
+                </app-holding-status>
+            </div>
+        </ng-container>
+        <ng-template #poScreen>
+            <div
+                *ngIf="accessibilityData?.adrStatus === 'identified' || accessibilityData?.adrStatus === 'pendingApproval' || accessibilityData?.lastUser === 'po'">
+                <app-holding-status [statusIcon]="adrItemsIdentified.icon" [status]="adrItemsIdentified.status"
+                    [message]="adrItemsIdentified.message">
+                    <button (click)="openDialog()" class="btn btn--primary">View</button>
+                </app-holding-status>
+            </div>
+            <div *ngIf="accessibilityData?.adrStatus === 'started' || accessibilityData?.adrStatus === 'saved' && accessibilityData?.lastUser === 'pm'">
+                <app-holding-status [statusIcon]="identifyingAdr.icon" [status]="identifyingAdr.status"
+                    [message]="identifyingAdr.message">
+                </app-holding-status>
+            </div>
+        </ng-template>
+    </ng-container>
+    
+    <ng-template #spinner>
+        <div class="absolute-center">
+            <cui-spinner color="default" label="Loading"></cui-spinner>
+        </div>
+      </ng-template>
+</div>

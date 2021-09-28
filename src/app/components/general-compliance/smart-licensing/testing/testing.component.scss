@@ -1,0 +1,14 @@
+.main{
+    &__container{
+        align-items: center;
+        border: 1px solid #9e9ea2;
+        background-color: white;
+        padding: 1.5rem 1rem 0;
+    }
+
+    app-navigation-tabs .custom-tab {
+        &__polygon {
+            width: 33%!important;
+        }
+    }
+}

@@ -1,0 +1,27 @@
+<div class="main" *ngIf="engineeringInterlockStatus == 'notApplicable'">
+  <div class="flex">
+    <app-holding-status [statusIcon]="engineeringInterlock_status.icon" [status]="engineeringInterlock_status.status">
+    </app-holding-status> 
+  </div>
+</div>
+
+<div class="main" *ngIf="engineeringInterlockStatus != undefined && engineeringInterlockStatus != 'notApplicable'">
+    <span *appHasRole="[role.pm]">Complete the following tasks and move to the 'Engineering Response' step.</span>
+    <span *appHasRole="[role.smartLicensingPO]">Project Manager will perform the following tasks</span>
+    <div class="main__container">
+        <div *ngFor="let info of data">
+            <p class="ml-1" [innerHTML]="info.text"></p>
+            <div *ngIf="info.subtext?.length > 0">
+                <p class="ml-2" *ngFor="let subtext of info.subtext" [innerHTML]="subtext"></p>
+            </div>
+        </div>
+    </div>
+    <div class="action">
+        <span class="mandatoryText">*Mandatory for existing and new products</span>
+        <span class="confirmationText" [class.disabled]="isCompletedByPM" *appHasRole="[role.pm]">
+            <input type="checkbox" id="checkbox" [checked]="isCompletedByPM"
+                (change)="onChecked($event)">
+            <label for="checkbox" class="confirmationText__checkbox_pointer">All the above tasks are complete</label>
+        </span>
+    </div>
+</div>

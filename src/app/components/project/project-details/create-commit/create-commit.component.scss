@@ -1,0 +1,59 @@
+.createCommitModelHeaderDiv{
+    position: relative;
+    background-color: #858585;
+    padding: 3%;
+}
+.createCommitModelCloseBtn{
+    position: absolute;
+    right: 2%;
+    top: 30%;
+    color: #fff;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+app-create-commit > div.responsive-table{
+    padding: 3%;
+}
+
+#createCommitTable{
+    margin-bottom: 0% !important;
+    border: 1px solid #6c757d9e;
+}
+
+.createCommitModelheaderLabel{
+    left: 2%;
+    position: absolute;
+    top: 22%;
+    color: #fff;
+}
+#createCommitTable > {
+    thead > tr > th:nth-child(1), tbody > tr > th:nth-child(1){
+        width: 30%;
+        // text-align: left !important;
+        padding-left: 4%;
+    };
+    thead > tr > th:nth-child(2){
+        text-align: left !important;
+        padding-left: 4%;
+    }
+}
+
+#createCommitTable > tbody > tr > td:nth-child(2){
+    text-align: left !important;
+}
+
+#createCommitTable > tbody > tr:nth-child(odd) {
+    background-color: transparent;
+}
+
+#createCommitTableContainer{
+    padding: 3%;
+}
+
+#commitActionButtonContainer{
+    display: flex;
+    justify-content: space-between;
+    padding: 0 25px 10px 25px;
+}

@@ -1,0 +1,245 @@
+<div class="csdl-create-project-modal">
+    <div class="csdl-create-project-modal__header" [ngClass]="{'border-bottom': isDetailsConfirmed, 'pb-1': isDetailsConfirmed}">
+        <div class="csdl-create-project-modal__header--title">
+            <h5 *ngIf="!isDetailsConfirmed" class="mr-1">Create a new project to generate the CSDL ID</h5>
+            <h5 *ngIf="isDetailsConfirmed" class="mr-1">Details</h5>
+            <a *ngIf="isDetailsConfirmed" [href]="siProjectLink" target="_blank">View in Security Insights tool</a>
+        </div>
+        <a class="modal__close" (click)="confirmClose()"><span class="icon-close i-close"></span></a>
+    </div>
+    <div class="csdl-create-project-modal__header pb-1 border-bottom" *ngIf="!isDetailsConfirmed">
+        <em>Answer the following questions</em>
+        <div class="mr-10">
+            <span class="required required-field"></span>
+            <em class="text-danger">required questions</em>
+        </div>
+    </div>
+    <div *ngIf="invalidUser" class="csdl-create-project-modal__invalid-user-alert pl-2 mb-2">
+        <em>Project creation failed. <strong>{{invalidUser}}</strong> is not registered in Security Insights. Please register <u><a [href]="siHomeLink" target="_blank">here</a></u></em>
+    </div>
+    <div *ngIf="invalidProjectName" class="csdl-create-project-modal__invalid-user-alert pl-2 mb-2">
+        <em>{{invalidProjectName}}. Please use different Project Name.</em>
+    </div>
+    <form [formGroup]="createProjectForm" (ngSubmit)="createProject()">
+        <div class="csdl-create-project-modal__body my-1" [ngClass]="{'small-modal': isDetailsConfirmed}">
+            <div class="csdl-create-project-modal__questions-list">
+                <ol [ngClass]="{'no-list-style-type': isDetailsConfirmed}">
+                    <li *ngIf="isDetailsConfirmed">
+                        <div class="mb-1">
+                            <span class="text-link text-bold">CSDL ID: {{projectDetails.project_id}}</span>
+                        </div>
+                    </li>
+                    <li [class.required-field]="createProjectForm.controls.project_name.invalid && !isDetailsConfirmed">
+                        <div class="form-group base-margin-bottom">
+                            <label for="project-name">Project name</label>
+                            <div class="form-group__text mb-2" [ngClass]="{'mt-1': !isDetailsConfirmed}">
+                                <input *ngIf="!isDetailsConfirmed" id="project-name" type="text" formControlName="project_name">
+                                <span *ngIf="isDetailsConfirmed" class="label label--small label--dark label--bordered">{{projectDetails.project_name}}</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li [class.required-field]="createProjectForm.controls.be_sbe_pf.invalid && !isDetailsConfirmed">
+                        <div class="form-group base-margin-bottom">
+                            <label for="be-sbe-pf">Business Entity // Sub Business Entity // Product Family</label>
+                            <div class="form-group__text mb-2" [ngClass]="{'mt-1': !isDetailsConfirmed}">
+                                <cui-select
+                                    class="be-sbe-pf"
+                                    *ngIf="!isDetailsConfirmed"
+                                    id="be-sbe-pf"
+                                    placeholder="Select"
+                                    [items]="beSbePfList"
+                                    [compressed]="false"
+                                    [empty]="false"
+                                    optionsKey="label"
+                                    optionsValue="value"
+                                    formControlName="be_sbe_pf"
+                                    [disabled]="loadingBeSbePf"></cui-select>
+                                    <span *ngIf="loadingBeSbePf" class="text-warning mt-1">* Please wait while be_sbe_pf data is loading</span>
+                                <span *ngIf="isDetailsConfirmed" class="label label--small label--dark label--bordered">
+                                    {{projectDetails.project_organization.be_business_entity}}//{{projectDetails.project_organization.be_sub_business_entity}}//{{projectDetails.project_organization.be_product_family}}
+                                </span>
+                            </div>
+                        </div>
+                    </li>
+                    <li [class.required-field]="!selectedUserList.accountable_executive.length && !isDetailsConfirmed">
+                        <div class="form-group base-margin-bottom">
+                            <label *ngIf="!isDetailsConfirmed" for="accountable-executive">Please add an Accountable Executive (Director or above) <span class="text-link ml-2"><em>Note: Make sure the Product Managers are registered in <u><a [href]="siHomeLink" target="_blank">Security Insights.</a></u></em></span></label>
+                            <label *ngIf="isDetailsConfirmed" for="accountable-executive">Accountable Executive</label>
+                            <div class="form-group__text mb-2" [ngClass]="{'mt-1': !isDetailsConfirmed}">
+                                <div>
+                                    <ng-container *ngIf="!isDetailsConfirmed">
+                                        <input
+                                            id="accountable-executive"
+                                            type="text"
+                                            formControlName="accountable_executive"
+                                            [matAutocomplete]="auto1"
+                                            placeholder="Search"
+                                            [ngClass]="{'disabled': selectedUserList['accountable_executive'].length}">
+                                        <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="selectMatOption($event.option.value, 'accountable_executive')" [displayWith]="getSelectedUserName">
+                                            <mat-option *ngFor="let user of dropdownUsers" [value]="user">
+                                                {{ user.name }} <span *ngIf="user.cecId">({{user.cecId}})</span>
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                        <button class="btn btn--primary mx-1" (click)="addSelectedUsers('accountable_executive')" [disabled]="!selectedUser['accountable_executive'] || selectedUserList['accountable_executive'].length">Add</button>
+                                        <span class="label label--small label--dark label--bordered userTab mr-1" [ngClass]="{'form-group__text--invalid-user': user == invalidUser}" [attr.data-balloon]="user"
+                                            *ngFor="let user of selectedUserList.accountable_executive; let i = index" data-balloon-pos="up">
+                                            <span>{{user}}</span> &nbsp;
+                                            <span class="icon-exit cursor-pointer" (click)="removeUser(i, 'accountable_executive')"></span>
+                                        </span>
+                                    </ng-container>
+                                    <span *ngIf="isDetailsConfirmed" class="label label--small label--dark label--bordered">{{projectDetails.accountable_executive.email.split('@')[0]}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li [class.required-field]="!selectedUserList.technical_leads.length && !isDetailsConfirmed">
+                        <div class="form-group base-margin-bottom">
+                            <label *ngIf="!isDetailsConfirmed" for="technical-leads">Please add Technical Lead(s) <span class="text-link ml-2"><em>Note: Make sure the Product Managers are registered in <u><a [href]="siHomeLink" target="_blank">Security Insights.</a></u></em></span></label>
+                            <label *ngIf="isDetailsConfirmed" for="technical-leads">Technical Lead(s)</label>
+                            <div class="form-group__text mb-2" [ngClass]="{'mt-1': !isDetailsConfirmed}">
+                                <div>
+                                    <ng-container *ngIf="!isDetailsConfirmed">
+                                        <input
+                                            id="technical-leads"
+                                            type="text"
+                                            formControlName="technical_leads"
+                                            [matAutocomplete]="auto2"
+                                            placeholder="Search">
+                                        <mat-autocomplete #auto2="matAutocomplete" (optionSelected)="selectMatOption($event.option.value, 'technical_leads')" [displayWith]="getSelectedUserName">
+                                            <mat-option *ngFor="let user of dropdownUsers" [value]="user">
+                                                {{ user.name }} <span *ngIf="user.cecId">({{user.cecId}})</span>
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                        <button class="btn btn--primary mx-1" (click)="addSelectedUsers('technical_leads')" [disabled]="!selectedUser['technical_leads']">Add</button>
+                                        <span class="label label--small label--dark label--bordered userTab mr-1" [ngClass]="{'form-group__text--invalid-user': user == invalidUser}" [attr.data-balloon]="user"
+                                            *ngFor="let user of selectedUserList.technical_leads; let i = index" data-balloon-pos="up">
+                                            <span>{{user}}</span> &nbsp;
+                                            <span class="icon-exit cursor-pointer" (click)="removeUser(i, 'technical_leads')"></span>
+                                        </span>
+                                    </ng-container>
+                                    <div *ngIf="isDetailsConfirmed">
+                                        <span *ngFor="let user of projectDetails.technical_leads" class="label label--small label--dark label--bordered mr-1">{{user.email.split('@')[0]}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li [class.required-field]="!selectedUserList.product_managers.length && !isDetailsConfirmed">
+                        <div class="form-group base-margin-bottom">
+                            <label *ngIf="!isDetailsConfirmed" for="products-managers">Please add Products Manager(s) <span class="text-link ml-2"><em>Note: Make sure the Product Managers are registered in <u><a [href]="siHomeLink" target="_blank">Security Insights.</a></u></em></span></label>
+                            <label *ngIf="isDetailsConfirmed" for="products-managers">Products Manager(s)</label>
+                            <div class="form-group__text mb-2" [ngClass]="{'mt-1': !isDetailsConfirmed}">
+                                <div>
+                                    <ng-container *ngIf="!isDetailsConfirmed">
+                                        <input
+                                            id="products-managers"
+                                            type="text"
+                                            formControlName="product_managers"
+                                            [matAutocomplete]="auto3"
+                                            placeholder="Search">
+                                        <mat-autocomplete #auto3="matAutocomplete" (optionSelected)="selectMatOption($event.option.value, 'product_managers')" [displayWith]="getSelectedUserName">
+                                            <mat-option *ngFor="let user of dropdownUsers" [value]="user">
+                                                {{ user.name }} <span *ngIf="user.cecId">({{user.cecId}})</span>
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                        <button class="btn btn--primary mx-1" (click)="addSelectedUsers('product_managers')" [disabled]="!selectedUser['product_managers']">Add</button>
+                                        <span class="label label--small label--dark label--bordered userTab mr-1" [ngClass]="{'form-group__text--invalid-user': user == invalidUser}" [attr.data-balloon]="user"
+                                            *ngFor="let user of selectedUserList.product_managers; let i = index" data-balloon-pos="up">
+                                            <span>{{user}}</span> &nbsp;
+                                            <span class="icon-exit cursor-pointer" (click)="removeUser(i, 'product_managers')"></span>
+                                        </span>
+                                    </ng-container>
+                                    <div *ngIf="isDetailsConfirmed">
+                                        <span *ngFor="let user of projectDetails.product_managers" class="label label--small label--dark label--bordered mr-1">{{user.email.split('@')[0]}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li [class.required-field]="!selectedUserList.program_managers.length && !isDetailsConfirmed">
+                        <div class="form-group base-margin-bottom">
+                            <label *ngIf="!isDetailsConfirmed" for="program-managers">Please add Project/Program Manager(s) <span class="text-link ml-2" ><em>Note: Make sure the Product Managers are registered in <u><a [href]="siHomeLink" target="_blank">Security Insights.</a></u></em></span></label>
+                            <label *ngIf="isDetailsConfirmed" for="program-managers">Project/Program Manager(s)</label>
+                            <div class="form-group__text mb-2" [ngClass]="{'mt-1': !isDetailsConfirmed}">
+                                <div>
+                                    <ng-container *ngIf="!isDetailsConfirmed">
+                                        <input
+                                            id="program-managers"
+                                            type="text"
+                                            formControlName="program_managers"
+                                            [matAutocomplete]="auto4"
+                                            placeholder="Search">
+                                        <mat-autocomplete #auto4="matAutocomplete" (optionSelected)="selectMatOption($event.option.value, 'program_managers')" [displayWith]="getSelectedUserName">
+                                            <mat-option *ngFor="let user of dropdownUsers" [value]="user">
+                                                {{ user.name }} <span *ngIf="user.cecId">({{user.cecId}})</span>
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                        <button class="btn btn--primary mx-1" (click)="addSelectedUsers('program_managers')" [disabled]="!selectedUser['program_managers']">Add</button>
+                                        <span class="label label--small label--dark label--bordered userTab mr-1" [ngClass]="{'form-group__text--invalid-user': user == invalidUser}" [attr.data-balloon]="user"
+                                            *ngFor="let user of selectedUserList.program_managers; let i = index" data-balloon-pos="up">
+                                            <span>{{user}}</span> &nbsp;
+                                            <span class="icon-exit cursor-pointer" (click)="removeUser(i, 'program_managers')"></span>
+                                        </span>
+                                    </ng-container>
+                                    <div *ngIf="isDetailsConfirmed">
+                                        <span *ngFor="let user of projectDetails.program_managers" class="label label--small label--dark label--bordered mr-1">{{user.email.split('@')[0]}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li [class.required-field]="createProjectForm.controls.hw_sw_type.invalid && !isDetailsConfirmed">
+                        <div class="form-group base-margin-bottom">
+                            <label for="hardware-software-type">Hardware/Software type</label>
+                            <div class="form-group__text mb-2" [ngClass]="{'mt-1': !isDetailsConfirmed}">
+                                <cui-select
+                                    *ngIf="!isDetailsConfirmed"
+                                    id="hardware-software-type"
+                                    placeholder="Select"
+                                    [items]="hwSwTypes"
+                                    [compressed]="false"
+                                    [empty]="false"
+                                    optionsKey="label"
+                                    optionsValue="value"
+                                    formControlName="hw_sw_type"></cui-select>
+                                <span *ngIf="isDetailsConfirmed" class="label label--small label--dark label--bordered">{{projectDetails.development_type}}</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li [class.required-field]="createProjectForm.controls.sw_version.invalid && !isDetailsConfirmed" *ngIf="!isDetailsConfirmed || projectDetails.project_version">
+                        <div class="form-group base-margin-bottom">
+                            <label for="software-version">Software version</label>
+                            <div class="form-group__text mb-2" [ngClass]="{'mt-1': !isDetailsConfirmed}">
+                                <input *ngIf="!isDetailsConfirmed" id="software-version" type="text" formControlName="sw_version">
+                                <span *ngIf="isDetailsConfirmed" class="label label--small label--dark label--bordered">{{projectDetails.project_version}}</span>
+                            </div>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <div class="csdl-create-project-modal__footer">
+            <div>
+                <span *ngIf="remainingQuestionsCount && !isDetailsConfirmed"><span class="icon-exclamation-triangle icon-small"></span> {{remainingQuestionsCount}} {{remainingQuestionsCount == 1 ? 'question is' : 'questions are'}} remaining to be answered</span>
+                <span *ngIf="!remainingQuestionsCount && !isDetailsConfirmed"><span class="icon-check-outline icon-small"></span> All {{totalQuestionsCount}} questions are answered</span>
+            </div>
+            <div>
+                <ng-container *ngIf="!showConfirmationSection">
+                    <button *ngIf="!isDetailsConfirmed" class="btn btn--dark" type="button" (click)="confirmClose()">Cancel</button>
+                    <button *ngIf="!isDetailsConfirmed" class="btn btn--success" type="submit" [disabled]="this.remainingQuestionsCount">Create</button>
+                    <button *ngIf="isDetailsConfirmed" class="btn btn--dark" type="button" (click)="closeModal()">Close</button>
+                </ng-container>
+                <ng-container *ngIf="showConfirmationSection">
+                    <span class="mr-2">You'll lose all the data. Do you still want to cancel?</span>
+                    <button class="btn btn--dark" type="button" (click)="showConfirmationSection = false">No</button>
+                    <button class="btn btn--dark" type="button" (click)="closeModal()">Yes, cancel</button>
+                </ng-container>
+            </div>
+        </div>
+    </form>
+</div>
+<ng-container *ngIf="showLoader">
+    <div class="flex-center full-height csdl-project-loader">
+        <cui-spinner color="default" label="Loading"></cui-spinner>
+    </div>
+</ng-container>

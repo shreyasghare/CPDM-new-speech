@@ -1,0 +1,36 @@
+<header class="header">
+    <div class="header__bar container-fluid">
+        <div class="header__bar__logo">
+            <a id="home-page-link" class="no-margin qtr-margin-top" (click)="navigateToHome()">
+                <img class="header__bar__logo--img" src="assets/images/logo/CPDM-Central-Color.png" />
+            </a>
+        </div>
+        <div class="header__bar__main">
+            <!-- Commented For adding more details in future
+            <div class="header-heading">
+                <a (click)="navigateToHome()" style="text-decoration:none" id="navHeaderLinkBtn">
+                    <h1 class="page-title text-vibrant text-xlarge">CPDM Central</h1>
+                </a>
+            </div>-->
+        </div>
+        <div class="header__bar__user-details" *ngIf="userDetails | async as userDetails;">
+            <div class="header__bar__user-details__profile">
+                <div class="row" style="margin: 1rem;">
+                    <!-- <span class="fa fa-microphone" (click)="voiceRecService.start()"></span> -->
+                    <span class="fa fa-microphone-slash" (click)="voiceRecService.stop()"></span>
+                </div>
+                <div><a class="half-padding-right" style="border-right: 0.2rem solid; cursor: default;">Welcome, {{userDetails.name}}</a></div>
+                <div class="form-group dropdown half-padding-left" [ngClass]="dropDownActive===true ?'active': ''" (click)="toggleDropDown()"  style="display: inline-block;" ng-show="true">
+                    <div class="form-group__text select">
+                        <input class="header__bar__user-details__profile--role-selection select" value="{{selectedRole.name}}" readonly="readonly">
+                    </div>
+                    <div class="dropdown__menu">
+                        <a *ngFor="let role of userDetails.hasAccessTo" id="{{role.value}}" [ngClass]="role.value==userDetails.role ? 'selected':''" (click)="switchRole($event)">
+                            {{ role.name }}
+                        </a>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

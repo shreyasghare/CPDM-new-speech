@@ -1,0 +1,115 @@
+.crc-review {    
+    &__po{
+        &--action {
+            display: flex;
+            align-items: center;
+            background-color: #c6c7ca;
+            padding: 0.5rem 1rem;
+            .form-group{
+                display: inline-block;
+                margin-top: 0;
+            }
+        }
+    }
+    
+    &__po-comments {        
+        &--comment {
+            textarea {
+                width: 100%;
+                padding: 10px;
+                resize: none;
+            }
+        }
+    }
+
+    &__rev-rec-comments {
+        border: solid 1px #c6c7ca;
+        background-color: #fff;
+        padding: 10px;
+    }
+
+    &__actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .buControllerDropDownItems {
+            width: 60rem;
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+}
+
+.review-icon{
+    width: 25px;
+    height: 25px;
+    margin-top: .4rem;
+    opacity: 0.55;
+    &__invert {
+        transform: rotate(180deg);
+    }
+}
+
+.highlight{
+    &__implementationDetailesText{
+        color: #1E4471;
+    }
+    &__rejected{
+        background: #FF00004D;
+        padding: 4px;
+    }
+    &__approve{
+        background: #BAE0BD;
+        padding: 4px;
+    }
+    &__user{
+        color: #1E4471;
+
+    }
+    &__date{
+        color: #5E5E5E;
+    }
+}
+
+.rightBorder{
+    border-right: solid 1px gray;
+}
+
+.rejectNote{
+    font: inherit;
+}
+// css for app hoing screen
+.holdingScreenContainer{
+    width: 90%;
+}
+// Css for approve/ reject
+.submitReviewContainer{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    &__reviewAction{
+        width: 90%; 
+    }
+
+    &__submitButton{
+        width: 90%;
+        display: flex;
+        justify-content: flex-end;
+    }
+}
+// css for reject 
+.holdingScreenContainerText{
+    display: flex;
+    flex-direction: inherit;
+    justify-content: flex-start;
+}    
+
+.manualImplTemplate{
+    display: flex;
+    width: 90%;
+    justify-content: center;
+    background-color: #fff;
+}

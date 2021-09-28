@@ -1,0 +1,24 @@
+<div class="uploadfilecontainer" (click)="fileInput.click()" appDragDrop (onFileDropped)="uploadFile($event)">
+    <input hidden type="file" #fileInput (change)="uploadFile($event.target.files)" [disabled]="!this.componentState.isActive || componentState.showLoader">
+    <div class="section">
+        <div class="flex-center-horizontal flex__align-items--center">
+            <p>Drop a file here or click​</p>
+            <button class="btn btn--primary" *ngIf="!componentState.showLoader" [disabled]="!this.componentState.isActive">Browse</button>
+        </div>
+    </div>
+    <div  class="files-list flex__align-items--center" [ngClass]="componentState.showLoader ? 'flex__justify-content--center':'flex__justify-content--space-around'" 
+    (click)="$event.stopPropagation()" *ngIf="files.length > 0 || componentState.showUploadContainer">
+         <div *ngIf="componentState.showLoader">
+            <cui-loader></cui-loader>
+        </div> 
+         <span *ngIf="!componentState.showLoader && !componentState.isFileUploded">{{ files[0]?.name }}
+            <a class="files-list__delete-item ml-1" (click)="deleteAttachment($event)">Remove</a> 
+        </span>
+        <button [disabled]="!this.componentState.isActive" *ngIf="!componentState.showLoader && !componentState.isFileUploded" class="btn btn--primary" 
+        (click)="onUpload($event)">Upload</button>
+        <span *ngIf="!componentState.showLoader && componentState.isFileUploded && docCentralObj.fileName"><b>
+            {{ docCentralObj.fileName }}</b> {{componentState.showUploadSuccess ? 'has been uploaded successfully':''}} | <i>
+                <a class="files-list__delete-item" (click)="onDownload()" [class.disabled]="disableDownloadBtn">{{docCentralObj.edcsID}}</a></i>
+        </span>
+    </div>
+</div>

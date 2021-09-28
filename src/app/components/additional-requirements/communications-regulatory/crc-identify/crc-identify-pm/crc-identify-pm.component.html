@@ -1,0 +1,105 @@
+<div class="crc-identify-pm">
+    <!-- Not applicable view -->
+    <div *ngIf="!isApplicable" class="flex full-height flex-center-vertical crc-identify-pm__single-holding">
+        <ng-container>
+            <app-holding-status [statusIcon]="naHoldingMsg.statusIcon" [status]="naHoldingMsg.status" [message]="naHoldingMsg.message"></app-holding-status>
+        </ng-container>
+    </div>
+    <ng-container *ngIf="isApplicable">
+        <!-- Initial wait view -->
+        <div *ngIf="!recommendationStatus" class="flex full-height flex-center-vertical crc-identify-pm__single-holding">
+            <ng-container>
+                <app-holding-status [statusIcon]="waitHoldingMsg.statusIcon" [status]="waitHoldingMsg.status"></app-holding-status>
+            </ng-container>
+        </div>
+        <!-- View for submitted and resubmitted -->
+        <ng-container *ngIf="recommendationStatus === 'submitted' || recommendationStatus === 'resubmitted'">
+            <app-holding-status [statusIcon]="reviewHoldingMsg.statusIcon" [status]="reviewHoldingMsg.status">
+                <button class="btn mt-1" (click)="openDialog()">View</button>
+            </app-holding-status>
+            <div class="crc-identify-pm__review">
+                <div>
+                    <img class="crc-identify-pm__review-icon" src="assets/images/icons/svg/like.svg">
+                    <img class="crc-identify-pm__review-icon crc-identify-pm__review-icon--invert" src="assets/images/icons/svg/like.svg">
+                </div>
+                <div><span class="mr-1 ml-2 text-bold">Review: </span></div>
+                <div class="form-group mr-3">
+                    <label class="radio">
+                        <input
+                            type="radio"
+                            name="approve-reject-recommendations"
+                            [(ngModel)]="recommendationApprovalStatus"
+                            (change)="onReviewChange()"
+                            value="approved">
+                        <span class="radio__input"></span>
+                        <span class="radio__label hidden-xs">Acknowledge all recommendations</span>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="radio">
+                        <input
+                            type="radio"
+                            name="approve-reject-recommendations"
+                            [(ngModel)]="recommendationApprovalStatus"
+                            (change)="onReviewChange()"
+                            value="rejected">
+                        <span class="radio__input"></span>
+                        <span class="radio__label hidden-xs">Return feedback</span>
+                    </label>
+                </div>
+            </div>
+            <div class="mt-2" *ngIf="implCommentsHoldingMsg.message">
+                <app-holding-status [statusIcon]="implCommentsHoldingMsg.statusIcon" [status]="implCommentsHoldingMsg.status" [message]="implCommentsHoldingMsg.message"></app-holding-status>
+            </div>
+            <div class="mt-2" *ngIf="isPOCommentsAvailable">
+                <app-holding-status [statusIcon]="poCommentsHoldingMsg.statusIcon" [status]="poCommentsHoldingMsg.status" [message]="poCommentsHoldingMsg.message"></app-holding-status>
+            </div>
+            <div class="mt-2">
+                <app-holding-status [statusIcon]="newCommentsHoldingMsg.statusIcon" [status]="newCommentsHoldingMsg.status">
+                    <div class="form-group base-margin-bottom">
+                        <div class="form-group__text">
+                            <textarea rows="3" placeholder="Type here" [(ngModel)]="comment"></textarea>
+                        </div>
+                    </div>
+                    <div class="text-seperator" *ngIf="crcData.identify.pmComments?.length">
+                        <div class="text-seperator--line"></div>
+                        <div class="text-seperator--text text-link text-italic text-weight-700">
+                            Previous comments <span class="icon-small" class="icon-chevron-down"></span>
+                        </div>
+                        <div class="text-seperator--line"></div>
+                    </div>
+                    <div *ngFor="let element of crcData.identify.pmComments; let i=index">
+                        <p>
+                            <span [class]="element.status === 'rejected' ? 'status-rejected' : 'status-approved'">{{element.status}}</span> | Comment by 
+                            <span class="text-link text-italic">{{element.commentedBy}}</span>
+                            <span class="text-gray-600"> | <span class="text-italic">On {{element.commentedOn | date:'dd MMM y'}}</span></span><br>
+                            <span class="{{!element.comment ? 'text-gray-600' : ''}}">{{element.comment ? element.comment : 'NA'}}</span>
+                        </p>
+                        <hr *ngIf="crcData.identify.pmComments.length > 1 && i < crcData.identify.pmComments.length - 1">
+                    </div>
+                </app-holding-status>
+            </div>
+            <div class="text-right py-2">
+                <button class="btn btn--primary"
+                [disabled]="!recommendationApprovalStatus || (recommendationApprovalStatus === 'rejected' && !comment)"
+                (click)="submit()">Submit</button>
+            </div>
+        </ng-container>
+    
+        <!-- View for rejected and approved -->
+        <ng-container *ngIf="recommendationStatus === 'rejected' || recommendationStatus === 'approved'">
+            <app-holding-status [statusIcon]="reviewHoldingMsg.statusIcon" [status]="reviewHoldingMsg.status" [message]="reviewHoldingMsg.message">
+                <button class="btn mt-1" (click)="openDialog()">{{ recommendationStatus === 'approved' && isMoveToIdentify ? 'View previous recommendations' : 'View' }}</button>
+            </app-holding-status>
+            <div class="mt-2" *ngIf="implCommentsHoldingMsg.message">
+                <app-holding-status [statusIcon]="implCommentsHoldingMsg.statusIcon" [status]="implCommentsHoldingMsg.status" [message]="implCommentsHoldingMsg.message"></app-holding-status>
+            </div>
+            <div class="mt-2" *ngIf="isPOCommentsAvailable">
+                <app-holding-status [statusIcon]="poCommentsHoldingMsg.statusIcon" [status]="poCommentsHoldingMsg.status" [message]="poCommentsHoldingMsg.message"></app-holding-status>
+            </div>
+            <div class="mt-2" *ngIf="isPMCommentsAvailable">
+                <app-holding-status [statusIcon]="pmCommentsHoldingMsg.statusIcon" [status]="pmCommentsHoldingMsg.status" [message]="pmCommentsHoldingMsg.message"></app-holding-status>
+            </div>
+        </ng-container>
+    </ng-container>
+</div>

@@ -1,0 +1,6 @@
+<ng-container *appHasRole="[role.pm]">
+    <app-crc-implement-pm></app-crc-implement-pm>
+</ng-container>
+<ng-container *appHasRole="[role.communicationsRegulatoryPO]">
+    <app-crc-implement-po (submitAction)="updateApproval($event)"></app-crc-implement-po>
+</ng-container>

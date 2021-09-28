@@ -1,0 +1,44 @@
+<div *ngIf="helperObj != null">
+    <div class="custom-header"> 
+        <div class="modal__title pl-1">{{helperObj.header}}</div>
+        <span id="close" class="icon-close icon-size-20" (click)="onClose()"></span>
+    </div>
+
+    <div id="info-helper" class="modal__body p-1">
+        <div class="modalContent">
+            <div>
+                <span><b>{{helperObj.subheader1}}</b></span>
+                <div *ngFor="let subcontent of helperObj.subcontent1">
+                    <span style="text-align: left;">{{subcontent.text1}}</span>
+                </div>
+            </div>
+            <div>
+                <span><b>{{helperObj.subheader2}}</b></span>
+                <div *ngFor="let subcontent of helperObj.subcontent2">
+                    <span>{{subcontent.text1}} <a href="https://www.w3.org/TR/WCAG21/" target="_blank">{{subcontent.link}}</a> {{subcontent.text2}}</span>
+                </div>
+            </div>
+            <div>
+                <ol>
+                    <li *ngFor="let subcontent of helperObj.subcontent3"><span><b>{{subcontent.header}}</b></span>-<span>{{subcontent.content}}</span></li>
+                </ol>
+            </div>
+            <div>
+                <div *ngFor="let subcontent of helperObj.subcontent4">
+                    <span>{{subcontent.text1}} <a href="https://www.section508.gov/manage/laws-and-policies" target="_blank">{{subcontent.link}}</a> {{subcontent.text2}}</span>
+                </div>
+            </div>
+            <div>
+                <div *ngFor="let subcontent of helperObj.subcontent5">
+                        <span><b>{{helperObj.subheader5}}:</b></span>
+                    <span>{{subcontent.text1}} <a>{{subcontent.link}}</a>{{subcontent.text2}}</span>
+                </div>
+            </div>
+            <div>
+                <div *ngFor="let subcontent of helperObj.subcontent6">
+                    <span>{{subcontent.content}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

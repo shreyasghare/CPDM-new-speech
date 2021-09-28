@@ -1,0 +1,51 @@
+.custom-modal {
+    //height: auto;
+    height: 52vh;
+    width: 50vw;
+    position: absolute;
+    background-color: white;
+    top: calc(50%); // half of width
+    left: calc(50% - 25vw);
+    
+    &__header {
+        background-color: #39393B;
+        color: white;
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__body {
+        padding: 0 1.5rem;
+        thead {
+            background-color: #f2f2f2;
+            th {
+                padding: 1rem;
+            }
+        }
+        
+        tbody > tr > td {
+            padding: 0.5rem;
+            padding-left: 1rem;
+        }
+
+        .btn-close {
+            margin: 15px 0;
+        }
+        
+    }  
+    &__footer {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1rem;
+    }
+}
+
+.modelCloseBtn{
+    color: #fff;
+    font-size: 14px;
+    font-family: "CiscoSans", "Arial", sans-serif;
+    font-weight: inherit;
+    background-color: transparent;
+    border: none;
+}

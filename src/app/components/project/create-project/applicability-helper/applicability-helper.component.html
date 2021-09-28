@@ -1,0 +1,232 @@
+<div class="container" *ngIf="apiResponseReady; else spinner">
+    <div class="">
+        <div>
+        <div class="appplicability-heading">
+            <h5 class="text-bold">Help Me Select <span id="close" class="icon-close helpMeSelect-close" (click)="onCancel()"></span></h5>
+            <p>Answer the following questions to determine the policies that are applicable to your project:</p>
+            <div class="divider"></div>
+        </div>
+        
+    <div class="row">
+        <div class="col-8">
+            <!-- Product Type -->
+            <div class="row mt-3">
+                <div class="col-6 text-align-right">
+                    <span>What is the product type <br> (Select all that apply).</span>
+                </div>
+                <div class="col-6">
+                    <div class="form-group" *ngFor="let option of questionNumberOne">
+                        <label class="checkbox">
+                            <input type="checkbox" [id]="createId(option.value)" [checked]="option.checkBox" (change)="onChangeCheckBox($event,option.value)">
+                            <span class="checkbox__input"></span>
+                            <span class="checkbox__label hidden-xs">{{option.value}}</span>
+                        </label>
+                        <!--<span class="icon-info icon-small" 
+                        [matTooltip]="getTooltipDesc(option.value)" matTooltipPosition="after" 
+                        style="margin-top:-15px;"></span> -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cisco Use Only Product -->
+            <div class="row mt-3">
+                <div class="col-6 text-align-right">
+                    <!-- <span class="text-right">{{questionNumberTwo.question}} <br> (Depending on your answer, you might need to answer two more questions)</span> -->
+                    <span class="text-right">Is this product for Cisco use only <br> (Depending on your answer, you might need to answer two more questions)</span>
+                </div>
+
+                <div class="col-6">
+                    <div style="width: 70%">
+                        <cui-select id="business-entity" placeholder="Select" 
+                        [items]="firstDropDownitems" [compressed]="true" 
+                        [empty]="false"
+                        optionsKey="name" optionsValue="value"
+                        [(ngModel)]="firstSelectionValue" (ngModelChange)="onSelectionFirstDropdown(true)">
+                            </cui-select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sold external to North America -->
+            <div class="row mt-3">
+                <div class="col-6 text-align-right">
+                    <!-- <span [ngClass]="{'disabled':disableCheckbox}">{{questionNumber2_1.question}}</span> -->
+                    <span >Is the product sold external to North America ?</span>
+                </div>
+
+                <div class="col-6">
+                    <div class="form-group">
+                        <label class="radio" [ngClass]="{'disabled':disableFirstCheckbox}"  >
+                            <input type="radio" id="sold-to-north-amer-yes" value="yes" [(ngModel)]="firstRadioButton" (change)="onFirstRadioButtonChange($event)" checked name="stacked-radio-1">
+                            <span class="radio__input"></span>
+                            <span class="radio__label hidden-xs">Yes</span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="radio" [ngClass]="{'disabled':disableFirstCheckbox}">
+                            <input type="radio" id="sold-to-north-amer-no" value="no" [(ngModel)]="firstRadioButton" (change)="onFirstRadioButtonChange($event)" name="stacked-radio-1">
+                            <span class="radio__input"></span>
+                            <span class="radio__label hidden-xs">No</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- New product or existing product -->
+            <div class="row mt-3">
+                <div class="col-6 text-align-right">
+                    <span >{{questionNumber2_2.question}}</span>
+                </div>
+
+                <div class="col-6">
+                    <div class="form-group">
+                        <label class="radio" [ngClass]="{'disabled':disableSecondCheckbox}" >
+                            <input type="radio" id="new-product" value="new product" [(ngModel)]="secondRadioButton" (change)="onSecondRadioButtonChange($event)" checked name="stacked-radio-2">
+                            <span class="radio__input"></span>
+                            <span class="radio__label hidden-xs">New product</span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="radio" [ngClass]="{'disabled':disableSecondCheckbox}">
+                            <input type="radio" id="existing-product" value="encryption modified" [(ngModel)]="secondRadioButton" (change)="onSecondRadioButtonChange($event)"  name="stacked-radio-2">
+                            <span class="radio__input"></span>
+                            <span class="radio__label hidden-xs">Existing product with modified encryption</span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="radio" [ngClass]="{'disabled':disableSecondCheckbox}">
+                            <input type="radio" id="neither" value="neither" [(ngModel)]="secondRadioButton" (change)="onSecondRadioButtonChange($event)"  name="stacked-radio-2">
+                            <span class="radio__input"></span>
+                            <span class="radio__label hidden-xs">Neither</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Voice/video Messaging Capability -->
+            <div class="row mt-3">
+                <div class="col-6 text-align-right">
+                        <!-- <span>{{questionNumberThree.question}}</span> -->
+                        <span>Does the product have voice, video or messaging capabillties ?</span>
+                </div>
+
+                <div class="col-6">
+                    <div style="width: 70%">
+                        <cui-select id="business-entity" placeholder="Select" 
+                        [empty]="false"
+                        [items]="secondDropDownitems" [compressed]="true" 
+                        optionsKey="name" optionsValue="value"
+                        [(ngModel)]="secondSelectionValue" (ngModelChange)="onSelectionSecondDropdown()">
+                            </cui-select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right # Top Block -->
+        <div class="col-4">
+            <div class="panel panel--bordered">
+                <div class="hero hero--mdgray">
+                    General Compliance Requirements        
+                </div>
+                <div class="form-group mt-1" *ngFor="let gcItem of generalComplianceItems">
+                    <label class="checkbox">
+                        <input type="checkbox" [id]="createId(gcItem.name)" disabled [checked]="gcItem.selected">
+                        <span class="checkbox__input"></span>
+                        <span class="checkbox__label hidden-xs disabled">{{gcItem.name}}</span>
+                        <span class="iconHelper icon-info icon-small" 
+                        (click)="showModal(content, 'large', gcItem.name)"></span> 
+                    </label>
+                </div>
+                        
+            </div>
+            
+            <!-- Right # Bottom Block -->
+            <div class="panel panel--bordered" style="margin-top: 20px;">
+                <div class="hero hero--mdgray">
+                    Additional Compliance Requirements        
+                </div>
+                <div class="form-group mt-1" *ngFor="let arItem of additionalRequirementsItems">
+                <label class="checkbox">
+                    <input type="checkbox"[id]="createId(arItem.name)" disabled [checked]="arItem.selected">
+                    <span class="checkbox__input"></span>
+                    <span class="checkbox__label hidden-xs disabled">{{arItem.name}}</span>
+                    <span class="iconHelper icon-info icon-small" 
+                    (click)="showModal(content, 'large', arItem.name)"></span> 
+                </label>
+            </div>
+            </div>    
+        </div>
+    </div>
+    <!-- <div class="divider"></div> -->
+
+    <div class="row mt-1">
+        <div class="col-6 flex flex-left">
+            <button id="create-project-2-cancel-btn" class="btn btn--gray-ghost" (click)="onCancel()" >Cancel</button>
+        </div>
+
+        <div class="col-6 flex flex-right">
+            <button id="create-project-btn" class="btn btn--primary" [disabled]="getSubmitBtnStatus" (click)="onSubmit()">Submit</button>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<ng-template #spinner>
+    <div  id="cuiLoaderContainer" class="absolute-center">
+        <cui-spinner color="default" label="Loading">
+        </cui-spinner> 
+    </div>
+</ng-template>
+<ng-template #content>  
+        <a class="modal__close" (click)="cuiModalService.hide()"><span class="icon-close"></span></a>
+        <div class="modal__header"> <h3 class="modalHeader">{{infoIconDesc.name}}</h3></div>
+        <div class="modal__body" style="text-align:left;">
+            <div class="modalContent">
+                <span class="modalSpan">{{infoIconDesc.description}}</span>
+                <span class="modalSpan"><b>{{applicabilityKey | titlecase}}:</b></span>
+                <span>{{applicability.text}}</span>
+                <ol>
+                    <li *ngFor="let content of applicabilityContent">
+                        <span class="modalSpan">{{content.text}}</span>   
+                        <ol *ngIf="content.subContent?.length > 0">
+                                <li *ngFor="let subContent of content.subContent">
+                                    <span class="modalSpan" *ngIf="subContent.text;else elseBlock2">{{subContent.text}}</span>
+                                    <ng-template #elseBlock2>{{subContent}}</ng-template>
+                                    <ul>
+                                        <li *ngFor="let scSubContent of subContent.subContent">
+                                                <span class="modalSpan">{{scSubContent}}</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ol>
+                    </li>
+                </ol>
+                <span class="modalSpan"><b>Steps to Reach Compliance:</b></span>
+                <span class="modalSpan" *ngIf="!reachCompliance.text">{{reachCompliance.text}}</span>
+                <ol>
+                    <li *ngFor="let content of reachComplianceContent">
+                        <span class="modalSpan">{{content.text}}</span>               
+                        <ol *ngIf="content.subContent?.length > 0">
+                            <li *ngFor="let subContent of content.subContent">
+                                <span class="modalSpan" *ngIf="subContent.text;else elseBlock">{{subContent.text}}</span>
+                                <ng-template #elseBlock>{{subContent}}</ng-template>
+                                <ul>
+                                    <li *ngFor="let scSubContent of subContent.subContent">
+                                            <span class="modalSpan">{{scSubContent}}</span>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ol>
+                     </li>
+                </ol>
+            </div> 
+        </div>
+      </ng-template>
+
+<!-- <div class="footer__fixed">
+    <app-footer></app-footer>
+</div> -->
+
+

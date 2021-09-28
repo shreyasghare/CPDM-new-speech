@@ -1,0 +1,43 @@
+.additional-requirements {
+    &__left-pane {
+        width:22%;
+        height: 100%;
+        overflow: auto;
+    }
+    &__right-pane {
+        width:78%;
+        height: 100%;
+    }
+    &--view{
+        height: 100%;
+    
+        &__content{
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        
+            &--footer{
+                border-top:1.5px solid #c6c7ca;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                height: 15%;
+        
+                .footer-btn {
+                    margin-top: 1rem;
+                }
+            }
+        }
+    }
+}
+
+.container-fluid{
+    padding: 0 5%;
+}
+
+.dynamic-component{
+    height: 85%;
+    width: 100%;
+    overflow-y: auto;
+    margin-bottom: 2rem;
+}

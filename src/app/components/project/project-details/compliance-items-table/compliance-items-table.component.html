@@ -1,0 +1,118 @@
+<!-- <div style="position: relative">
+    <span class="text-bold text-large span-margin">Project Compliance</span>
+    <span class="manageCompliancesSpan">To choose applicability or for adding more items</span>
+    <button type="button" class="manageCompliances" (click)="manageComplianceItemPopup()">
+        Manage <span class="icon-cog"></span>
+    </button>
+</div> -->
+<div class="row sectionHeader">
+    <!-- <div class="col-sm-8 col-md-8 col-ls-8" style="padding: 0px;">
+        <span class="text-bold text-large span-margin">Applicable Requirements</span>
+    </div> -->
+    <div class="col-sm-12 col-md-12 col-ls-12 manageCompliancesSpan">
+        <span class="manageComplianceLabel">To manage applicability or to add more items</span>
+        <button type="button" class="btn btn--secondary" (click)="manageComplianceItemPopup()">
+            Manage
+            <!-- <span class="icon-cog"></span>  commenting as a part of new cui  -->
+        </button>
+    </div>
+</div>
+<div>
+    <table class="table--custom compliance--table--size" id="project-Compliance-Table" matSort
+        (matSortChange)="sortData($event)">
+        <thead [ngClass]="{'mac--os':isMacOs}">
+            <tr>
+                <th role="gridcell" col-id="complianceItems" mat-sort-header="name">
+                    {{selectedTabIndex == 2 ? 'Best Practices' :'Compliance Items' }} </th>
+                <th role="gridcell" col-id="status">Status & Backlog Links</th>
+                <th role="gridcell" col-id="progress" mat-sort-header="progressScore">Progress</th>
+                <th role="gridcell" col-id="acceptors">Acceptors<span class="icon-info icon-small"
+                    [matTooltip]="getTooltipDesc('Project_Milestone_Acceptor')"
+                    matTooltipPosition="right"  [matTooltipClass]="'tooltipForInfo'"></span></th>
+                <th role="gridcell" col-id="owners" >Owners<span class="icon-info icon-small"
+                    [matTooltip]="getTooltipDesc('Project_Milestone_Owner')"
+                    matTooltipPosition="after"  [matTooltipClass]="'tooltipForInfo'"></span></th>
+                <th role="gridcell" col-id="comments">Comments</th>
+            </tr>
+        </thead>
+        <tbody [ngClass]="{'height--auto':complianceItems?.length < 10}">
+            <!-- Alpha release change for US7548 & US7549 -->
+            <ng-container *ngFor="let project of complianceItemsSortedData; let i = index">
+                <tr style="height:4.5rem">
+                    <td class="p-1" [ngClass]="{'disabled': !project.selected}">
+                        <span [ngClass]="{'selectedItem': project.selected}" class="complianceItemText"
+                                *ngIf="project.progressStatus == 'Not Started'"
+                                (click)="startProcess(project, i)"><u>{{ project.name }}</u></span>
+                        <span [ngClass]="{'selectedItem': project.selected}" class="complianceItemText"
+                                *ngIf="project.progressStatus != 'Not Started'"
+                                (click)="onViewComplianceItem(projectId,project.name)"><u>{{ project.name }}</u></span>
+                        <span class="icon-info icon-small" (click)="openTooltipModal(project.name)"></span>
+                        <span *ngIf="project.betaFlag===true" class="qtr-margin-left"><sup class="betaTag">BETA</sup></span>
+
+                    </td>
+                    <td [ngClass]="{'disabled': !project.selected}">
+                        <div class="custom-flex">
+                            <span *ngIf="!hideme[i]">{{ project.selected ? project.progressStatus : 'Not Applicable'}}</span>
+                            <span *ngIf="!hideme[i] && project.progressStatus == 'Not Started'" class="btn btn--small btn--primary"
+                                [ngClass]="{'disabled': !project.selected}"
+                                (click)="startProcess(project, i)">Start</span>
+                            <span *ngIf="project.progressStatus != 'Not Started' && !hideme[i]" class="btn btn--small btn--primary"
+                                [ngClass]="{'disabled': !project.selected}"
+                                (click)="onViewComplianceItem(projectId,project.name)">View</span>
+
+                            <div class="loading-dots loading-dots--muted progressStatusDots" [hidden]="!hideme[i]"
+                                aria-label="Loading, please wait...">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </div>
+                    </td>
+                    <td [ngClass]="{'disabled': !project.selected}">
+                        <div class="custom-flex-2">
+                            <span class="mr-1">{{ project.progressScore }} %</span>
+                            <div class="progressbar progressbar--indigo" [attr.data-percentage]="project.progressScore">
+                                <div class="progressbar__fill"></div>
+                            </div>
+                        </div>
+                    </td>
+                    <td [ngClass]="{'disabled': !project.selected}">
+                        <app-edit-acceptor-owner header="Owner"
+                            [memberObj]="{ 'name': project.name,'acceptors': project.acceptors,'projectId': projectId,'complianceType': project.complianceType,
+                                'complianceItemId': project._id, 'isSelected': project.selected }"
+                            (complianceItems)="updatecomplianceItemsSortedData($event)"></app-edit-acceptor-owner>
+                    </td>
+                    <td [ngClass]="{'disabled': !project.selected}">
+                        <app-edit-acceptor-owner header="Acceptor"
+                            [memberObj]="{ 'name':project.name,'owners': project.owners, 'projectId': projectId,'complianceType':project.complianceType,
+                                'complianceItemId':project._id, 'isSelected': project.selected }"
+                            (complianceItems)="updatecomplianceItemsSortedData($event)">
+                        </app-edit-acceptor-owner>
+                    </td>
+                    <td class="text-center">
+                        <!--<span class="icon-medium icon-message" (click)="openCommentPopup(project.name, project.comments, project.complianceType)"
+                        *ngIf= " project.applicability == project.selected &&  project.comments == 'NA'"></span>
+                    <span class="icon-medium icon-comment" (click)="openCommentPopup(project.name, project.comments, project.complianceType)"
+                        *ngIf= "project.comments !== 'NA'"></span>
+                    <span class="icon-medium icon-message" (click)="openCommentPopup(project.name, project.comments, project.complianceType)"
+                        *ngIf= " project.applicability != project.selected && project.comments == 'NA' "><sup class="exclamationMarkClass">!</sup></span>-->
+                        <div style="display: flex; justify-content: center;" class="cursor-pointer">
+                            <span
+                                (click)="openCommentPopup(project.name, project.comments, project.complianceType, project._id)">
+                                <img class="imgCursor"
+                                    *ngIf="project.comments && project.comments.length > 0 && !project.newComments"
+                                    src="assets/images/icons/comments/Comment.png" />
+                                <img class="imgCursor" *ngIf="project.newComments"
+                                    src="assets/images/icons/comments/new-comment.png" />
+                                <img class="imgCursor" *ngIf="!project.comments || project.comments.length == 0"
+                                    src="assets/images/icons/comments/No+comment.png" />
+                            </span>
+                            <i class="icon-exclamation-circle icon-exclamation-circle-red"
+                                *ngIf="!project.selected && project.applicability"></i>
+                        </div>
+                    </td>
+                </tr>
+            </ng-container>
+        </tbody>
+    </table>
+</div>

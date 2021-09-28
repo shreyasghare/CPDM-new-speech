@@ -1,0 +1,30 @@
+<div class="container">
+    <div *ngIf="bubbleNavigation">
+    <h6 class="section"> <a id="create-project-nav-home"(click)="goToHome()">Home</a> 
+    <span class="icon-small icon-chevron-right"></span> Create Project</h6>
+    <span class="text-bold text-large span-margin">Create a new project</span> 
+    <div class="divider" style="margin-top: 5px;"></div>   
+    <div class="row" style="margin-top: -30px;">
+        <div class="col-md-12">
+            <div class="ui-steps mt-2">
+                <div class="ui-step" [ngClass]="{'active':createProjectPage}">
+                    <a (click)="goToPreviousPage()" id="create-project-step-one"><div class="step__icon">1</div></a>
+                    <div class="step__label">Project Details</div>
+                </div>
+                <div class="ui-step" [ngClass]="{'active':compliancePage,'disabled':!isFormValid}">
+                    <a (click)="goToNextPage()" id="create-project-step-two" ><div class="step__icon">2</div></a>
+                    <!-- <div class="step__label">Select template</div> -->
+                  <!-- Alpha release changes for US7907, US7547-->
+                    <div class="step__label">Select Policy</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+   <app-create-project-form (selectedScreen)="screenUpdateEvent($event)"></app-create-project-form>
+</div>
+
+<!-- <div>
+    <app-footer></app-footer>
+</div>
+  -->

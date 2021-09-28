@@ -1,0 +1,134 @@
+.engg-response{
+    width: 90%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: auto;
+
+    .flex{
+        width: 80%;
+        flex-direction: column;
+        justify-content: center;
+        align-items: left;
+        padding: 2rem 3rem;
+        background-color: #c6c7ca;
+        margin: auto;
+    }
+
+    &__download {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        background-color: white;
+        border: 1px solid #9e9ea2;
+
+        p {
+            line-height: 3rem;
+            margin: 0;
+        }
+    }
+
+    &__browse {
+        background-color: white;
+        border: 1px solid #9e9ea2;
+
+        &--text {
+           // width: 50%;
+            display: flex;
+            justify-content: space-around;
+        }
+       
+ 
+        .custom-dropzone-div{
+            width: 100%;
+            height: 20vh;
+        }
+        
+        p {
+            margin: 0;
+        }
+    }
+
+    &__waiting {
+        background-color: #c6c7ca;
+        padding: 0.5rem;
+
+        .waiting-icon {
+            height: 4rem;
+            width: 4rem;
+            opacity: 0.6;
+            margin-top: 1rem;
+            margin-left: 2rem;
+        }
+
+        .waiting-heading {
+            margin-top: -4rem;
+            margin-left: 9rem;
+            font-size: 200%;
+        }
+        p {
+            margin-left: 9rem;
+            margin-top: 1rem;
+        }
+    }
+
+}
+
+.sl-engResponse {
+    width: 80%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: auto;
+
+    app-holding-status {
+        button {
+            display: table;
+            max-width: fit-content;
+            margin-top: 5px;
+        }
+    }
+
+    &__review {
+        &--action {
+            display: flex;
+            align-items: center;
+            background-color: #c6c7ca;
+            padding: 0.5rem 1rem;
+
+            .form-group {
+                display: inline-block;
+                margin-top: 0;
+            }
+        }
+
+        &--label {
+            position: relative;
+            top: -6px;
+        }
+    }
+
+    &__comments {
+        &--title {
+            background-color: #c6c7ca;
+            padding: 5px 0 0 10px;
+        }
+        &--comment {
+            textarea {
+                width: 100%;
+                padding: 10px;
+                resize: none;
+            }
+        }
+        &--required {
+            color: red;
+        }
+    }
+
+    &__actions {
+        display: flex;
+        justify-content: flex-end;
+    }
+}

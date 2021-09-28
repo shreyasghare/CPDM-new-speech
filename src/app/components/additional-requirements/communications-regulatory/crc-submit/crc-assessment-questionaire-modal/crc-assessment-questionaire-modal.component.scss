@@ -1,0 +1,90 @@
+.crc-assesment-modal{
+    &__header {
+        display: flex;
+        justify-content: space-between;
+    }
+    &__content{
+        &__field{
+          display: flex;
+          justify-content: space-between;
+          .required-questions{
+            color: red;
+          }
+        }
+        &__main{
+           border-top: 1px solid #636363; 
+           border-bottom: 1px solid #636363; 
+           height: 55vh;
+           overflow-y: auto;
+           overflow-x: hidden;
+           margin: 1% 0;  
+           ol{
+            padding: 0 0 0 40px !important;
+           }   
+           .radio-btn-container {
+              display: flex;
+              align-items: center;
+            }
+        }
+
+        &__footer{
+            text-align: center;
+         }
+    }
+}
+
+
+.form-group__text {
+  width: 97%;
+}
+
+.required-note {
+    margin-top: 1rem;
+    margin-left: 25rem;
+}
+.required-field {
+  height: 1rem;
+  width: 1rem;
+  background-color: rgb(255, 1, 1);
+  border-radius: 50%;
+  display: inline-block;
+  margin-left: -4rem;
+}
+
+.required-question-list{
+  margin-top: -2.1rem;
+}
+
+::ng-deep .required-question-list ol,
+::ng-deep .required-question-list ul {
+  margin-bottom: 1rem;
+}
+
+ol {
+  list-style-type: none;
+}
+
+.li-counter{
+  font-weight: bold;
+  font-size: 14px;
+  margin-right: 7px;
+  margin-top: 3px;
+}
+
+.counter__custom-flex{
+  width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.answer-label {
+  background-color: #b3ebf9;
+  padding: 6px 3px;
+  border-radius: 5px;
+}
+
+.close-button {
+  display: flex;
+  justify-content: flex-end;
+}

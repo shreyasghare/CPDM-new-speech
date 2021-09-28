@@ -1,0 +1,115 @@
+
+.crc-recommendations-modal {
+    height: 100%;
+    
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        height: 7%;
+    }
+
+    &__form {
+        height: 93%;
+    }
+
+    &__body {
+        height: 90%;
+        overflow-y: auto;
+        border-bottom: 1px solid #d0c9c9;
+    }
+
+    &__table {
+        width: 100%;
+        max-height: 100%;
+        border: 1px solid #dfdfdf;
+
+        th {
+            background-color: #b6b9bb;
+            font-size: 14px;
+            font-weight: bold;
+            border-right: 1px solid  #dfdfdf;
+            padding: 1rem;
+
+            &:nth-child(1), &:nth-child(4), &:nth-child(5) {
+                text-align: center;
+            }
+        }
+        td {
+            border-right: 1px solid  #dfdfdf;
+            padding: 0 10px;
+            text-align: center;
+
+            &:nth-child(1) {
+                width: 5%;
+                padding: 0;
+            }
+            &:nth-child(2) {
+                width: 25%;
+            }
+            &:nth-child(3) {
+                width: 50%;
+            }
+            &:nth-child(4), &:nth-child(5) {
+                width: 10%;
+            }
+
+            .form-group .form-group__text .textarea {
+                padding: 3px 10px;
+            }
+        }
+        .icon-delete {
+            color: red;
+        }
+        &__detail-row {
+            height: 0;
+        }
+        &__element-detail-row {
+            overflow: hidden;
+            display: flex;
+            padding: 0 !important;
+        }
+        &__element-description {
+            padding: 10px;
+            width: 100%;
+
+            div {
+                padding: 0 !important;
+            }
+        }
+        &__comment-width {
+            padding: 0;
+            width: 100%;
+
+            ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-infix {
+                padding-bottom: 0.1rem !important;
+            }
+        
+            textarea {
+                resize: none;
+            }
+        }
+        .active-border {
+            border-top: 1px solid #dfdfdf;
+        }
+        &--full-width {
+            width: 100%;
+        }
+    }
+
+    &__footer {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        height: 10%;
+        background-color: #fff;
+    }
+
+    .required-field {
+        height: 1rem;
+        width: 1rem;
+        background-color: rgb(255, 1, 1);
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 5px;
+    }
+}

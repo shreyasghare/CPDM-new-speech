@@ -1,0 +1,110 @@
+$dark-gray-2: #58585b !default;
+$light-gray-3: #dfdfdf !default;
+$light-gray-5: #f2f2f2 !default;
+$white: #ffffff !default;
+$base-table-striping-odd-background-color: $light-gray-5 !default;
+$base-table-striping-even-background-color: $white !default;
+
+.cui .form-group .form-group__text, .cui .smart-search {
+    ::placeholder { 
+        font-style: italic !important;
+    }
+    ::-webkit-input-placeholder { /* Edge */
+        font-style: italic;
+    }
+    ::-ms-input-placeholder { /* Internet Explorer 10-11 */
+        font-style: italic;
+    }
+}
+
+.cui .divider {
+    position: relative;
+    text-align: center;
+    border-top: 1px solid #dfdfdf;
+    margin: 17px 0; 
+}
+
+// .label {
+//     background: #dfdfdf !important;
+//     font-size: 12px !important;
+//     border: unset !important;
+//     color: #39393b !important;
+//     margin-right: 5px !important;
+// }
+.cui .form-group .form-group__text textarea, .cui textarea.textarea {
+    resize: none;
+    width: 100%;
+    border: 1px solid #dfdfdf;
+    background-color: #fff;
+    box-shadow: none;
+    padding: 10px;
+    // color: #58585b;
+    overflow-x: hidden;
+    min-height: 40px;
+}
+
+.flex {
+    @include flex;
+}
+
+.flex-inline {
+    display: inline-flex !important;
+}
+
+.flex-center {
+    @include flex-center;
+}
+
+.flex-center-vertical {
+    @include flex-center-vertical;
+}
+
+.flex-center-horizontal {
+    @include flex-center-horizontal;
+}
+
+.cui .content {
+    min-height: unset;
+    overflow-y: auto;
+    padding-bottom: 0;
+}
+
+.cui .checkbox input.checked~.checkbox__label, .cui .checkbox input:checked~.checkbox__label {
+    color: $dark-gray-2;
+}
+
+.cui .hero--mdgray {
+    color: $dark-gray-2;
+    position: relative;
+    background: #dfdfdf;
+    box-shadow: none;
+    border: 1px solid transparent;
+    padding: 1rem;
+}
+
+.cui .modal__title {
+    font-size: 27px;
+    font-weight: 500;
+}
+
+.cui .modal__body--text {
+    font-size: 16px;
+}
+
+.cui .radio .radio__input {
+    background-color: #fff !important;
+}
+
+.table {
+    > tbody > tr:nth-child(even) {
+        background-color: $base-table-striping-odd-background-color;
+    }
+    
+    > tbody > tr:nth-child(odd) {
+        background-color: $base-table-striping-even-background-color;
+    }
+}
+
+.cui .tabs > li > a, .cui .nav-tabs > li > a {
+    border-bottom: 1px solid #dee2e6;
+}

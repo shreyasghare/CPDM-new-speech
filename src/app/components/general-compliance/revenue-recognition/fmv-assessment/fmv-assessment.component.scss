@@ -1,0 +1,98 @@
+.main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+
+    &__content {
+        width: 80%;
+
+        .fmvComment {
+          background-color: #fff;
+          border: 1px solid #9e9ea2;
+          padding: 1rem 7rem;
+        }
+    }
+}
+
+.fmvScreen {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &__container {
+    width: 100%;
+      
+    &--header {
+      height: 5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      background-color: #b6b9bb;
+
+      h5 {
+        margin-bottom: 0;
+      }
+    }  
+    
+    &--dropzone {
+      height: 20rem;
+    }
+
+    &--submit {     
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
+    &--comment {
+      background-color: #a0a0a0; // #969798; //a0a0a0
+      padding: 8px;
+    }
+
+    textarea {
+      width: 100%;
+      transition: ease-in 0.25s;
+      padding: 1rem;
+      resize: none;
+    }
+  }
+}
+
+.file-update-button {
+  border: 2px solid gray;
+  color: white;
+  background-color: white;
+  padding: 0px 10px;
+  border-radius: 8px;
+  font-size: 20px;
+  font-weight: bold;    
+  overflow: hidden !important;
+  position: relative;
+  
+  &::after {
+    content: 'update';
+    color: white;
+    font-size: 1.5rem;
+    text-align: center;
+  }
+  
+  input[type="file"] {
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+  }
+}
+
+.inprogressrolemsg{
+  background-color: #c6c7ca;
+  padding: 5px 72px;
+}
+::placeholder { 
+    font-style: italic !important;
+}

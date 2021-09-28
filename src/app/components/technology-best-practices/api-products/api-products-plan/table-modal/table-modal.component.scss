@@ -1,0 +1,248 @@
+// main div with nested content add any styles here using BEM more here https://css-tricks.com/bem-101/
+
+// private mixins
+@mixin custom-pipe {
+    content: "\007C";
+    margin: 1rem;
+    font-size: large;
+  }
+  
+  .table-model {
+    height: 100%;
+    &__table {
+      width: 100%;
+      max-height: 100%;
+      
+      th {
+        background-color: #b6b9bb;
+        font-family: "CiscoSans", "Arial", sans-serif;
+        font-size: 14px;
+        font-weight: bold;
+      }
+  
+      
+      &__detail-row {
+        height: 0;
+      }
+
+      &__element-row:not(.table-model__table__expanded-row):hover {
+        background: whitesmoke;
+      }
+
+      &__element-row:not(.table-model__table__expanded-row):active {
+          background: #efefef;
+      }
+
+      &__element-row td {
+          border-bottom-width: 0;
+      }
+
+      &__element-detail-row {
+        overflow: hidden;
+        display: flex;
+        padding: 0 !important;
+      }
+
+      &__element-description {
+        padding: 10px;
+        width: 100%;
+
+        div {
+          padding: 0 !important;
+        }
+      }
+
+      &__full-width {
+        padding: 0;
+        width: 100%;
+
+        ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-infix {
+            padding-bottom: 0.1rem !important;
+        }
+        
+        textarea{
+          resize: none;
+        }
+      }
+      // Adding border dynamically
+      .active-border {
+        border-top: 1px solid #dfdfdf;
+      }
+    }
+  
+    &__footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 10%;
+  
+      &__left-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+  
+        &--label {
+          div:before {
+            @include custom-pipe;
+          }
+        }
+      }
+  
+      &--buttons {
+        div:before {
+          @include custom-pipe;
+        }
+      }
+    }
+  
+    // table modal
+    #custom-data-table{
+      height: 100%;
+      overflow-y: scroll;
+      border-bottom: 1px solid #d0c9c9;
+      // To remove flickring effect
+      table {
+        table-layout: fixed;
+      }
+
+      tr > th {
+        height: 4rem;
+      }
+      
+      tr > th:nth-child(1) {
+        width: 4%;
+        align-items: center;
+      }
+    
+      tr > th:nth-child(2) {
+        width: 4%;
+        align-items: center;
+        padding-left: 1rem;
+      }
+      tr > td:nth-child(2) {
+        text-align: center;
+      }
+    
+      tr > th:nth-child(3) {
+        width: 15%; 
+        white-space: nowrap;
+      }
+    
+      tr > th:nth-child(4) {
+        width: 38%;
+      }
+    
+      tr > th:nth-child(5) {
+        width: 7%
+      }
+    
+      tr > th:nth-child(6) {
+        width: 15%;
+      }
+    
+      tr > th:last-child {
+        width: 7%;
+      }
+    }
+  }
+  // -----------------------------------------------------------------------------------------------------
+  
+  .table--compressed {
+    border: 1px solid gray;
+    background-color: #f2f2f2;
+    text-align: left;
+    width: 100%;
+  
+    tr > td:nth-child(1) {
+      width: 20%; // width of first header
+    }
+  
+    tr > th > mat-checkbox {
+      margin-left: 1rem;
+    }
+  
+    th {
+      border: 1px solid gray;
+      border-left: 1px solid gray !important;
+      background-color: #b6b9bb;
+    }
+  
+    .column-data {
+      vertical-align: top;
+      border-right: 1px solid gray;
+      background-color: #f2f2f2;
+    }
+  }
+  
+  #filter-table {
+    position: absolute;
+    width: 100%;
+    z-index: 2000 !important;
+    background-color: #c6c7ca;
+    padding: 0;
+    margin-left: -1rem;
+    display: none;
+  
+    .half-padding-top {
+      padding: 1rem 1rem 1rem 0 !important;
+    }
+  }
+  
+  .filter-header {
+    display: flex;
+    justify-content: space-between;
+    height: 7%;
+  
+    div {
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+      margin-left: -1rem;
+      h4 {
+        text-transform: none;
+      }
+      button {
+        margin-left: 1rem;
+      }
+    }
+  
+    a {
+      font-size: x-large;
+    }
+  }
+  
+  .active {
+    display: block !important;
+  }
+  
+  .text-center {
+    text-align: center;
+  }
+  
+  .applied-filters {
+    display: flex;
+    justify-content: space-between;
+    height: 6%;
+  }
+
+  .filtersAvailable {
+    position: relative;
+    height: 76%;
+  }
+
+  .noFilters {
+    height: 82%;
+  }
+  
+  .gray-border-right {
+    border-right: 1px solid #dfdfdf !important;
+    padding: 0 1rem 0 1rem;
+  }
+  
+  .absolute-center {
+    z-index: 1000 !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+  }

@@ -1,0 +1,28 @@
+<div class="createCommitModelHeaderDiv">
+        <h6 class="createCommitModelheaderLabel">Choose items to create commit</h6>
+        <div>
+            <button type="button" class="close createCommitModelCloseBtn" aria-label="Close" (click)="closeCommitModdal()">
+                <span class="icon-close"></span>
+            </button>
+        </div>
+    </div>
+    <div class="responsive-table" id="createCommitTableContainer">
+        <table id="createCommitTable" class="table">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" [(ngModel)]="selectAll" (change)="selectAllItems();"  disabled></th>
+                    <th>Compliance items</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let project of items">
+                    <td><input type="checkbox" [(ngModel)]="project.applicability" (change)="checkIfAllSelected()"  disabled></td>
+                    <td>{{ project.name }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="commitActionButtonContainer">
+        <button class="btn btn--gray-ghost" (click)="closeCommitModdal()">Cancel</button>
+        <button class="btn btn--primary" (click)="saveCommit(items)"  disabled>Save</button>
+    </div>

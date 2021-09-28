@@ -1,0 +1,20 @@
+<div class="confirmation-dialog">
+    <div class="confirmation-dialog__header">
+        <div class="confirmation-dialog__header--title">
+            <h5 class="mr-1">{{headerText}}</h5>
+        </div>
+        <a class="modal__close" (click)="closeModal()"><span class="icon-close i-close"></span></a>
+    </div>
+    <div class="confirmation-dialog__body my-1">
+        <span [innerHTML]="confirmationText"></span>
+    </div>
+    <div class="confirmation-dialog__footer">
+        <button class="btn btn--dark" (click)="closeModal()">Cancel</button>
+        <button class="btn btn--default" [ngClass] = "buttonStyle ? 'btn--primary' : 'btn--success'" (click)="onConfirm()">{{buttonText}}</button>
+    </div>
+</div>
+<ng-container *ngIf="showLoader">
+    <div class="flex-center full-height csdl-project-loader">
+        <cui-spinner color="default" label="Loading"></cui-spinner>
+    </div>
+</ng-container>

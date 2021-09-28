@@ -1,0 +1,68 @@
+<ng-container *ngIf="apiResponseReady; else spinner">
+    <div class="main" *ngIf="isPMscreen; else poScreen ">
+        <!-- performing test - PM -- start -->
+        <div id="pmProgress" class="performingTests" *ngIf="performingTests">
+            <app-holding-status [statusIcon]="'performingTest'" [status]="'Performing tests'" [message]= "performTest">
+            </app-holding-status>
+        </div>
+        
+        <!-- performing test - PM -- end -->
+        <!-- testing complete - PM -- start -->
+        <div id="pmComplete" class="performingTests" *ngIf="testingComplete">
+            <app-holding-status [statusIcon]="'complete'" [status]="'Testing complete'" [message]= "''">
+                <div>
+                    <p>Test document <b>{{docCentralObj.fileName}}</b> is uploaded and marked as ready.</p>
+                    <i> 
+                        <a (click)="downloadFile('docCentral')" class="edcsLink">
+                            {{docCentralObj.edcsID}}                            
+                        </a>
+                    </i>
+                </div>
+            </app-holding-status>
+        </div>
+        <!-- testing complete - PM -- end -->
+    </div>
+
+    <ng-template #poScreen>
+        <div class="policyTest-PO">
+            <div class="policyTest-PO__container"> 
+                <div class="policyTest-PO__container--download text-center">
+                    <p>The testing document is ready to be downloaded to start testing.</p>
+                    <a class="btn btn--primary" [class.disabled]="!isDownloadEnabled"
+                        (click)="downloadFile('node')" download>Download <span class="icon-download"></span></a>
+                </div>
+            </div>
+            <div class="policyTest-PO__container mt-2" [ngStyle]="{'height':showSkipCheckbox?'14%':'12%'}">
+                <div class="policyTest-PO__container--info text-center">
+                    <div><span>Once the testing is completed, upload the document and click <b>Next</b> to continue.</span></div>
+                    <div *ngIf="showSkipCheckbox" [class.disabled]="disableSkipValidation">
+                        <input type="checkbox" id="checkbox" class="checkbox_input" (change)="onChecked($event)" [(ngModel)]="isSkipValidationChecked">
+                        <span>Skip validation</span>
+                    </div>
+                </div>
+            </div>
+            <div class="custom-dropzone-div">
+                <custom-dropzone  (isFileRemoved)="isFileRemoved($event)" (isFileSelected)="isFileSelected($event)" (onUploadClicked)="onUploadClicked($event)" 
+                    [docCentralObj]="docCentralObj" [componentState]="customDropzoneState"></custom-dropzone>
+            </div>
+            <div class="policyTest-PO__container mt-2">
+                <div class="policyTest-PO__container--syncAdrChecklist text-center" [ngStyle]="{'width':isChecklistSynced?'82%':'90%'}"
+                     [class.disabled]="disableSyncAdrChecklist">
+                        <!-- [ngStyle]="{'width':showLoaderForBtn?'95%':'90%'}"> -->
+                    <div class="syncText" [ngStyle]="{'width':isChecklistSynced?'50%':'75%'}">{{syncAdrChecklistMsg}}</div>
+                    <div class="syncBtn" [ngStyle]="{'width':isChecklistSynced?'33%':'25%'}">
+                        <button class="btn btn--primary" [disabled]="disableSyncBtn" (click)="onSyncAdrChecklist()">Sync ADR Checklist</button>
+                        <div *ngIf="isChecklistSynced && showSuccessIcon"><img src="assets\images\icons\svg\tick-inside-circle.svg"></div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn--success mt-2" (click)="onSubmitClicked()" [disabled]="isSubmitBtnDisabled">Submit</button>
+        </div>
+    </ng-template>
+</ng-container>
+<ng-template #spinner>
+    <div class="absolute-center" style="margin-left: 100px;">
+        <cui-spinner color="default" label="Loading"></cui-spinner>
+    </div>
+</ng-template>
+<cui-modal></cui-modal>

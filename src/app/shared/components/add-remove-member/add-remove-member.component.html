@@ -1,0 +1,79 @@
+<div class="add-remove">
+    <!-- <span class="label" *ngFor="let member of members | slice:0:2 ; let i = index">{{member.name}}
+        <span class="icon-exit" (click)="onRemove(i)"></span></span> -->
+        <!-- <span tabindex="0" class="label" [attr.data-balloon]="getMailerIds(i)"  -->
+        <div tabindex="0" class="label label--small label--dark label--bordered mr-1" [attr.data-balloon]="member.name" 
+        *ngFor="let member of members | slice:0:numberOfMembersToBeShown ; let i = index" 
+         data-balloon-pos="up">
+         <span class="{{ member.members ? 'icon-conference' : 'icon-contact'}}"></span>
+         <span>{{getShortName(member)}}</span>  
+         <span class="icon-exit" *ngIf="isOwnerCanRemove()" (click)="onRemove(i)"></span></div>
+         <span [ngClass]="{'btn-margin':members.length >= 1 && !showButtonsInline, 'show-inline':showButtonsInline}" >
+             <span class="label label--small label--dark label--bordered mr-1"
+                *ngIf="members.length > numberOfMembersToBeShown" [attr.data-balloon]="" 
+                     data-balloon-break data-balloon-pos="up" (click)="showModal(content, 'normal')">
+                 <span class="icon-plus margin-right"></span>{{getShowMore}}</span>
+             <div class="btn btn--small btn-primary" *ngIf="isProjectOwner || createProject" (click)="showModal(content, 'normal')">Add<span class="icon-plus"></span></div>
+             </span>
+</div>
+
+<ng-template #content>
+    <a class="modal__close" (click)="cuiModalService.hide()"><span class="icon-close"></span></a>
+    <div class="addRemoveModalHeader">
+        <div class="modal__title">Add {{header}}s</div>
+    </div>
+    <div class="modal__body">
+        <mat-tab-group  animationDuration="0ms" [(selectedIndex)]="selectedMemberTypeTabIndex"  *ngIf="!typeView" (selectedTabChange)="memberTypeTabChange($event)">                        
+            <mat-tab label="User">
+            </mat-tab>
+            <mat-tab label="Mailer">
+            </mat-tab>
+        </mat-tab-group>
+        <div class="row search" *ngIf="!showLoader && isProjectOwner || createProject">
+            <div class="col-md-9" [ngClass]="errorOccurred?'form-group--error':''">
+                    <!-- <div class="form-group__text">
+                        <input (keyup.enter)="onAdd()" placeholder="Add a {{header}}" 
+                        [(ngModel)]="inputValue" type="text">
+                    </div>-->
+                    <form spellcheck="false">
+                        <mat-form-field class="autoComplete-matInput">
+                            <input type="text" placeholder="{{placeholderText}}"
+                                matInput 
+                                [formControl]="searchMember" 
+                                [matAutocomplete]="auto">                          
+                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="matOptionSelected($event.option.value)" [displayWith]="getSelectedUserName"> <!--getPosts($event.option.value)-->
+                                <mat-option *ngFor="let user of users" [value]="user" >
+                                    {{ user.name }} <span *ngIf="user.cecId">({{user.cecId}})</span>
+                                </mat-option>
+                            </mat-autocomplete>                        
+                        </mat-form-field>     
+                        <div class="text-danger" role="alert" style="text-align: right;">
+                            <span>{{getErrorMessage}}</span>
+                        </div>               
+                    </form>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn--primary mt-1" [disabled]="!inputUserObj" (click)="onAdd()">Add</button>
+            </div>
+        </div>
+        <div style="height: 5px" class="loading-dots loading-dots--muted mt-1" *ngIf="showLoader" aria-label="Loading, please wait...">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        <br/>    
+        <div class="custom__label">
+            <span class="label label--small label--dark label--bordered mr-1"
+                style="height: 27px" tabindex="0" data-balloon-pos="down" data-balloon-length="" data-balloon-break
+            [attr.data-balloon]="member.members ? getMembersTooltip(member.members) : member.name" 
+            *ngFor="let member of members; let i = index"> 
+                <span class="{{ member.members ? 'icon-conference' : 'icon-contact'}}"></span> &nbsp;
+                <span>{{member.name || member.cecId}}</span>             
+                <span class="icon-exit" *ngIf="isOwnerCanRemove()" (click)="onRemove(i)"></span>
+            </span>
+        </div>
+    </div>
+    <div class="modal__footer">
+        <button class="btn btn--secondary" (click)="hideModal()">Ok</button>
+    </div>
+</ng-template>

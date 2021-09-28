@@ -1,0 +1,61 @@
+<div class="container-fluid">
+    <div class="top-bar">
+        <div class="top-bar__navigation">
+            <h6 class="section"> <a routerLink="/home">Home</a>
+                <span class="icon-small icon-chevron-right"></span>
+                <a routerLink="/project/{{projectId}}"
+                    *appHasRole="[role.pm]">{{projectName}}</a>
+                <span class="icon-small icon-chevron-right"></span>TPSCRM
+            </h6>
+        </div>
+        <div class="top-bar__button">
+            <button class="btn btn--secondary" (click)="openHelpOverlayModal()">Overview</button>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="row">
+            <div class="tpsd-left-pane pl-1">
+                <div class="tpsd-left-pane__sidebar">
+                    <p class="text-large text-center text-bold">TPSCRM
+                        <span *ngIf="betaFlag" ><sup class="betaTag qtr-padding-top text-normal" >BETA</sup></span>
+                    </p>
+                    <process-sidebar [sidebarData]="sidebarData" (onSidebarSwitch)="switchSidebarTab($event)"
+                        (onInfoClick)="showInfoHelperModal($event)">
+                    </process-sidebar>
+                </div>
+                <div class="tpsd-left-pane__reinitiate-section" *ngIf="this.currentTabName !== 'create_link'">
+                    <button class="btn btn--small btn--secondary" (click)="changeProduct()">Change TPSCRM Product</button>
+                    <span
+                        class="icon-info icon--custom-size ml-1"
+                        [matTooltip]="updateBtnInfo"
+                        matTooltipPosition="below"
+                        [matTooltipClass]="'tooltipForInfo'"></span>
+                </div>
+            </div>
+
+            <div class="general-compliance__right-pane">
+                <div class="general-compliance--view">
+                    <div class="general-compliance--view__content">
+                        <div class="dynamic-component">
+                            <!-- all other components -->
+                            <router-outlet></router-outlet>
+                            <!-- end  -->
+                        </div>
+                        <div class="general-compliance--view__content--footer">
+                            <div class="previousBtn"><button *ngIf="!sidebarData[0].isActive"
+                                    class="btn btn--secondary" [class.disabled]="disablePreviousBtn"
+                                    (click)="onPreviousClick()"><span
+                                        class="icon-arrow-up-tail mr-1"></span>{{sideBar.getStepName('previous')}}</button>
+                            </div>
+                            <div class="nextBtn"> <button *ngIf="!sidebarData[2].isActive"
+                                class="btn btn--secondary" [class.disabled]="disableNextBtn"
+                                (click)="onNextClick()">{{sideBar.getStepName('next')}}<span
+                                    class="icon-arrow-down-tail ml-1"></span></button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

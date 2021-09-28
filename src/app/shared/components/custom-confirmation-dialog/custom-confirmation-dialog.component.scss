@@ -1,0 +1,31 @@
+.confirmation-dialog {
+    &__header {
+        border-bottom: solid 1px gray;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        &--title {
+            display: flex;
+            align-items: baseline;
+        }
+    }
+    &__body {
+        padding: 3rem 0 1rem 0;
+    }
+    &__footer {
+        display: flex;
+        min-height: 5rem;
+        justify-content: flex-end;
+        align-items: center;
+    }
+}
+
+.csdl-project-loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+.text-green{
+    color: green;
+}

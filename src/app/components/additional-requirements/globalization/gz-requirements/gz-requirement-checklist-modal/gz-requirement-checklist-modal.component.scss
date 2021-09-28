@@ -1,0 +1,71 @@
+.requirement-checklist-modal{
+    &__header {
+        display: flex;
+        justify-content: space-between;
+    }
+    &__content{
+        &__field{
+          display: flex;
+          justify-content: space-between;
+        }
+        &__main{
+           border-top: 1px solid #636363; 
+           border-bottom: 1px solid #636363; 
+           height: 50vh;
+           overflow-y: auto;
+           overflow-x: hidden;
+           margin: 1% 0;   
+        }
+
+        &__footer{
+            text-align: center;
+         }
+    }
+}
+
+p {
+  margin: 0rem;
+}
+.border-line {
+  border-top: 0.4px solid #999999;
+}
+
+.mandatory-field {
+  &::before {
+      content:"*";
+      color:red;
+      margin-right: 5px;
+  }
+ 
+}
+
+::ng-deep .mat-checkbox-checked.mat-primary .mat-checkbox-background {
+  background-color: #00bceb;
+}
+
+::ng-deep .mat-checkbox-background {
+  background-color: transparent;
+}
+
+::ng-deep .mat-checkbox-frame {
+  border: 2px solid gray;
+}
+
+::ng-deep .mat-checkbox-layout {
+  margin-bottom: 1.2rem;
+}
+
+.form-group__text {
+  width: 97%;
+}
+
+.user-input {
+  height: 30px;
+  width: 20rem;
+  border-radius: 3px;
+}
+
+.close-button {
+  display: flex;
+  justify-content: flex-end;
+}

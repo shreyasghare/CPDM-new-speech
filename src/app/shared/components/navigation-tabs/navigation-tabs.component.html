@@ -1,0 +1,6 @@
+<div class="custom-tab">
+    <div class="custom-tab__polygon" (click)="onCustomTabChange(item)" [ngClass]="[item.active ? 'active-tab' : '', item.isDisabled ? 'disabled-tab' : 'in-active-tab', !item.isEnabled && item.isEnabled != undefined?  'disabled-tab':'']" *ngFor="let item of customTabs">
+        <span class="custom-tab__polygon--inner-text">{{item.tabName}} <span *ngIf="item.selectedAdr != undefined && item.totalAdr != undefined">({{item.selectedAdr}}/{{item.totalAdr}})</span></span>
+        <!-- <span class="icon-check-outline icon-small status-message" *ngIf="item.isStatusAvailable"> In progress</span> -->
+    </div>
+</div>

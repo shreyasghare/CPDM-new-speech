@@ -1,0 +1,151 @@
+.complianceModelHeaderDiv{
+    &__header{
+        display: flex;
+        justify-content: space-between;
+        .icon-close{
+            cursor: pointer;
+        }
+    }
+}
+
+.complianceModelheaderLabel{
+    left: 2%;
+    position: absolute;
+    top: 22%;
+    color: #fff;
+}
+
+.complianceModelCloseBtn{
+    position: absolute;
+    right: 2%;
+    top: 30%;
+    color: #fff;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.fullLegthBtn{
+    display: block;
+    width: 100%;
+    border: none;
+    background-color: #858585;
+    color: white;
+    padding: 1rem 0rem;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+}
+
+#complianceTable > tfoot > tr > td{
+    padding: 0% !important;
+    border-left: none !important;
+}
+
+#manageComplianceButtonContainer{
+    display: flex;
+    justify-content: space-between;
+}
+
+.newComplianceItemsContainer{
+    width: 48%;
+    padding-left: 3%;
+}
+
+.newComplianceItemsAddContainer{
+    width: 17%;
+    text-align: left;
+    padding: 5px;
+}
+
+.newComplianceItemsapplicabilityContainer{
+    width: 26%;
+    padding: 5px;
+}
+
+
+.table--custom{
+    border: 1px solid #dfdfdf;
+    margin-top: 1rem !important;
+    border-collapse: collapse;
+
+    tr>th{
+    padding: 1rem;
+    border-right:1px solid #dfdfdf; 
+    border-bottom:1px solid #dfdfdf; 
+    background-color: #f2f2f2;
+    }
+
+    .custom-center{
+        display: flex;
+        justify-content: center;
+    }
+
+    tr > td{
+        border-bottom:1px solid #dfdfdf;    
+        padding: 1rem;
+    }
+
+    tbody {
+        display:block;
+        height:auto;
+        overflow-y:scroll;
+    }
+    thead, tbody tr {
+        display:table;
+        table-layout:fixed;
+    }
+    
+    tbody tr{
+        width: 100%;
+    }
+
+    thead{
+        width: calc( 100% - 1.7rem )
+    }
+    tfoot > tr > td{
+        padding: 0rem;
+    }
+
+    thead > tr > th:nth-child(1){
+        text-align: left;
+        width: 60%;
+    }
+    
+    tbody > tr > td:nth-child(1){
+        text-align: left;
+        width: 60%;
+    }
+}
+
+#tooltipDetailContainer {
+    text-align: left !important;
+    overflow-y: auto;
+    display: block;
+    max-height: auto;
+    padding: 0 1rem;
+}
+
+.tooltipSectionHeading{
+    font-weight: bold;
+    margin: 0px !important;
+}
+// ******** //
+.complianceTooltipModelheaderLabel {
+    color: black;
+    font-weight: 600;
+    padding-bottom: 2%;
+}
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.complianceTooltipModelCloseBtn {
+    position: absolute;
+    right: 2%;
+    top: 5%;
+    color: #868585;
+    background-color: transparent;
+    border: none;
+}

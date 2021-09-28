@@ -1,0 +1,487 @@
+[
+    {
+        "name": "Accessibility",
+        "description": "The Accessibility directive sets forth Cisco’s governing compliance with governmental laws and regulations and customer driven requirements for software and hardware products, and services, to be accessible to people with disabilities.  This directive applies to all Cisco products, from design to sale to post-sales support.",
+    
+        "applicability":{
+            "text":"All hardware and software products, and services, which are provided to customers, either for sale or for free.",
+            "content":[]
+        },
+        "reachCompliance":{
+            "text":"Steps to Reach Compliance",
+            "content":[
+                {
+                    "text":"In the beginning of the project, use the Accessibility Process Form to contact the Accessibility team to determine the applicable requirements.",
+                    "subContent":[]
+                },
+                {
+                    "text":"Prior to Commit, work with the Accessibility team to create the ADR Checklist to document the current level of accessibility.",
+                    "subContent":[]
+                },
+                {
+                    "text":"Prior to FCSRR or initial orderability, work with the Accessibility team to create the VPAT if required",
+                    "subContent":[]
+                },
+                {
+                    "text":" If the product is legally required to be accessible, the Accessibility team will help to address the issues in future releases.",
+                    "subContent":[]
+                }
+            ]   
+        }
+    },
+    {
+        "name": "Export Compliance",
+        "description": "The Export Compliance Policy is to maintain strict compliance with global export control laws. Global Export Trade (GET) directs and counsels all parties involved in Cisco’s Exports. The goal is to facilitate and expedite worldwide trade in the most effective and efficient manner by proactively observing all international rules and regulations regarding export.",
+    
+        "applicability":{
+            "text":"All new products need to be reviewed by Global Export Trade(GET)",
+            "content":[
+                {
+                    "text":"If a product contains encryption, it may need to be submitted for technical review to the U.S. Department of Commerce and the U.S. National Security Agency",
+                    "subContent":[]
+                },
+                {
+                    "text":"If the encryption functionality in a previously reviewed product has been modified or enhanced, it may need to be submitted for re-review",
+                    "subContent":[]
+                }
+            ]
+        },
+        "reachCompliance":{
+            "text":"Steps to Reach Compliance",
+            "content":[
+                {
+                    "text":"If you have an existing EPR number and you have confirmed that there are no changes to encryption functionality or other export-controlled functionality, then skip to step 6 below",
+                    "subContent":[""]
+                },
+                {
+                    "text":"If you have an EPR number but you’re unsure,then reach out to the Global Export Trade (GET) Team",
+                    "subContent":[]
+                },
+                {
+                    "text":"If you’ve searched for an existing EPR number and you are unable to find an existing EPR number for your product or offer, then complete an Export Review Form",
+                    "subContent":[{
+                        "text":"Prior to creating PIDs in eGenie,  open an Export Product Review (EPR) case to initiate the export compliance due diligence review process and to review the PID naming and PID structure of your offer",
+                        "subContent":[
+                            "eGenie link if needed"
+                        ]
+                    }]
+                },
+                {
+                    "text":"Complete the export compliance due diligence review process with a member of the Global Export Trade (GET) Team",
+                    "subContent":[]
+                },
+                {
+                    "text":"Once export the export compliance due diligence review process is complete, an email from the GET team will be provided to confirm completion",
+                    "subContent":[]
+                },
+                {
+                    "text":"Once you have the EPR number for your product/offer, enter the EPR number into your commit",
+                    "subContent":[]
+                }
+            ]   
+        }
+    },
+    {
+        "name": "Open Source Software",
+        "description": "The Commercial and Open Source Initiative (COSI) establishes a corporate policy governing Cisco’s use and distribution of Third Party Software. COSI is a cross-functional program to address technical and business requirements of using third party commercial and open source software in Cisco's products.",
+    
+        "applicability":{
+            "text":"ANY software that may be delivered or deployed to a customer or partner.",
+            "content":[ ]
+        },
+        "reachCompliance":{
+            "text":"Steps to Reach Compliance",
+            "content":[
+                {
+                    "text":"Register all Open Source and Commercial SW in IP Central.",
+                    "subContent":[]
+                },
+                {
+                    "text":"Ensure royalty payments (where applicable) are setup",
+                    "subContent":[]
+                },
+                {
+                    "text":"Comply with licensing/purchase requirements",
+                    "subContent":[]
+                }
+            ]   
+        }
+    },
+    {
+        "name": "Revenue Recognition",
+        "description": "The Revenue Recognition Policy describes when revenues are recognizable by Cisco Systems, Inc. for the purposes of its consolidated financial statements, prepared in accordance with U.S. generally accepted accounting principles (“U.S. GAAP”), specifically in accordance with FASB Accounting Standards Codification (“ASC”) 605 Revenue Recognition (formerly known as Staff Accounting Bulletin 104 Revenue Recognition, Emerging Issue Task Force (EITF) 00-21 Revenue Arrangements with Multiple Deliverables among others)(“ASC 605”) and ASC 985-605 Software Revenue Recognition.(formerly known as AICPA Statement of Position 97-2 Software Revenue Recognition and other accounting pronouncements where applicable) (“ASC 985-605”).",
+    
+        "applicability":[
+            {
+            "text":"All programs and projects that have associated revenue.",
+            "content":[ ],
+            },
+            {
+            "text":"Any functionality updates to an existing project which can have potential revenue impact.",
+            "content":[ ],
+            },
+        ],
+        "reachCompliance":{
+            "text":"Steps to Reach Compliance",
+            "content":[
+                {
+                    "text":"Complete a revenue recognition worksheet as part of the initial commit.",
+                    "subContent":[]
+                },
+                {
+                    "text":"Document controller and marketing director approval of the worksheet.",
+                    "subContent":[]
+                }
+            ]   
+        }
+    },
+    {
+        "name": "Smart Licensing",
+        "description": "The Smart Licensing Directive defines the requirements for smart software licensing.  Smart Licensing seeks to answer the two primary questions that Cisco and Customers need to know: what licenses have been purchased and what licenses are being used?",
+    
+        "applicability":[
+            {
+            "text":"New Cisco licensed on premise software products planned to be released in FY15 or later.",
+            "content":[ ],
+            },
+            {
+            "text":"Product is not going end of life or end of sale.",
+            "content":[ ],
+            },
+        ],
+        "reachCompliance":{
+            "text":"Steps to Reach Compliance",
+            "content":[
+                {
+                    "text":"Validate that Smart Licensing has been included in product scope.",
+                    "subContent":[]
+                },
+                {
+                    "text":"Ensure Smart Licensing requirements (Smart Agent, 8 pre-res & the 4 standards) were prioritized in Development Priority List and included in the PRD or user stories and commit presentation.",
+                    "subContent":[]
+                }
+            ]   
+        }
+    },
+    {
+        "name": "Security",
+        "description": "The Cisco Secure Development Lifecycle (CSDL) Directive establishes this lifecycle as a required methodology for the Engineering organization to implement trustworthiness in their feature, product, system, and solution development efforts. CSDL is the security technical layer of the Cisco Product Development Methodology(CPDM).  Use of CSDL increases the resiliency and trustworthiness of Cisco products.",
+    
+        "applicability":[
+            {
+                "text":"Applies to the development of any Cisco product, including hardware and software products. This includes all operating systems or any other software installed or delivered in Cisco products. Applicability includes ODM, OEM, and JDM product development projects.",
+                "content":[ ],
+            }
+        ],
+        "reachCompliance":{
+            "text":"Steps to Reach Compliance",
+            "content":[
+                {
+                    "text":"Select secure coding standards and safe coding libraries.",
+                    "subContent":[]
+                },
+                {
+                    "text":"Perform threat modeling.",
+                    "subContent":[]
+                },
+                {
+                    "text":"Perform Static Analysis.",
+                    "subContent":[]
+                },
+                {
+                    "text":"Include applicable Protocol Robustness, Vulnerability, and Application Security testing.",
+                    "subContent":[]
+                },
+                {
+                    "text":"Register Commercial and Open Source code (see Open Source Use) and have a plan to handle related security alerts.",
+                    "subContent":[]
+                },
+                {
+                    "text":"Perform Product Security Baseline (PSB) Gap Analysis and commit to addressing areas of non-compliance in the current and future releases.",
+                    "subContent":[]
+                },
+                {
+                    "text":" Update the Security Dashboard for Iterative, Gates, and, where applicable, System/Solution Styles, these actions will be performed once per external release. For Continuous Style, select a cadence (eg. quarterly or every six months)",
+                    "subContent":[]
+                }
+            ]   
+        }
+    },
+    {
+        "name": "Communications Regulation Assessment",
+        "description": "The Communications Regulatory Compliance Policy is designed to ensure that Cisco products and offers that may be subject to communications regulation in markets around the world are vetted before release to ensure compliance.",
+    
+        "applicability":{
+            "c":"This policy applies to the deployment of any product or offer in a new jurisdiction, as well as to the release of significant modifications to a product or offer in a jurisdiction where it has already been deployed, and meets at least one of the following criteria:",
+            "content":[
+                {
+                    "text":"The product/offer includes person-to-person communications capabilities, including voice, video, or messaging, or",
+                    "content":[ ],
+                },
+                {
+                    "text":"The product/offer includes video streaming or broadcasting, whether to the public or to closed user groups, or",
+                    "content":[ ],
+                },
+                {
+                    "text":"The offer is bundled with voice or data transmission capacity (such as the resale of PSTN connectivity or data circuits that Cisco purchases on a wholesale basis and sells to its customers).",
+                    "content":[ ],
+                }
+            ]
+        },
+        "reachCompliance":{
+            "text":"Steps to Reach Compliance",
+            "content":[
+                {
+                    "text":"Contact the Regulatory Compliance Team (RCT) for an assessment of compliance.",
+                    "subContent":[]
+                },
+                {
+                    "text":"Ensure that the requirements have been satisfied.",
+                    "subContent":[]
+                }
+            ]   
+        }
+    },
+    {
+        "name": "End of Life (EOL)",
+        "description": "The End of Life (EOL) policy is to be used for effectively managing the product end of life process for Cisco hardware and software products.  EOL is the process in which a Cisco HW, OS SW, or APP SW product will no longer be sold or supported.  It is the responsibility of the Product Manager to take action when their Business Unit is ready to End of Sale / Support a product.",
+    
+        "applicability":{
+            "contentText":null,
+            "content":[
+                {
+                    "text":"All hardware products, software products and releases (PIDs) sold by Cisco with sales/distribution,",
+                    "content":[ ],
+                },
+                {
+                    "text":"All 3rd party products, OEM sold by Cisco with PIDs",
+                    "content":[ ],
+                },
+                {
+                    "text":"The offer is bundled with voice or data transmission capacity (such as the resale of PSTN connectivity or data circuits that Cisco purchases on a wholesale basis and sells to its customers).",
+                    "content":[ ],
+                }
+            ]
+        },
+        "reachCompliance":{
+            "text":"Steps to Reach Compliance",
+            "content":[
+                {
+                    "text":"Review EOL Policy and identify applicable items",
+                    "subContent":[]
+                },
+                {
+                    "text":"Enter EOL data into EOL Solution Center",
+                    "subContent":[]
+                },
+                {
+                    "text":"Determine whether EOL will be done in conjunction with other commits or as a separate commit.",
+                    "subContent":[
+                        "If done separately or as part of a Standard Agile or CPDM Waterfall Commit, use the EOL Commit Template (EDCS-580995)",
+                        "If done as part of Thin Layer 2, use the included End Of Life Overview Slide. If done in ThinOnline, use the included EOL Widget."
+                    ]
+                },
+            ]   
+        }
+    },
+    {
+        "name": "Globalization",
+        "description": "The Globalization Directive establishes corporate policy governing Cisco’s design and development of software products with internationalization requirements. Globalization is the process by which any business successfully integrates internationally.  For software product development, globalization is comprised of internationalization and localization.",
+        "applicability":{
+            "contentText":"All Cisco software products, and services, which are provided to customers, either for sale or for free.",
+            "content":[
+                {
+                    "text":null,
+                    "content":[ ],
+                }
+            ]
+        },
+        "reachCompliance":{
+            "text":"Steps to Reach Compliance",
+            "content":[
+                {
+                    "text":"Review internationalization requirements during the design and development process.",
+                    "subContent":[]
+                },
+                {
+                    "text":"Implement internationalization during new feature development, as applicable",
+                    "subContent":[]
+                }
+            ]   
+        }
+    },
+    {
+        "name": "Hardware Core Regulatory",
+        "description": "The Hardware Core Regulatory Directive sets forth product compliance with governmental laws and regulations as well as customer driven requirements for hardware products. Compliance with government laws and regulations is mandatory for selling products in various countries or to certain customers such a service providers. Failure to comply with these government laws and regulations would result in legal and financial penalties and will prevent the sale of Cisco products in these countries.",
+        "applicability":{
+            "contentText":"Applies to all Cisco hardware products, from design to sale to post-sales support and EoL.",
+            "content":[]
+        },
+        "reachCompliance":{
+            "text":"Steps to Reach Compliance",
+            "content":[
+                {
+                    "text":"Contact the GDS team (use mailer provided), identify applicable hardware regulatory requirements and translate these requirements to user stories.",
+                    "subContent":[]
+                },
+                {
+                    "text":"Refer to applicable technical standards identified in the requirements documents during product development.",
+                    "subContent":[]
+                },
+                {
+                    "text":"Consult with ESS as needed during the design and, if applicable, provide prototype hardware to ESS for pre-testing to ensure design is on track to meet requirements.",
+                    "subContent":[]
+                },
+                {
+                    "text":"Ensure all necessary paperwork is filed with governments and all necessary certifications/certificates have been obtained to permit sales.",
+                    "subContent":[]
+                },
+                {
+                    "text":"Follow ECN process to enable continuous compliance",
+                    "subContent":[]
+                }
+            ]   
+        }
+    },
+    {
+        "name": "Business Entity",
+        "description": "Business Entity",
+        "applicability":{
+        },
+        "reachCompliance":{
+        }
+    },
+    {
+        "name": "Sub-business Entity",
+        "description": "Sub-business Entity",
+        "applicability":{
+        },
+        "reachCompliance":{
+        }
+    },
+    {
+        "name": "Product Type",
+        "description": "Product Type",
+        "applicability":{
+        },
+        "reachCompliance":{
+        }
+    },
+    {
+        "name": "Development Style",
+        "description": "Development Style",
+        "applicability":{
+        },
+        "reachCompliance":{
+        }
+    },
+    {
+        "name": "Owner",
+        "description": "Owner",
+        "applicability":{
+        },
+        "reachCompliance":{
+        }
+    },
+    {
+        "name": "Team",
+        "description": "Team",
+        "applicability":{
+        },
+        "reachCompliance":{
+        }
+    },
+    {
+        "name": "Visibility",
+        "description": "Visibility",
+        "applicability":{
+        },
+        "reachCompliance":{
+        }
+    },
+    {
+        "name": "Template",
+        "description": "Template",
+        "applicability":{
+        },
+        "reachCompliance":{
+        }
+    },
+    {
+        "name": "Project Code Name",
+        "description": "Project Code Name",
+        "applicability":{
+        },
+        "reachCompliance":{
+        }
+    },
+    {
+        "name": "Existing/New",
+        "description": "Existing/New",
+        "applicability":{
+        },
+        "reachCompliance":{
+        }
+    },
+    {
+        "name": "Product Version",
+        "description": "Product Version",
+        "applicability":{
+        },
+        "reachCompliance":{
+        }
+    },
+    {
+        "name": "FCS Date",
+        "description": "FCS Date",
+        "applicability":{
+        },
+        "reachCompliance":{
+        }
+    },
+    {
+        "name": "IPV6",
+        "description": "IPV6",
+        "applicability":{
+        },
+        "reachCompliance":{
+        }
+    },
+    {
+        "name": "Yang standard",
+        "description": "Yang standard",
+        "applicability":{
+        },
+        "reachCompliance":{
+        }
+    },
+    {
+        "name": "Hardware",
+        "description": "Hardware",
+        "applicability":{
+        },
+        "reachCompliance":{
+        }
+    },
+    {
+        "name": "Software as a service",
+        "description": "Software as a service",
+        "applicability":{
+        },
+        "reachCompliance":{
+        }
+    },
+    {
+        "name": "Software on premise",
+        "description": "Software on premise",
+        "applicability":{
+        },
+        "reachCompliance":{
+        }
+    },
+    {
+        "name": "Submit",
+        "description": "The Product/Project Manager answers 16 initial questions from Revenue Recognition Checklist Assessment. If any of these 16 answers are Yes, then three additional questions will be required.  The Security Services Platform (SSP) Checklist Excel file is available for the Product/Project Manager to download and the upload after filling with the final list of product IDs."
+    },
+    
+    ]

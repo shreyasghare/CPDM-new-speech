@@ -1,0 +1,29 @@
+<div class="custom-sidebar">
+    <div *ngFor="let item of sidebarData; let i=index; let last = last;">
+        <div class="action-container">
+            <div (click)="switchSidebarTab(item.alias)" class="auto-wh" [ngClass]="{'disabled': !item.isEnabled}">
+                <div class="custom--circle--icon"  [ngClass]="{'active': item.isActive}"><span>{{i + 1}}</span></div>
+                <div class="custom--circle--title">{{item.title}}</div>
+            </div> 
+            <div class="auto-wh">
+                <span *ngIf="isInfoIconVisible(i)" class="icon-info icon--custom-size" (click)="showModal(item)"></span>
+            </div>
+        </div>
+        <div class="workflowTime" *ngIf="item.showTimestampStatus">
+            <span class="connector" [ngClass]="{'disabled': sidebarData[i+1] && !sidebarData[i+1].isEnabled, 'hide-connector': last}"></span>
+            <div *ngIf="item.showTimestampStatus">
+                <span *ngIf="item.isCompleted && !item.notApplicable" class="stepCompletionStatus">
+                    <p>Completed<span class="time">On {{item.completedOn | date:'dd MMM y'}}</span></p>
+                </span>
+                <span *ngIf="!item.isCompleted && item.isEnabled && !item.notApplicable" class="stepCompletionStatus">
+                    <p>In progress</p>
+                </span>
+                <span *ngIf="item.notApplicable && item.isEnabled" class="stepCompletionStatus">
+                    <p>Not applicable</p>
+                </span>
+            </div>
+           
+        </div>
+    </div>   
+</div>
+

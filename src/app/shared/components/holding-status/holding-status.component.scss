@@ -1,0 +1,50 @@
+.holding-status {
+    background-color: #c6c7ca;
+    &.light {
+        background-color: #fff;
+        border: solid 1px #c6c7ca;;
+    }
+    padding: 15px 20px;
+    display: flex;
+    &__icon {
+        img {
+            width: 35px;
+            opacity: 0.5;
+        }
+        span {
+            display: flex;
+            justify-content: space-evenly;
+            margin-top: 0.5rem;
+
+            .review-icon{
+                width: 30px;
+                height: 30px;
+                margin-top: .4rem;
+                opacity: 0.55;
+                &__invert {
+                    transform: rotate(180deg);
+                }
+            }
+        }
+    }
+    &__container {
+        width: 100%;
+        &--status {
+            margin-top: 3px;
+        }
+        &--status-text {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+        }
+        &--message {
+            p {
+                margin: 10px 0 0;
+                .whatIsTelemetry { 
+                    margin-bottom: 0px !important;
+                }
+            }
+        }
+    }
+}

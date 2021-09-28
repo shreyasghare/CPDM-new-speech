@@ -1,0 +1,422 @@
+<div class="table-model">
+    <!-- Filter table starts here-->
+    <div>
+        <div class="col-12 filter-header">
+            <div class="text-left">
+                <h4 class="mb-2 text-normal">Telemetry Recommendations {{data.version}} <span
+                        *ngIf="!isReadOnly">&#124;</span></h4>
+                <button class="btn btn--primary" #filterTableBtn [disabled]="!filterDataLoaded"
+                    (click)="toggleFilter()">Filter table <span class="icon-filter"></span></button>
+            </div>
+        </div>
+    </div>
+    <div class="col-12" #filterTableDiv>
+        <div id="filter-table" class="filter panel responsive-table " [class.active]="showFilter"
+            *ngIf="filterDataLoaded">
+            <table class="table table--compressed">
+                <tr>
+                    <th>
+                        <mat-checkbox color="primary" [(ngModel)]="filterHeader.uniqueIdentifiers.selected"
+                            (change)="checkUncheckFilterColumn($event, filterHeader.uniqueIdentifiers.key)"
+                            [value]="filterHeader.uniqueIdentifiers.key">
+                            {{filterHeader.uniqueIdentifiers.name}}</mat-checkbox>
+                    </th>
+                    <th>
+                        <mat-checkbox color="primary" [(ngModel)]="filterHeader.priority.selected"
+                            (change)="checkUncheckFilterColumn($event, filterHeader.priority.key)"
+                            [value]="filterHeader.priority.key">
+                            {{filterHeader.priority.name}}</mat-checkbox>
+                    </th>
+                    <th>
+                        <mat-checkbox color="primary" [(ngModel)]="filterHeader.embeddedApps.selected"
+                            (change)="checkUncheckFilterColumn($event, filterHeader.embeddedApps.key)"
+                            [value]="filterHeader.embeddedApps.key">
+                            {{filterHeader.embeddedApps.name}}</mat-checkbox>
+                    </th>
+                    <th>
+                        <mat-checkbox color="primary" [(ngModel)]="filterHeader.onOffPrem.selected"
+                            (change)="checkUncheckFilterColumn($event, filterHeader.onOffPrem.key)"
+                            [value]="filterHeader.onOffPrem.key">
+                            {{filterHeader.onOffPrem.name}}</mat-checkbox>
+                    </th>
+                    <th>
+                        <mat-checkbox color="primary" [(ngModel)]="filterHeader.businessOperational.selected"
+                            (change)="checkUncheckFilterColumn($event, filterHeader.businessOperational.key)"
+                            [value]="filterHeader.businessOperational.key">
+                            {{filterHeader.businessOperational.name}}</mat-checkbox>
+                    </th>
+                    <th>
+                        <mat-checkbox color="primary" [(ngModel)]="filterHeader.status.selected"
+                            (change)="checkUncheckFilterColumn($event, filterHeader.status.key)"
+                            [value]="filterHeader.status.key">
+                            {{filterHeader.status.name}}</mat-checkbox>
+                    </th>
+                </tr>
+                <tr>
+                    <td class="column-data">
+                <tr *ngFor="let uniqueIdentifierData of filterRows.uniqueIdentifiers">
+                    <td>
+                        <mat-checkbox color="primary" [value]="uniqueIdentifierData.value"
+                            [checked]="uniqueIdentifierData.selected"
+                            (change)="checkUncheckSpecificFilter($event, uniqueIdentifierData.key)"
+                            [(ngModel)]="uniqueIdentifierData.selected">{{uniqueIdentifierData.value}}
+                        </mat-checkbox>
+                    </td>
+                </tr>
+                </td>
+
+                <td class="column-data">
+                    <tr *ngFor="let priorityData of filterRows.priority">
+                        <td>
+                            <mat-checkbox color="primary" [value]="priorityData.value" [checked]="priorityData.selected"
+                                (change)="checkUncheckSpecificFilter($event, priorityData.key)"
+                                [(ngModel)]="priorityData.selected">{{priorityData.value}}</mat-checkbox>
+                        </td>
+                    </tr>
+                </td>
+
+                <td class="column-data">
+                    <tr *ngFor="let embeddedAppsData of filterRows.embeddedApps">
+                        <td>
+                            <mat-checkbox color="primary" [value]="embeddedAppsData.value"
+                                [checked]="embeddedAppsData.selected"
+                                (change)="checkUncheckSpecificFilter($event, embeddedAppsData.key)"
+                                [(ngModel)]="embeddedAppsData.selected">{{embeddedAppsData.value}}</mat-checkbox>
+                        </td>
+                    </tr>
+                </td>
+
+                <td class="column-data">
+                    <tr *ngFor="let onOffPremData of filterRows.onOffPrem">
+                        <td>
+                            <mat-checkbox color="primary" [value]="onOffPremData.value"
+                                [checked]="onOffPremData.selected"
+                                (change)="checkUncheckSpecificFilter($event, onOffPremData.key)"
+                                [(ngModel)]="onOffPremData.selected">{{onOffPremData.value}}</mat-checkbox>
+                        </td>
+                    </tr>
+                </td>
+
+                <td class="column-data">
+                    <tr *ngFor="let businessOperationalData of filterRows.businessOperational">
+                        <td>
+                            <mat-checkbox color="primary" [value]="businessOperationalData.value"
+                                [checked]="businessOperationalData.selected"
+                                (change)="checkUncheckSpecificFilter($event, businessOperationalData.key)"
+                                [(ngModel)]="businessOperationalData.selected">{{businessOperationalData.value}}
+                            </mat-checkbox>
+                        </td>
+                    </tr>
+                </td>
+
+                <td class="column-data">
+                    <tr *ngFor="let statusData of filterRows.status">
+                        <td>
+                            <mat-checkbox color="primary" [value]="statusData.value" [checked]="statusData.selected"
+                                (change)="checkUncheckSpecificFilter($event, statusData.key)"
+                                [(ngModel)]="statusData.selected">{{statusData.value}}</mat-checkbox>
+                        </td>
+                    </tr>
+            </table>
+            <div class="text-right half-padding-top">
+                <button class="btn btn--dark" (click)="clearAllFilter()">Clear All</button>
+                <button class="btn btn--primary" (click)="applyFilter()">Apply</button>
+            </div>
+        </div>
+    </div>
+    <!-- Filter table ends here-->
+
+    <!-- Modal body starts here-->
+    <!--Fix for [DE3037](https://rally1.rallydev.com/#/300796297852ud/iterationstatus?detail=%2Fdefect%2F462502009776&fdp=true?fdp=true): TBPs_While adding too many filter options for TBPs, zooming, few added details are getting displayed behind the headers of the recommendation table-->
+    <div class="row " *ngIf="!hideAppliedFilterRow">
+        <div class="col-11" *ngIf="isTelemetryRecommendationDataLoaded && !hideAppliedFilterRow">
+            <span class="text-left text-large text-bold">Applied Filters : </span>
+
+            <span class="text-medium text-bold">Unique Identifiers : </span>
+            <span class="text-muted" *ngIf="filtersArray.filters['tag'].length == 0">NA</span>
+            <!-- <span class="text-italic"
+                *ngFor="let uniqueIdentifier of filtersArray.filters['tag']">{{uniqueIdentifier['recommendations.tag']}},
+            </span> -->
+            <span *ngIf="filtersArray.filters['tag'].length <= 3">
+                <span class="text-italic"
+                    *ngFor="let uniqueIdentifier of filtersArray.filters['tag']">{{uniqueIdentifier['recommendations.tag']}},
+                </span>
+            </span>
+            <span *ngIf="filtersArray.filters['tag'].length > 3">
+                <span class="text-italic"
+                    *ngFor="let uniqueIdentifier of filtersArray.filters['tag'].slice(0, 3)">{{uniqueIdentifier['recommendations.tag']}},
+                </span>
+                <a [matTooltip]="ballonData.tag" [matTooltipClass]="'tooltipForInfo'"><b> more...</b></a>
+            </span>
+
+            <span class="text-medium text-bold"> | Priority : </span>
+            <span class="text-muted" *ngIf="filtersArray.filters['priority'].length == 0">NA</span>
+            <span class="text-italic"
+                *ngFor="let priority of filtersArray.filters['priority']">{{priority['recommendations.priority']}},
+            </span>
+
+            <span class="text-medium text-bold"> | Embedded / Apps : </span>
+            <span class="text-muted" *ngIf="filtersArray.filters['embeddedApps'].length == 0">NA</span>
+            <span class="text-italic"
+                *ngFor="let embeddedApps of filtersArray.filters['embeddedApps']">{{embeddedApps['recommendations.embeddedApps']}},
+            </span>
+
+            <span class="text-medium text-bold"> | On Prem / Off Prem : </span>
+            <span class="text-muted" *ngIf="filtersArray.filters['onOffPrem'].length == 0">NA</span>
+            <span class="text-italic"
+                *ngFor="let onOffPrem of filtersArray.filters['onOffPrem']">{{onOffPrem['recommendations.onOffPrem']}},
+            </span>
+
+            <span class="text-medium text-bold"> | Business / Operational : </span>
+            <span class="text-muted" *ngIf="filtersArray.filters['businessOperational'].length == 0">NA</span>
+            <span class="text-italic"
+                *ngFor="let businessOperational of filtersArray.filters['businessOperational']">{{businessOperational['recommendations.businessOperational']}},
+            </span>
+
+            <span class="text-medium text-bold"> | Status : </span>
+            <span class="text-muted" *ngIf="filtersArray.filters['status'].length == 0">NA</span>
+            <!-- <span class="text-italic"
+                *ngFor="let status of filtersArray.filters['status']">{{status['recommendations.status']}},
+            </span> -->
+            <span *ngIf="filtersArray.filters['status'].length <= 3">
+                <span class="text-italic"
+                    *ngFor="let status of filtersArray.filters['status']">{{status['recommendations.status']}},
+                </span>
+            </span>
+            <span *ngIf="filtersArray.filters['status'].length > 3">
+                <span class="text-italic"
+                    *ngFor="let status of filtersArray.filters['status'].slice(0, 2)">{{status['recommendations.status']}},
+                </span>
+                <a [matTooltip]="ballonData.status" [matTooltipClass]="'tooltipForInfo'"><b> more...</b></a>
+            </span>
+        </div>
+
+        <div class="col-1">
+            <button class="btn btn--dark" [disabled]="!isTelemetryRecommendationDataLoaded || hideAppliedFilterRow"
+                (click)="clearAllAppliedFilters()" >Clear All</button>
+        </div>
+    </div>
+
+    <div class="row" [ngClass]="hideAppliedFilterRow ? 'noFilters' : 'filtersAvailable'">
+        <div class="col-12" id="custom-data-table">
+            <table multiTemplateDataRows mat-table matSort [dataSource]="dataSource"
+                class="mat-elevation-z8 table-model__table" [@.disabled]="true" id="matSortCustomeIcon">
+
+                <ng-container matColumnDef="select">
+                    <th mat-header-cell *matHeaderCellDef class="gray-border-right">
+                        <mat-checkbox color="primary" (change)="$event ? masterToggle() : null"
+                            [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+                        </mat-checkbox>
+                    </th>
+                    <td mat-cell *matCellDef="let row" class="gray-border-right">
+                        <mat-checkbox color="primary" (click)="$event.stopPropagation()"
+                            (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"
+                            [aria-label]="checkboxLabel(row)">
+                        </mat-checkbox>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="position">
+                    <th mat-header-cell *matHeaderCellDef class="text-center gray-border-right">
+                        <div class="table-model__table">
+                            <div>#</div>
+                            <div></div>({{recommendationCount}})
+                        </div>
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="gray-border-right">
+                        <div class="table-model__table">
+                            <div>{{element.position}}</div>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="tag">
+                    <th mat-header-cell mat-sort-header *matHeaderCellDef class="gray-border-right">
+                        Unique Identifier
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="gray-border-right">
+                        <div class="table-model__table">
+                            <div>{{element.uniqueIdentifier}}</div>
+                            <span class="text-dkgray-4">{{element.tag}}</span>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="recommendation">
+                    <th mat-header-cell *matHeaderCellDef class="gray-border-right">Recommendation </th>
+                    <td mat-cell *matCellDef="let element" class="gray-border-right">
+                        <div class="table-model__table--align-left">
+                            <div>{{element.recommendationDesc}}</div>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="priority">
+                    <th mat-header-cell mat-sort-header *matHeaderCellDef class="text-center gray-border-right">
+                        Priority
+                        <span class="icon-info icon--custom-size ml-1"
+                            [matTooltip]="getTooltipDesc('Telemetry_Priority')" matTooltipPosition="below"
+                            [matTooltipClass]="'tooltipForInfo'"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="gray-border-right">
+                        <div class="table-model__table">
+                            {{element.priority}}
+                        </div>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="embeddedApps">
+                    <th mat-header-cell *matHeaderCellDef class="text-center gray-border-right">
+                        Embedded / Apps
+                        <span class="icon-info icon--custom-size"
+                            [matTooltip]="getTooltipDesc('Telemetry_EmbeddedApps')" matTooltipPosition="below"
+                            [matTooltipClass]="'tooltipForInfo'"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="gray-border-right">
+                        <div class="table-model__table">
+                            {{element.embeddedApps}}
+                        </div>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="onPremOffPrem">
+                    <th mat-header-cell *matHeaderCellDef class="text-center gray-border-right">
+                        On-prem / Off-prem
+                        <!-- <span class="icon-info icon--custom-size ml-1"
+                            [matTooltip]="getTooltipDesc('Telemetry_OnOffPrem')" matTooltipPosition="below"
+                            [matTooltipClass]="'tooltipForInfo'"></span> -->
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="gray-border-right">
+                        <div class="table-model__table">
+                            {{element.onOffPrem}}
+                        </div>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="businessOperational">
+                    <th mat-header-cell *matHeaderCellDef class="text-center gray-border-right">
+                        Business / Operational
+                        <span class="icon-info icon--custom-size"
+                            [matTooltip]="getTooltipDesc('Telemetry_BusinessOperational')" matTooltipPosition="below"
+                            [matTooltipClass]="'tooltipForInfo'"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="gray-border-right">
+                        <div class="table-model__table">
+                            {{element.businessOperational}}
+                        </div>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell mat-sort-header *matHeaderCellDef class="gray-border-right"
+                        style="font-size: unset;">Status
+                        <span class="icon-info icon--custom-size ml-1" [matTooltip]="getTooltipDesc('Telemetry_Status')"
+                            matTooltipPosition="below" [matTooltipClass]="'tooltipForInfo'"></span>
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="gray-border-right">
+                        <div class="table-model__table pt-1">
+                            <mat-form-field [class.disabled]="isReadOnly">
+                                <mat-label>Set status</mat-label>
+                                <mat-select [(ngModel)]="element.status" (ngModelChange)="onChangeTableData($event)">
+                                    <mat-option *ngFor="let status of statusArray" [value]="status">
+                                        {{status}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="comments">
+                    <th mat-header-cell *matHeaderCellDef class="gray-border-right">Comments</th>
+                    <td mat-cell *matCellDef="let element" class="gray-border-right"
+                        [class.table-model__table__expanded-row]="expandedElement === element"
+                        (click)="expandedElement = expandedElement === element ? null : element">
+                        <div>
+                            <div class="text-center">
+                                <img src="{{getImageSrc(element)}}" alt="No Comment" class="cursor-pointer">
+                            </div>
+                        </div>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="expandedComment">
+                    <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+                        <div class="table-model__table__element-detail-row"
+                            [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                            <div class="table-model__table__element-description"
+                                [ngClass]="{'active-border': expandedElement}">
+                                <ng-container *ngIf="!isReadOnly">
+                                    <mat-form-field class="table-model__table__full-width">
+                                        <mat-label>Leave a comment</mat-label>
+                                        <textarea matInput [(ngModel)]="element.comment"
+                                            (ngModelChange)="onChangeTableData(element)" rows="3"></textarea>
+                                    </mat-form-field>
+                                    <button class="btn btn--primary"
+                                        (click)="expandedElement = expandedElement === element ? null : element">Done</button>
+                                </ng-container>
+                                <div *ngIf="isReadOnly">
+                                    <strong>Comment: </strong>
+                                    <span class="text-muted text-break ">{{element.comment ? element.comment : 'NA'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let element; columns: displayedColumns;"
+                    class="table-model__table__element-row">
+                </tr>
+                <tr mat-row *matRowDef="let row; columns: ['expandedComment']" class="table-model__table__detail-row">
+                </tr>
+            </table>
+        </div>
+        <div class="absolute-center"
+            *ngIf="!isTelemetryRecommendationSuccessRes && isTelemetryRecommendationDataLoaded">
+            <h1>No Data Found For Applied Filter</h1>
+        </div>
+        <div class="absolute-center" *ngIf="!isTelemetryRecommendationDataLoaded">
+            <cui-spinner color="default" label="Loading"></cui-spinner>
+        </div>
+    </div>
+    <!-- Modal body ends here-->
+
+
+    <!-- Modal footer starts here-->
+    <div class="table-model__footer">
+        <div class="table-model__footer__left-content">
+            <div class="table-model__footer__left-content--status" [class.disabled]="selection.selected.length == 0">
+                <mat-form-field class="half-padding-right">
+                    <mat-label>Set status</mat-label>
+                    <mat-select [(ngModel)]="statusUpdateValue">
+                        <mat-option *ngFor="let status of statusArray" [value]="status">
+                            {{status}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <button class="btn btn--primary" (click)="bulkStatusUpdate()" [disabled]="selection.selected.length == 0 || (statusUpdateValue == undefined || 
+                    statusUpdateValue == '')">Apply</button>
+            </div>
+            <!-- <div class="table-model__footer__left-content--label ml-2">
+                <div>
+                    <span class="label label--large label--dark">
+                        <span>Clear values</span>
+                        <span class="icon-close"></span>
+                    </span>
+                </div>
+            </div> -->
+        </div>
+
+        <div class="table-model__footer--buttons">
+            <div>
+                <button class="btn btn--dark" (click)="closeModal()"
+                    [disabled]="!isTelemetryRecommendationDataLoaded">Close</button>
+                <button class="btn btn--primary" [disabled]="!showSaveBtn || isReadOnly"
+                    (click)="saveTelemetryRecommendation()">Save</button>
+            </div>
+        </div>
+    </div>
+    <!-- Modal footer ends here-->
+
+</div>

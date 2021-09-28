@@ -1,0 +1,56 @@
+<div class="mt-2">
+    <span class="text-bold text-large span-margin">Technical best practices</span>
+    <table class="table--custom technical--table--size"  
+            id="project-Functional-Requirements-Table"
+            matSort (matSortChange)="sortData($event)">
+        <thead>
+            <tr>
+                <th role="gridcell" col-id="complianceItems"  mat-sort-header="name">Technical Standard Items</th>
+                <th role="gridcell" col-id="applicability">Applicability</th>
+                <th role="gridcell" col-id="status">Status and Backlog links</th>
+                <th role="gridcell" col-id="progress" mat-sort-header="progressScore">Progress</th>
+                <th role="gridcell" col-id="owners">Owners</th>
+                <th role="gridcell" col-id="comments">Comments</th>
+            </tr>
+        </thead>
+        <tbody [ngClass]="{'height--medium':complianceItems.length < 4}">
+            <tr *ngFor="let project of TechnologyItemsSortedData">
+                <td>{{ project.name }}</td>
+                <td>
+                    <div class="form-group form-group--stacked">
+                        <label class="switch disabled">
+                            <input type="checkbox" [checked]="project.Applicability === 'yes'? true:false" />
+                            <span class="switch__label">No</span>
+                            <span class="switch__input"></span>
+                            <span class="switch__label">Yes</span>
+                        </label>
+                    </div>
+                </td>
+                <td>
+                    <div class="custom-flex">
+                        <span>{{project.progressStatus}}</span>
+                        <button *ngIf="project.progressStatus!='Not Applicable'" class="btn btn--small btn--primary-ghost" style="width: 9rem" id="start-btn">{{project.progressStatus == 'Working'?'Remove':'Link'}}</button>
+                    </div>
+                </td>
+                <td>
+                    <div class="custom-flex-2">
+                        <span class="mr-1">{{ project.progressScore }} %</span>
+                        <div class="progressbar progressbar--indigo"
+                            [attr.data-percentage]="project.progressScore">
+                            <div class="progressbar__fill"></div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <span class="label mr-1" *ngFor="let owner of project.owners">{{owner.name}}</span>
+                        <span class="icon-border icon-plus"></span>
+                    </div>
+                </td>
+                <td class="text-center">
+                    <span disabled class="icon-medium icon-message"></span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

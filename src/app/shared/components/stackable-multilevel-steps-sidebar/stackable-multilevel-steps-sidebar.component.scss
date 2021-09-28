@@ -1,0 +1,36 @@
+#multilevelStepsDiv {
+    p, a {
+        color: white;
+        text-decoration: none;
+    }
+    p:hover {
+        background-color: darkgrey;
+    }
+    p:nth-child(1) {
+        margin-top: 1rem;
+    }
+    a {
+        width: 15vw;
+    }
+    div {
+        margin-left: 1rem;
+        label {
+            display: block;
+            height: 4rem;
+            padding: 0.75rem 0;
+            color: #00bceb;
+        }
+    }
+    mat-expansion-panel-header {
+        background-color: #495057;
+    }
+    mat-panel-title {
+        color: white;
+    }
+
+    // Border radius set to 0 to avoid weird white colored corners
+    .mat-accordion .mat-expansion-panel:last-of-type,
+    .mat-accordion .mat-expansion-panel:first-of-type {
+        border-radius: 0;
+    }
+}

@@ -1,0 +1,32 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "es5",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2018",
+      "dom"
+    ],
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./",
+    "paths": {
+      "@cpdm-service/*": ["src/app/services/*"],
+      "@cpdm-model/*": ["src/app/models/*"],
+      "@cpdm-component/*" :["src/app/components/*"],
+      "@cpdm-shared/*": ["src/app/shared/*"],
+      "@cpdm-asset/*":["src/assets/*"]
+  },
+  "resolveJsonModule": true
+  }
+}

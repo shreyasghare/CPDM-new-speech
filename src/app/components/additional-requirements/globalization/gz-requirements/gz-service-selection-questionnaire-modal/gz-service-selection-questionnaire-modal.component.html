@@ -1,0 +1,114 @@
+<div class="service-assesment-modal">
+    <div class="service-assesment-modal__header">
+        <div class="modal__title">Additional Questions</div>
+        <div class="required-note">
+            <span class="text-danger text-italic ml-1">* Required Questions</span>
+        </div>
+        <div id="close" class="icon-close icon-size-20 mt-1" (click)="closeModal()"></div>
+    </div>
+    <form [formGroup]="serviceAssesmentForm">
+        <div class="service-assesment-modal__content">
+            <div class="service-assesment-modal__content__main">
+                <div class="mt-2"> <span class="mandatory-field" *ngIf="questionOneMandatory"></span>{{assessmentQuestion.questionOne}}</div>
+                <div class="form-group form-group--inline" *ngFor="let radio of question.options">
+                    <label class="radio mb-1 mt-1 ml-2">
+                        <input
+                        value="{{ radio.value }}"
+                        type="radio"
+                        formControlName="questionNumberOneRadio"/>
+                        <span class="radio__input"></span>
+                        <span class="radio__label hidden-xs">{{ radio.value }}</span>
+                    </label>
+                </div>
+                <div class="form-group form-group__text">
+                    <textarea
+                    class="textarea mb-1 ml-2"
+                    formControlName="questionNumberOneText"
+                    [placeholder]="questionOnetextPlaceHolder"></textarea>
+                </div>
+
+                <div class="mt-2"> <span class="mandatory-field" *ngIf="questionTwoMandatory"></span>
+                    2) Were there any i18n <span class="icon-info icon--custom-size" [matTooltip]="toolTipInfo.i18nInfoIconText" matTooltipPosition="right"></span> /L10n <span class="icon-info icon--custom-size" [matTooltip]="toolTipInfo.i10nInfoIconText" matTooltipPosition="right"></span> bugs that were not addressed in the last release that need to be fixed in the upcoming release?
+                </div>
+                <div class="form-group form-group--inline" *ngFor="let radio of question.options">
+                    <label class="radio mb-1 mt-1 ml-2">
+                        <input
+                        value="{{ radio.value }}"
+                        type="radio"
+                        formControlName="questionNumberTwoRadio"/>
+                        <span class="radio__input"></span>
+                        <span class="radio__label hidden-xs">{{ radio.value }}</span>
+                    </label>
+                </div>
+                <div class="form-group form-group__text">
+                    <textarea
+                    class="textarea mb-1 ml-2"
+                    formControlName="questionNumberTwoText"
+                    [placeholder]="questionTwotextPlaceHolder"></textarea>
+                </div>
+
+                <div class="mt-2"> <span class="mandatory-field" *ngIf="questionThreeMandatory"></span>{{assessmentQuestion.questionThree}}</div>
+                <div class="form-group form-group--inline" *ngFor="let radio of question.options">
+                    <label class="radio mb-1 mt-1 ml-2">
+                        <input
+                        value="{{ radio.value }}"
+                        type="radio"
+                        formControlName="questionNumberThreeRadio"/>
+                        <span class="radio__input"></span>
+                        <span class="radio__label hidden-xs">{{ radio.value }}</span>
+                    </label>
+                </div>
+                <div class="form-group form-group__text">
+                    <textarea
+                    class="textarea mb-1 ml-2"
+                    formControlName="questionNumberThreeText"
+                    [placeholder]="questionThreetextPlaceHolder"></textarea>
+                </div>
+
+                <div class="mt-2"> <span class="mandatory-field" *ngIf="questionFourMandatory"></span>{{assessmentQuestion.questionFour}}</div>
+                <div class="form-group form-group__text">
+                    <textarea
+                    class="textarea mb-1 ml-2"
+                    formControlName="questionNumberFourText"
+                    placeholder="Please provide details"></textarea>
+                </div>
+
+                <div class="mt-2"> <span class="mandatory-field" *ngIf="questionFiveMandatory"></span>{{assessmentQuestion.questionFive}}</div>
+                <div class="form-group form-group--inline" *ngFor="let radio of question.options">
+                    <label class="radio mb-1 mt-1 ml-2">
+                        <input
+                        value="{{ radio.value }}"
+                        type="radio"
+                        formControlName="questionNumberFiveRadio"/>
+                        <span class="radio__input"></span>
+                        <span class="radio__label hidden-xs">{{ radio.value }}</span>
+                    </label>
+                </div>
+                <!-- <div class="form-group form-group__text">
+                    <textarea
+                    class="textarea mb-1 ml-2"
+                    formControlName="questionNumberFiveText"
+                    placeholder="Write here"></textarea>
+                </div> -->
+                       
+                <!-- <ng-container *ngIf="isSpinner">
+                    <div class="overlay">
+                      <div class="absolute-center"><cui-spinner></cui-spinner></div>
+                    </div>
+                </ng-container> -->
+            </div>
+            <div class="service-assesment-modal__content__footer">
+                <div class="mt-1">
+                    <span [ngClass]=" mendatoryQuestionCount === 0 ? 'icon-check-outline icon-small' : 'icon-exclamation-triangle icon-small text-danger' "></span>
+                    <span class="ml-1" [ngClass]=" mendatoryQuestionCount === 0 ? 'text-default':'text-danger'">{{questionnaireStatus}}</span>
+                </div>
+                <div class="mt-1">
+                    <button id="onCancel" class="btn btn--dark" (click)="closeModal()"> Cancel</button>
+                    <button id="onSave"  class="btn btn--secondary" (click)="saveQuestionnaireData()"> Save </button>
+                </div>
+            </div>
+        </div>
+    </form>
+   
+</div>
+  

@@ -1,0 +1,112 @@
+.rev-rec-review {
+    app-holding-status {
+        button {
+            max-width: none;
+            margin-top: 5px;
+        }
+    }
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 100%;
+    width: 80%;
+    margin: auto;
+    
+    &__rcl, &__scoping-checklist {
+        &--action {
+            display: flex;
+            align-items: center;
+            background-color: #c6c7ca;
+            padding: 0.5rem 1rem;
+
+            .form-group {
+                display: inline-block;
+                margin-top: 0;
+            }
+        }
+
+        &--label {
+            position: relative;
+            top: -6px;
+        }
+    }
+    
+    &__rr-comments {
+        &--title {
+            background-color: #c6c7ca;
+            padding: 5px 0 0 10px;
+        }
+        &--status {
+            background-color: #c6c7ca;
+            padding: 5px 0px 5px 10px;
+            width: 20%;
+
+            i {
+                font-size: 12px;
+            }
+        }
+        &--comment {
+            textarea {
+                width: 100%;
+                padding: 10px;
+                resize: none;
+            }
+        }
+    }
+
+    &__rev-rec-comments {
+        border: solid 1px #c6c7ca;
+        background-color: #fff;
+        padding: 10px;
+    }
+
+    &__actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .buControllerDropDownItems {
+            width: 60rem;
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+}
+
+a.modal__close {
+    .icon-close {
+    font-size:medium;
+    }
+}
+.revRecCommentHeader.modal__header {
+    .modal__title {
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 2;
+    }
+    }
+
+.dropdownBU{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    display: block;
+    width: 60%
+    //margin-top: 3.5rem;
+}
+.required-field {
+    &:after {
+        content:"*";
+        color:red;
+    }
+}
+
+
+.commentContent {
+    font-size: var(--cui-font-size-lg);
+    text-transform: none;
+    font-weight: normal;
+}
+
+.inline-display {
+    display: inline;
+}

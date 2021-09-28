@@ -1,0 +1,48 @@
+<div class='implement' *ngIf="isStepInitiated; else spinner">
+    <div class='implement__container' *ngIf="isImplementRequired; else holdingStatus">
+        <div class="implement__container--header">
+            <div class="implement__container--action">
+                Choose Implementation method
+                <span class="icon-info icon-small"
+                [matTooltipClass]="'tooltipForInfo'"
+                [matTooltip]="getTooltipDesc('Choose Implementation Method')"
+                matTooltipPosition="after"></span>
+            </div>
+            <div class="implement__container--action">
+                <label class="radio"
+                    [ngClass]="{'disabled': disableImplementation.manual || populateBacklogStatus.isPopulating}">
+                    <input type="radio" name="implMethod" [(ngModel)]="selectedImplMethod" value="manual">
+                    <span class="radio__input"></span>
+                    <span class="radio__label hidden-xs">Manual</span>
+                </label>
+                <label class="radio"
+                    [ngClass]="{'disabled': disableImplementation.pushToRepo || populateBacklogStatus.isPopulating}">
+                    <input type="radio" name="implMethod" [(ngModel)]="selectedImplMethod" value="pushToRepo">
+                    <span class="radio__input"></span>
+                    <span class="radio__label hidden-xs">Push to repository</span>
+                </label>
+            </div>
+        </div>
+        <ng-container *ngIf="selectedImplMethod=='manual'">
+            <app-manual-implementation [templates]="manualTemplates" (downloadTemplate)="onDownloadTemplate($event)"
+                [isTaskComplete]="isManualTaskCompleted" (taskComplete)="onManualImplTaskCompletion($event)">
+            </app-manual-implementation>
+        </ng-container>
+        <ng-container *ngIf="selectedImplMethod=='pushToRepo'">
+            <app-push-to-repository [implementationDetails]="ipv6Details" [repositories]="backlogRepositories"
+                [populateBacklogStatus]="populateBacklogStatus" (populate)="populateBacklog($event)">
+            </app-push-to-repository>
+        </ng-container>
+    </div>
+</div>
+
+<ng-template #holdingStatus>
+    <app-holding-status [statusIcon]="implementationStatus.icon" [status]="implementationStatus.status"
+        [message]="implementationStatus.message"></app-holding-status>
+</ng-template>
+
+<ng-template #spinner>
+    <div class="flex-center full-height">
+        <cui-spinner color="default" label="Loading"></cui-spinner>
+    </div>
+</ng-template>

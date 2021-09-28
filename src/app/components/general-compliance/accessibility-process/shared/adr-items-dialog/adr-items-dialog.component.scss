@@ -1,0 +1,227 @@
+$border-color: #dfdfdf;
+
+table {
+    width: 100%;
+}
+
+tr.example-detail-row {
+    height: 0;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+    background: whitesmoke;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+    background: #efefef;
+}
+
+.example-element-row td {
+    border-bottom-width: 0;
+}
+
+.example-element-detail {
+    overflow: hidden;
+
+    & > div {
+        padding: 1rem;
+    }
+}
+
+.example-element-diagram {
+    min-width: 80px;
+    border: 2px solid black;
+    padding: 8px;
+    font-weight: lighter;
+    margin: 8px 0;
+    height: 104px;
+}
+
+.example-element-symbol {
+    font-weight: bold;
+    font-size: 40px;
+    line-height: normal;
+}
+
+.example-element-description {
+    padding: 16px;
+}
+
+.example-element-description-attribution {
+    opacity: 0.5;
+}
+
+.adrItems {
+    &__nav {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        &--custom-nav-button {
+            border: 1px solid #052B58;
+            display: flex;
+            border-radius: 5px;
+            overflow: hidden;
+            
+            .first {
+                // background-color: #1AD6FF;
+
+                & > div {
+                padding: 7px 10px;
+                border-right: 1px solid #052B58;
+                
+                }
+            }
+            
+            .last {            
+                & > div {
+                // border-radius: 0 5px 5px 0;
+                padding: 7px 10px;
+                }
+            }
+
+            .activeNav {
+                background-color: #1AD6FF;
+                cursor: pointer;
+            }
+        }
+
+        &--custom-navbar {
+            width: 90%;
+        }
+    }
+
+    &__body {
+        margin-top: 1%;
+
+        &__table {
+            height: 73vh;
+            width: 100%;
+            overflow-x: hidden;
+            overflow-y: scroll;
+
+            th {
+                background-color: #b6b9bb;
+                font-family: "CiscoSans", "Arial", sans-serif;
+                font-size: 14px;
+                font-weight: bold;
+                border-right: 1px solid $border-color;
+                padding: 1rem;
+            }
+
+            td {
+                padding: 0 1rem;
+                border-right: 1px solid $border-color;
+            }
+    
+
+            &--spinner {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100%;
+            }
+
+            &__message {
+                width: 100%;
+            }
+        }
+    }
+
+    &__footer {
+        height: 9vh;
+        background-color: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0px -3px 5px 3px rgb(198 201 204);
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 1rem 2rem;
+
+        &__left-content {
+            width: 40%;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        &__right-content {
+            width: 60%;
+            display: flex;
+            justify-content: flex-end;
+        }
+    }
+
+     // Adding border dynamically
+     .active-border {
+        border-top: 1px solid $border-color;   
+    }
+}
+
+.custom-tooltip {
+    position: relative;
+    margin: 0 1rem;
+
+    &__tooltip-text {
+        background-color: black;
+        position: absolute;
+        top: -299%;
+        left: 62%;
+        color: white;
+        padding: 11px;
+        opacity: 0.77;
+        border-radius: 7px;
+        width: 205px;
+        transition: opacity 300ms ease-out ;
+
+        .icon-close {
+            right: 8px;
+            top: 5px;
+            position: absolute;
+        }
+
+    }
+
+    &__tooltip-text::after {
+        content: "";
+        position: absolute;
+        border: 5px solid;
+        border-color: black transparent transparent transparent;
+        top: 100%;
+        left: 6%;
+    }
+}
+
+.inactive {
+    display: none !important;
+}
+
+.seeAllDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    hr{
+        width: 90%;
+    }
+    button {
+        padding: 0.5rem;
+        margin-top: -3rem;
+        cursor: pointer;    
+    }
+}
+
+.mat-column-id {
+    width: 10%;
+}
+
+.mat-column-applicability {
+    width: 13%;
+}
+.mat-column-description {
+    width: 65%;
+}

@@ -1,0 +1,38 @@
+{"filterHeader" : [
+    {
+      "value": "1",
+      "name": "Unique Identifiers",
+      "checked": false
+    },
+    {
+      "value": "2",
+      "name": "Priority",
+      "checked": false
+    }, {
+      "value": "3",
+      "name": "Status",
+      "checked": false
+    }
+  ],
+  "filterRow" : 
+  {
+      "tag" : [ 
+          "Documentation", 
+          "Introduction"
+      ],
+      "priority" : [ 
+          "Medium", 
+          "Low", 
+          "High"
+      ],
+      "status" : [ 
+          "Part of roadmap", 
+          "Not applicable", 
+          "Adopted", 
+          "Not Selected", 
+          "Part of backlog"
+      ]
+  }
+
+
+}

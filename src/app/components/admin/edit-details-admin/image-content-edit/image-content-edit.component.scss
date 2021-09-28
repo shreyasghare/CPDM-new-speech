@@ -1,0 +1,116 @@
+#main-content-div {
+    height: 100%;
+    padding-right: 0rem;
+    padding-left: 1rem;
+    overflow-x: hidden;
+    div:nth-child(1) {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        p {
+            color: #adb5bd;
+            font-size: large;
+            font-weight: bold;
+        }
+    }
+    .one-row {
+        display: flex;
+        align-items: flex-start !important;
+        img {
+            top: 0;
+            position: absolute;
+            width: 95%;
+            height: 100%;       
+        }
+        img:hover {
+            -webkit-filter: blur(2px);
+            filter: blur(2px);
+            cursor: zoom-in;
+        }
+
+        .img-border {
+            border: 3px solid #00a3d2;
+        }
+
+        div {
+            height: 20vh;
+        }
+        &__one-row-buttons {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            label:nth-child(2) {
+                color: #1e4471;
+            }
+            button {
+                width: 10rem;
+            }
+            
+            a {
+                text-decoration: underline;
+                color: #00bceb;
+            }    
+        }
+        &__save-discard-buttons {
+            display: inline !important;
+            height: 4rem !important;
+        }
+        .editor-div {
+            width: 98%;
+            height: 70%;
+            margin-left: 1rem;
+        }
+        .btn-publish {
+            width: 12rem;
+        }
+        hr {
+            border: 0;
+            clear:both;
+            display:block;
+            width: 96%;               
+            background-color: lightgray;
+            height: 1px;
+        }
+        .title-div {
+            height: 5vh;
+            justify-content: flex-start;
+        }
+    }
+}
+
+.editorOpen {
+    height: 75vh !important;
+}
+
+.editorClose {
+    height: 25vh !important;
+}
+
+.close {
+    margin-top: -20px;
+}
+
+.custom-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.modal__title {
+    font-size: 24px;
+}
+
+.modal__body {
+    font-size: 16px;
+}
+.draft-disabled {
+    pointer-events: none;
+    color: #979797 !important;
+}
+.required-field {
+    &:after {
+        content: "*";
+        color:red;
+    }
+}

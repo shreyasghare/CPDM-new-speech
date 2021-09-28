@@ -1,0 +1,23 @@
+<div class="confirm-popup">
+    <div class="confirm-popup__header">
+        <div class="confirm-popup__header--text">
+            <div class="modal__title mb-1">Confirm Action</div>
+        </div>
+        <span id="close" [class.disabled]="showLoader" class="icon-close close" (click)="onCancel()"></span>
+    </div>
+    <div class="confirm-popup__content">
+        <div>
+            <p class="text-left confirm-text" [innerHTML]="body"></p>
+        </div>
+        <div class="confirm-popup__content__btn mt-3">
+            <button [disabled]="showLoader" class="btn btn--success confirm-popup__content__btn--cancel"
+                (click)="onCancel()">No</button>
+            <button *ngIf="!showLoader; else resLoader"
+                class="btn btn--danger confirm-popup__content__btn--confirm"
+                (click)="onConfirm()">Yes</button>
+        </div>
+    </div>
+</div>
+<ng-template #resLoader>
+    <cui-loader></cui-loader>
+</ng-template>

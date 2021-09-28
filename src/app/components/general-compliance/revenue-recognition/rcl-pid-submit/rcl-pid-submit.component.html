@@ -1,0 +1,210 @@
+<!-- PM Home screen  -->
+<div style="height:100%" *ngIf="!showSpinner; else spinner">
+    <div *appHasRole="[role.revRecPO, role.BUController]" class="rev-rec-holding-status">
+        <app-holding-status *ngIf="!updatedRevRecObj.rclPidSubmit || updatedRevRecObj.rclPidSubmit.status == 'reinitiated'"
+            [statusIcon]="'review'" [status]="'Please wait'"
+            [message]="'The Project Manager will submit the RCL Assessment Worksheet and the New PID List after completion.'">
+        </app-holding-status>
+        <app-holding-status *ngIf="updatedRevRecObj.rclPidSubmit && updatedRevRecObj.rclPidSubmit.status !== 'reinitiated'"
+            [statusIcon]="'complete'" [status]="'Submission available for review'"
+            [message]="'RCL assessment and New PID List are available for review. Go to the next step to review them.​'">
+        </app-holding-status>
+    </div>
+    <div *appHasRole="[role.engSox]" class="rev-rec-holding-status">
+        <app-holding-status *ngIf="!updatedRevRecObj.rclPidSubmit || updatedRevRecObj.rclPidSubmit.status == 'reinitiated'" 
+            [statusIcon]="'review'" [status]="'Please wait'"
+            [message]="'The Project Manager will submit the RCL Assessment Worksheet and the New PID List after completion.'">
+        </app-holding-status>
+        <app-holding-status *ngIf="updatedRevRecObj.rclPidSubmit && updatedRevRecObj.rclPidSubmit.status !== 'reinitiated'" 
+            [statusIcon]="'complete'"
+            [status]="'Submission available for review'"
+            [message]="'RCL assessment and New PID List are available for review. BU Controller and Revenue Recognition can provide their reviews.​'">
+        </app-holding-status>
+    </div>
+    <div class="main mt-1" *appHasRole="[role.pm]">
+        <div class="submitScreen">
+            <!-- <div style="width:80%;" *ngIf="reinitiateBtn == 'Update RCL / PID list'">
+                <div class="row">
+                    <div class="col-12">
+                        <button class="btn btn--primary btn--small" style="float:right; margin-top: -2.7rem !important;"
+                            (click)="onSubmitBtn(reinitiateBtn)">{{reinitiateBtn}}</button>
+                    </div>
+                </div>
+            </div>             -->
+            <!-- <div *ngIf="reinitiateBtn == 'Update RCL / PID list'" class="submitScreen__update-btn">
+                <button class="btn btn--dark"
+                (click)="onSubmitBtn(reinitiateBtn)" >{{reinitiateBtn}}</button>
+            </div> -->
+            <div class="submitScreen__container mt-1">
+                <div class="row p-2">
+                    <div class="col-1">
+                        <img src="assets\images\icons\svg\checklist.svg" class="checklist-icon" />
+                    </div>
+                    <div class="col-11">
+                        <h3 class="submit__container">RCL Assessment Questionnaire</h3>
+                        <div style="display: flex; align-items: center;" class="mt-1">
+                            <button class="btn btn--primary"
+                                (click)="onBegin(rclQuestionnaireBtnName)">{{rclQuestionnaireBtnName}}</button>
+                            <span *ngIf="rclQuestionnaireObject.status !== 'notStarted'"
+                                style="font-size: 1.8rem; margin-left: 1rem;"><span
+                                    [ngClass]="rclQuestionnaireObject.isAllQestionsAnswered? 'icon-check-outline icon-small':'icon-exclamation-triangle icon-small'"></span>
+                                {{getRclWQuestionsStatus}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="submitScreen">
+            <div class="submitScreen__container mt-1">
+                <div class="row custom-padding mb-1">
+                    <div class="col-1">
+                        <img src="assets\images\icons\svg\checklist.svg" class="checklist-icon" />
+                    </div>
+                    <div class="col-11">
+                        <h3 class="submit__container">Download, Edit, and Upload New PID List</h3>
+                            <div class="row">
+                                <div class="col-9">
+                                    <button class="btn btn--primary mt-1" (click)="onDownload()">Download <span
+                                        class="icon-download"></span></button>
+                                </div>
+                                <div class="col-3" class="font-size-1_8" >
+                                    <input type="checkbox"  [disabled]="!formEditableState" [(ngModel)]="updatedRevRecObj.skipPidListUpload.flag" (click) = "skipPidListFlagClicked($event)"/>  PID not applicable
+                                </div>
+                            </div>
+                    </div>
+                </div>
+
+                <ng-container *ngIf="updatedRevRecObj.skipPidListUpload.flag;  then skipPidListUploadTemplate; else uploadPidListTemplate">
+                </ng-container>
+            
+                <ng-template #skipPidListUploadTemplate>
+                    <div class="p-div ">
+                       <span class="red-color"> *</span> <span>Checking the box requires a comment</span>
+                    </div>
+                    <div class="custom-dropzone-div" >
+                        <textarea [disabled]="!formEditableState" 
+                                 class="pid-list-comments-area" 
+                                 (change)="onPidListCommentChanged($event)"
+                                 [(ngModel)]="updatedRevRecObj.skipPidListUpload.comments"></textarea>
+                    </div>
+                </ng-template>
+            
+                <ng-template #uploadPidListTemplate>
+                    <div class="p-div text-center">
+                        <p>Once the editing of New PID List is complete, upload the document</p>
+                    </div>
+                    <div class="custom-dropzone-div">
+                        <custom-dropzone (onUploadClicked)="onUploadClicked($event)" [docCentralObj]="docCentralObj"
+                            [componentState]="customDropzoneState"></custom-dropzone>
+                    </div>
+                </ng-template>
+
+
+            </div>
+        </div>
+
+        <div class="submitBtn" style="margin-top: 1.5rem;">
+            <div class="dropdownDiv mt-1" style="height: 10rem">
+                <div class="dropdownBU" [class.disabled]="reinitiateBtn == 'Update RCL / PID list'? true : false">
+                    <div style="margin-right: 2.7rem !important;" [class.disabled]="reinitiateBtn == 'Re-initiate' ? true : false">
+                        <label for="buControllers" class="required-field "><b>Choose BU Controller</b></label>
+                    </div>
+
+                    <div style="margin-top: 2.5rem" [class.disabled]="reinitiateBtn == 'Re-initiate' ? true : false">
+                        <mat-form-field>
+                            <mat-label>Select an option</mat-label>
+                            <mat-select [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedBuController"
+                                (ngModelChange)="onSelection()" [required]="true">
+                                <mat-option value="No Selection">No Selection</mat-option>
+                                <mat-option *ngFor="let element of buControllers" [value]="element.value">{{element.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- Alternate Approver -->
+                <div class="dropdownBU" [class.disabled]="reinitiateBtn == 'Re-initiate' ? true : false">
+                    <div style="margin-right: 2.5rem !important;" class="ml-4">
+                        <label for="buControllers"><b>Alternate Approver</b></label><span
+                        class="icon-info icon--custom-size"
+                        [matTooltip]="getTooltipDesc('RevenueRecognition_AlternateBuController')" matTooltipPosition="right" [matTooltipClass]="'tooltipForInfo'"></span>
+                    </div>
+                    <div id="acceptorOwnerSearchContainer">
+                        <!-- <br /> -->
+                        <div class="button_container">
+                            <div class="form-group mt-1" [ngClass]="errorOccurred?'form-group--error':''">
+                                <form>
+                                    <mat-form-field  class="autoComplete-matInput">
+                                        <input type="text" placeholder="Search..."
+                                            matInput
+                                            [formControl]="searchMember"
+                                            [matAutocomplete]="auto">
+                                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="matOptionSelected($event.option.value)" [displayWith]="getSelectedUserName"> <!--getPosts($event.option.value)-->
+                                          <mat-option *ngFor="let user of users" [value]="user">
+                                            {{ user.name }} <span *ngIf="user.cecId">({{user.cecId}})</span>
+                                          </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                </form>
+                            </div>
+                            <!--loader part -->
+                            <div class="loading-dots loading-dots--muted" *ngIf="showLoader" aria-label="Loading, please wait...">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <div class="form-group input--compressed"  *ngIf="!showLoader">
+                                <button class=" btn btn--primary" [disabled]="!inputValue" (click)="onMemberAddition()">Add</button>
+                            </div>
+                        </div>
+                        <!-- <div class="help-block text-danger" role="alert">
+                            <span>{{getErrorMessage}}</span>
+                        </div> -->
+                    </div>
+                    <div class="panel panel--ltgray panel--loose" id="acceptorOwnerList">
+                        <!-- <br /> -->
+                        <span tabindex="0" class="label label--dark label--bordered userTab" [attr.data-balloon]="member.fullName"
+                            *ngFor="let member of members; let i = index" data-balloon-pos="up">
+                            <span class="icon-contact"></span> &nbsp;
+                            <span>{{member.name}}</span> &nbsp;
+                            <span class="icon-exit removeUserIcon" (click)="onRemove(i)" *ngIf="!typeView"></span>
+                        </span>
+                        <div class="help-block text-danger" role="alert" style="margin-left: 1rem;">
+                            <span>{{getErrorMessage}}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dropdownBU" [class.disabled]="reinitiateBtn == 'Update RCL / PID list'? true : false"
+                    style="margin-left: 4rem; margin-top:0.5rem">
+                    <div class="mr-2" [class.disabled]="reinitiateBtn == 'Re-initiate' ? true : false || !enableBUDropdown">
+                        <label for="businessUnitList"><b>Choose BU</b></label>
+                    </div>
+
+                    <div  [class.disabled]="reinitiateBtn == 'Re-initiate' ? true : false || !enableBUDropdown" >
+                        <mat-form-field>
+                            <mat-label>Select an option</mat-label>
+                            <mat-select [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedBU"
+                                (ngModelChange)="onSelectionBusinessUnit()">
+                                <mat-option value="No Selection">No Selection</mat-option>
+                                <mat-option *ngFor="let element of businessUnitList" [value]="element.name">
+                                    {{element.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div class="action-button" style="margin-top: 2.7rem;">
+                <button class="btn btn--success" (click)="onSubmitBtn(reinitiateBtn)"
+                    [disabled]="!isSubmitBtnEnabled"
+                    *ngIf="reinitiateBtn == 'Submit' || reinitiateBtn == 'Resubmit'">{{reinitiateBtn}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<ng-template #spinner>
+    <div class="flex-center full-height">
+        <cui-spinner color="default" label="Loading"></cui-spinner>
+    </div>
+</ng-template>

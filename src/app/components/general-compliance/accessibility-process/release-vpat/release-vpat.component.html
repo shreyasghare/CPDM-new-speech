@@ -1,0 +1,47 @@
+<div class="main" *ngIf="apiResponseReady; else spinner">
+    <div class="flex">
+        <div>
+            <app-holding-status *ngIf="isPMscreen" [statusIcon]="'complete'" [status]="'Accessibility policy complete'" [message]="'Thank you for working with the Accessibility Team to go through its workflow. This concludes this policy\'s process. Here is a summary of documents that can be downloaded.'"></app-holding-status>
+            <app-holding-status *ngIf="!isPMscreen" [statusIcon]="'complete'" [status]="'Accessibility policy complete'" [message]="'Thank you for working with the Project Team to go through its workflow. This concludes this policy\'s process. Here is a summary of documents that can be downloaded.'"></app-holding-status>
+        </div>
+    </div>
+    <div class="documents-list-container mt-2">
+        <div class="responsive-table">
+            <table class="table table--bordered">
+                <thead>
+                    <tr>
+                        <th>Document name</th>
+                        <th>EDCS number</th>
+                        <th>Upload date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let document of docCentralLinks">
+                        <td>{{document.fileName}}</td>
+                        <!--Code changes to show Retry button if ADR Checklist upload was failed//[US11858](https://rally1.rallydev.com/#/300796297852ud/search?detail=%2Fuserstory%2F71573ddb-4883-497f-978b-476cff95236c&keywords=retry&type=1975280142&fdp=true?fdp=true): Accessibility: After step 2, the ADR Checklist file should be generated-->
+                        <td *ngIf="document.hasOwnProperty('adrChecklistFound') || found; else  downloadLink">
+                            <div *ngIf="!showLoader && adrCheckListRetry == undefined">
+                            <span>Upload Failed  </span><button class="btn btn--primary half-margin-bottom"  (click)="retryAdrChecklistUpload()"> Retry</button>
+                            </div>
+                            <cui-loader *ngIf="showLoader" color="info"></cui-loader>
+                            <a *ngIf="adrCheckListRetry" (click)="downloadFile(adrCheckListRetry.nodeRef,adrCheckListRetry.fileName)">{{adrCheckListRetry.edcsID}}</a> 
+                        </td>
+                        <ng-template #downloadLink > 
+                           <td>     
+                                <a (click)="downloadFile(document.nodeRef,document.fileName)">{{document.edcsID}}</a> 
+                            </td>
+                        </ng-template>
+                        <td>{{document.uploadDate |date}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<ng-template #spinner>
+  <div class="absolute-center" style="margin-left: 100px;">
+      <cui-spinner color="default" label="Loading"></cui-spinner>
+  </div>
+</ng-template>
+<cui-modal></cui-modal>

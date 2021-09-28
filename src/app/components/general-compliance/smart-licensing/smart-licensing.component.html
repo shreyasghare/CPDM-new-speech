@@ -1,0 +1,54 @@
+<div class="container-fluid">
+    <div class="top-bar">
+        <div class="top-bar__navigation">
+            <h6 class="section"> <a routerLink="/home">Home</a>
+                <span class="icon-small icon-chevron-right"></span><a routerLink="/project/{{projectId}}"
+                    *appHasRole="[role.pm]">{{projectName}}</a><span
+                    *appHasRole="[role.smartLicensingPO]">{{projectName}}</span> <span
+                    class="icon-small icon-chevron-right"></span>Smart Licensing</h6>
+        </div>
+        <div class="top-bar__button">
+                <button class="btn btn--secondary" (click)="openComponentModal()">Overview</button>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="row">
+            <div class="general-compliance__left-pane">
+                <p class="text-large text-center text-bold mr-4">Smart Licensing
+                    <span *ngIf="betaFlag===true"><sup class="betaTag qtr-padding-top text-normal">BETA</sup></span>
+                </p>
+                <process-sidebar [sidebarData]="sidebarData" (onSidebarSwitch)="switchSidebarTab($event)"
+                    (onInfoClick)="showModal($event)"></process-sidebar>
+            </div>
+            <div class="general-compliance__right-pane">
+                <div class="general-compliance--view">
+                    <div class="general-compliance--view__content">
+                        <div class="dynamic-component">
+                            <!-- all other components -->
+                            <app-initiate *ngIf="sidebarData[0].isActive"></app-initiate>
+                            <app-engineering-interlock *ngIf="sidebarData[1].isActive"></app-engineering-interlock>
+                            <app-engineering-response *ngIf="sidebarData[2].isActive"></app-engineering-response>
+                            <app-sl-implementation *ngIf="sidebarData[3].isActive"></app-sl-implementation>
+                            <app-demo-elo *ngIf="sidebarData[4].isActive"></app-demo-elo>
+                            <app-testing *ngIf="sidebarData[5].isActive"></app-testing>
+                            <app-operational-readiness *ngIf="sidebarData[6].isActive"></app-operational-readiness>
+                            <!-- end  -->
+                        </div>
+                        <div class="general-compliance--view__content--footer">
+                            <div class="previousBtn"><button *ngIf="!sidebarData[0].isActive"
+                                    class="btn btn--secondary" [class.disabled]="disablePreviousBtn"
+                                    (click)="onPreviousClick()"><span
+                                        class="icon-arrow-up-tail mr-1"></span>{{sideBar.getStepName('previous')}}</button>
+                            </div>
+                            <div class="nextBtn"> <button *ngIf="!sidebarData[6].isActive"
+                                    class="btn btn--secondary" [class.disabled]="disableNextBtn"
+                                    (click)="onNextClick()">{{sideBar.getStepName('next')}}<span
+                                        class="icon-arrow-down-tail ml-1"></span></button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

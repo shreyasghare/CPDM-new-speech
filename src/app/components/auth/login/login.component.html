@@ -1,0 +1,24 @@
+<!-------------------- we can show login errors here --------------------------->
+
+<div class="row" *ngIf="loginFaild">
+        <div class="col-md-3 text-center">
+            <div class="form-group">
+                <div class="form-group__text">
+                    <input id="login-form-cecId-input" [(ngModel)]="inputValue" [disabled]="disableLogIn" (keyup.enter)="onLogin()" placeholder="Enter CEC Id" type="text" appAutofocus>
+                    <label for="login-form-cecId-input">Login</label>
+                </div>
+            </div>
+            <button class="btn btn--primary mt-2" (click)="onLogin()" [disabled]="disableLogIn">Login</button>
+        </div>
+    </div>
+ 
+<!-- CUI spinner -->
+<div  id="cuiLoaderContainer" *ngIf="!loginFaild" class="absolute-center">
+    <cui-spinner color="default" label="logging...">
+    </cui-spinner>
+</div>
+
+<!-- app footer -->
+<!-- <div class="footer__fixed">
+    <app-footer></app-footer>
+</div> -->

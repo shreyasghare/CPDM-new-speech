@@ -1,0 +1,43 @@
+<div class="main" *ngIf="data">
+    <div class="mb-3">
+        <app-navigation-tabs [customTabs]="customTab" (tabChanged)="onTabChanged($event)"></app-navigation-tabs>
+    </div>
+    <div class="gc-content-area">
+        <div *appHasRole="[role.pm]" class="mb-2">Complete the following tasks <label *ngIf="tabID!=='OnPremProductionTest'">and click <b>Next</b> to proceed.</label></div> 
+        <div *appHasRole="[role.smartLicensingPO]" class="mb-2">Project Manager will complete the following tasks.</div>
+        <div class="main__container">
+            <div *ngFor = "let info of data">
+                <p class="ml-1" [innerHTML]="info.text"></p>
+                <div *ngIf = "info.subtext?.length > 0" >
+                    <p class="ml-2" *ngFor = "let subtext of info.subtext" [innerHTML]= "subtext"></p>
+                </div>
+            </div>
+        </div>
+        <div *ngIf = "tabID == 'BUTesting'" class="mt-2">
+            <span *appHasRole="[role.pm]" [class.disabled]="isCompletedByPm">
+                <input type="checkbox" class="checkbox_input" [checked] = "isCompletedByPm" (click) = "testingStepOnChecked($event)">
+                All the above tasks are complete
+            </span>
+        </div>
+        <div *ngIf = "tabID == 'CSSMProductionTest'" class="mt-2">
+            <span *appHasRole="[role.pm]" [class.disabled]="isCompletedByPm">
+                <input type="checkbox" class="checkbox_input" [checked] = "isCompletedByPm" (click) = "testingStepOnChecked($event)">
+                All the above tasks are complete
+            </span>
+        </div>
+        <div *ngIf = "tabID == 'OnPremProductionTest'" class="mt-2">
+            <span *appHasRole="[role.pm]" [class.disabled]="isCompletedByPm">
+                <input type="checkbox" class="checkbox_input" [checked] = "isCompletedByPm" (click) = "testingStepOnChecked($event)">
+                All the above tasks are complete
+            </span>
+       </div>
+       <div class="general-compliance--view__content--bottom--buttons mt-3">
+           <button class="btn btn--primary" [disabled]="disablePreviousBtn" (click)="tabs.previousTab()">
+               <span class="icon-arrow-left-tail"></span> Previous
+           </button>
+           <button class="btn btn--primary" [disabled]="disableNextBtn" (click)="tabs.nextTab()">
+               Next <span class="icon-arrow-right-tail"></span>
+           </button>
+       </div>
+    </div>
+</div>

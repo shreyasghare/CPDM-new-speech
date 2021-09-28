@@ -1,0 +1,59 @@
+.custom__label{
+    margin-top: 2rem;
+
+    
+    .icon-exit{
+        margin-left: 0.8rem;
+        margin-bottom:0.4rem; 
+    }
+}
+
+span{
+    cursor: pointer;
+}
+
+.member, .member span {
+    cursor: text;
+}
+
+div{
+    .row,.loading-dots{
+        height:5.2rem;
+    }
+}
+
+.add-remove {
+    display: flex;
+    align-items: center;
+
+    span{
+        font-size: 1.3rem;
+    }
+
+    .icon-exit{
+        margin-left: 0.8rem;
+        cursor: pointer;
+    }
+
+    .icon-plus{
+        margin-left: 0.8rem;
+    }
+
+    .margin-right{
+        margin-left: 0;
+        margin-right:0.8rem;
+    }
+
+    #members {
+        margin-bottom: 0;
+    }
+}
+
+.addBtn{
+    background-color: #fff;
+    border: 1px solid #39393b;
+}
+
+.noMargin{
+    margin: 0px 0px 0px 0.5rem !important;
+}

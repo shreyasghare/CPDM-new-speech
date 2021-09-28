@@ -1,0 +1,112 @@
+<ng-container *ngIf="demoToEloStatus != undefined && demoToEloStatus != 'notApplicable'">
+    <div class="main">
+        <!-- pm view - start -->
+        <div class="main-pm" *appHasRole="[role.pm]">
+            <div class="tasks" *ngIf="data">
+                <span>Complete the following tasks.</span>
+                <div class="tasks__container">
+                    <div *ngFor="let info of data">
+                        <p class="ml-2">{{info.text}}</p>
+                    </div>
+                </div>
+                <span class="confirmationText" *appHasRole="[role.pm]" [class.disabled]="isConfirmed || isApprovedByPO">
+                    <input type="checkbox" id="checkbox" class="checkbox_input confirmationText__checkbox_pointer"
+                        [checked]="isConfirmed || isApprovedByPO" (change)="onChecked($event)">
+                    <label for="checkbox" class="confirmationText__checkbox_pointer">All the above tasks are
+                        complete</label>
+                </span>
+            </div>
+            <div class="reviews mt-2" *ngIf="(isConfirmed || isRejectedByPO || isApprovedByPO) && data">
+                <div class="reviews__container">
+                    <app-single-review-list [reviews]="comments" [workFlow]="'smart-licensing'">
+                    </app-single-review-list>
+                </div>
+            </div>
+        </div>
+        <!-- pm view - end -->
+        <!-- po view - start -->
+
+        <div class="po-view" *appHasRole="[role.smartLicensingPO]">
+            <div class="main-po-option" *ngIf="!isRejectedByPO && !isApprovedByPO">
+                <div class="main-po-option__container" [class.disabled]="!isConfirmed">
+                    <app-holding-status [statusIcon]="slPO.review.icon" [status]="slPO.review.status"
+                        [message]="slPO.review.message">
+                        <div class="mt-1">
+                            <label class="radio">
+                                <input type="radio" [(ngModel)]="demoReviewStatus" value="approved">
+                                <span class="radio__input"></span>
+                                <span class="radio__label hidden-xs mr-1">Approve</span>
+                            </label>
+                            <label class="radio">
+                                <input type="radio" [(ngModel)]="demoReviewStatus" value="rejected">
+                                <span class="radio__input"></span>
+                                <span class="radio__label hidden-xs">Reject</span>
+                            </label>
+                        </div>
+                    </app-holding-status>
+                </div>
+                <div class="main-po-option__container mt-1" [class.disabled]="!isConfirmed">
+                    <div class="main-po-option__container__review-comments">
+                        <div class="main-po-option__container__review-comments--title">
+                            <span>Provide Comments</span>
+                            <span *ngIf="demoReviewStatus=='approved'"> (if any)</span>
+                            <span class="main-po-option__container__review-comments--required"
+                                *ngIf="demoReviewStatus=='rejected'"> *</span>
+                        </div>
+                        <div class="main-po-option__container__review-comments--comment">
+                            <textarea rows="5" [(ngModel)]="poComment"  (ngModelChange)="checkEmptyString($event)"></textarea>
+                        </div>
+                        <!-- <div class="main-po-option__container__review-comments--action mt-1">
+                        <button class="btn btn--primary btn--small" (click)="onSendReview()" [disabled]="!demoReviewStatus">Send review</button>
+                    </div> -->
+                    </div>
+                </div>
+                <div class="main-po-option__container" *ngIf="comments[0].status != 'none'">
+                    <app-single-review-list [reviews]="comments" [workFlow]="'smart-licensing'">
+                    </app-single-review-list>
+                </div>
+                <div class="sendBtn mt-1">
+                    <button *ngIf="!showLoader; else loader" class="btn btn--success"
+                        (click)="onSendReview()"
+                        [disabled]="!demoReviewStatus || demoReviewStatus == 'rejected' && !poComment">Send
+                        review</button>
+                </div>
+            </div>
+
+            <div class="main-po" *ngIf="isRejectedByPO || isApprovedByPO">
+                <div class="main-po__container" *ngIf="isRejectedByPO">
+                    <app-holding-status [statusIcon]="slPO.reject.icon" [status]="slPO.reject.status"
+                        [message]="slPO.reject.message"></app-holding-status>
+                   
+                </div>
+                <div class="main-po__container" *ngIf="isApprovedByPO">
+                    <app-holding-status [statusIcon]="slPO.approve.icon" [status]="slPO.approve.status"
+                        [message]="slPO.approve.message"></app-holding-status>
+                  
+                </div>
+
+                <div class="main-po__container">
+                    <app-single-review-list [reviews]="comments" [workFlow]="'smart-licensing'">
+                    </app-single-review-list>
+                </div>
+            </div>
+        </div>
+
+        <!-- po view - end -->
+    </div>
+</ng-container>
+<ng-template #spinner>
+    <div class="flex-center full-height">
+        <cui-spinner color="default" label="Loading"></cui-spinner>
+    </div>
+</ng-template>
+
+<div class="main gc-content-area" *ngIf="demoToEloStatus != undefined && demoToEloStatus == 'notApplicable'">
+    <div class="flex">
+    <app-holding-status [statusIcon]="demoToElo_status.icon" [status]="demoToElo_status.status">
+    </app-holding-status>
+    </div>
+</div>
+<ng-template #loader>
+    <cui-loader></cui-loader>
+</ng-template>

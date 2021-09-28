@@ -1,0 +1,29 @@
+<div class="custom-dialog">
+    <div class="custom-dialog__header">
+        <h3>Import ADRs</h3>
+        <span (click)="dialogRef.close(false)" class="icon-close"></span>
+    </div>
+    <div class="custom-dialog__body">
+        <div class="custom-dialog__body__file">
+            <span>Please select file to import</span>
+            <input type="file" (change)="onFilePicked($event)" class="custom-dialog__body__file--input" name="import-adr-checklist"
+                id="adr-checklist-import">
+        </div>
+        <span class="text-bold">NOTE:</span>
+        <div class="custom-dialog__body__message">
+            <span>The template is based on this file <span class="custom-dialog__body__message--download" (click)="onDownload()">here</span></span>
+            <span class="text-medium mt-1">The uploaded file may error out and prevent importing due to:</span>
+        </div>
+
+        <ol>
+            <li>The status values must be Supports, Partially Supports, Does not Support, Not Applicable, or Not Evaluated.  If the file has an unknown status value or a misspelling, the import will fail.</li>
+            <li>The columns are deleted.</li>
+            <li>The ADR descriptions are edited and no longer match.</li>
+        </ol>
+    </div>
+
+    <div class="custom-dialog__footer">
+        <button class="btn btn--dark" (click)="dialogRef.close(false)">Cancel</button>
+        <button class="btn btn--primary" [disabled]="!file" (click)="onImport()">Import</button>
+    </div>
+</div>

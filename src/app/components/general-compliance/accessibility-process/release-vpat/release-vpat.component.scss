@@ -1,0 +1,72 @@
+.main{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height:100%;
+
+    .flex, .documents-list-container {
+        margin: auto;
+    }
+
+    .flex{
+        width: 80%;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem 3rem;
+        background-color: #c6c7ca;
+    }
+
+    .documents-list-container {
+        width: 80%;
+        .responsive-table {
+            table {
+                table-layout: fixed;
+            }
+            table > thead > tr > th:nth-child(1), td:nth-child(1) {
+                width: 60%;
+                height: 5.1rem;
+                text-align: left;
+            }
+            table > thead > tr > th:nth-child(2), td:nth-child(2) {
+                width: 20%;
+                height: 5.1rem;
+                text-align: left;
+            }
+            table > thead > tr > th:last-child, td:last-child {
+                width: 20%;
+                height: 5.1rem;
+                text-align: left;
+            }
+        }
+    }
+    .finishBtn {
+        width:60%;
+        display:flex;
+        justify-content: flex-end;
+    }
+}
+
+.edcsUploadDiv {
+    display: flex;
+    justify-content: flex-start;
+    a { 
+        // width: 15rem;
+        margin-top: 0.5rem;
+    }
+    #retryDocCentralDiv {
+        display: flex;
+        justify-content: center;
+        span {
+            margin-top: 0.5rem;
+        }
+    }
+}
+
+.edcs-failed {
+    width: 15rem;
+    font-size: 15px;
+    color: red;
+    margin-top: 0.5rem;
+}

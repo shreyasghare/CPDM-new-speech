@@ -1,0 +1,261 @@
+<div class="main" *ngIf="!showSpinner; else spinner">
+
+    <div class="container">
+        <div class="headerText">
+            <ng-template [appHasRole]="role.pm">
+                <span>
+                    Please complete this questionnaire before engaging with the Smart Licensing team.
+                </span>
+            </ng-template>
+            <ng-template [appHasRole]="role.smartLicensingPO">
+                <span>
+                    Please view this submission from the Project Manger.
+                </span>
+            </ng-template>
+        </div>
+
+        <div class="questionnaireContainer form-group p-1" [formGroup]="slInitiateForm">
+            <div>
+                <span>
+                    <ng-template [appHasRole]="role.pm">
+                        <span class="required-field" *ngIf="!slInitiateForm.value.sLEngagedChoice || (slInitiateForm.value.sLEngagedChoice == 'yes' && !slInitiateForm.value.sLReleaseChoice)"></span>
+                    </ng-template>
+                    1. Have you already engaged in the Smart Licensing process in the previous release?
+                    <span class="icon-info icon--custom-size" [matTooltip]="getTooltipText('SL_Initiate_Q1')"
+                        matTooltipPosition="after" [matTooltipClass]="'tooltipForInfo'"></span>
+                </span>
+
+            </div>
+            <div class="container  row ml-2">
+                <ng-template [appHasRole]="[role.pm]">
+                    <div class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-11"
+                        [class.disabled]="initiateProcessContinues == false">
+                        <span>
+                            <label class="radio optionSpacing">
+                                <!--optionSpacing -->
+                                <input type="radio" id="sl-engaged-yes" value="yes" (change)="onSLEngagedChange($event)"
+                                    name="sLEngagedChoice" formControlName="sLEngagedChoice" required>
+                                <span class="radio__input"> </span>
+                                <span class="radio__label hidden-xs">Yes</span>
+                            </label>
+                            <label class="radio">
+                                <input type="radio" id="sl-engaged-no" value="no" (change)="onSLEngagedChange($event)"
+                                    name="sLEngagedChoice" formControlName="sLEngagedChoice" required>
+                                <span class="radio__input"></span>
+                                <span class="radio__label hidden-xs">No</span>
+                            </label>
+                        </span>
+                    </div>
+                    <div>
+                        <span class="additionalInfoHeader">Note–</span> <i>If you select ‘Yes’, you do have an option to
+                            skip steps.</i>
+                    </div>
+                </ng-template>
+                <ng-template [appHasRole]="role.smartLicensingPO">
+                    <div *ngIf="initiateProcessContinues">
+                        <img class="icon ml-3" src="assets/images/icons/svg/time-left.svg"> <span
+                            class="text-muted ml-1">
+                            Awaiting answer</span>
+                    </div>
+                    <div *ngIf="!initiateProcessContinues">
+                        <span class="read-only ml-3">{{slInitiateForm.value.sLEngagedChoice | titlecase}}</span>
+                    </div>
+                </ng-template>
+            </div>
+
+            <div class="subQuestion ml-3 pl-1">
+                <div *appHasRole="[role.pm]" [class.disabled]="!sLEngagedChoice || sLEngagedChoice != 'yes'">
+                    <span>a. What are you trying to achieve as a part of this release? </span>
+                </div>
+                <div *appHasRole="[role.smartLicensingPO]">
+                    <span *ngIf="!sLEngagedChoice || sLEngagedChoice == 'yes'">a. What are you trying to achieve as a part of this release? </span>
+                </div>
+                <div class="container row">
+                    <ng-template [appHasRole]="[role.pm]">
+                        <div class="form-group col-lg-9 col-md-9 col-sm-9 col-xs-9 mt-1" [class.disabled]="sLEngagedChoice != 'yes' || initiateProcessContinues == false">
+                            <span>
+                                <label class="radio optionSpacing">
+                                    <!--optionSpacing -->
+                                    <input type="radio" id="ssl-webinar-yes" value="Update agent"
+                                        (change)="onSLReleaseChange($event)" name="sLReleaseChoice"
+                                        formControlName="sLReleaseChoice" required>
+                                    <span class="radio__input"> </span>
+                                    <span class="radio__label hidden-xs">Update agent</span>
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" id="ssl-webinar-yes-no" value="Update product feature"
+                                        (change)="onSLReleaseChange($event)" name="sLReleaseChoice"
+                                        formControlName="sLReleaseChoice" required>
+                                    <span class="radio__input"></span>
+                                    <span class="radio__label hidden-xs">Update product feature</span>
+                                </label>
+                                <button class=" btn btn--primary mb-1 ml-2" *ngIf="showSkipButton()"
+                                    (click)="onSkipButtonClick()" [disabled]="disableSkipToBtn">{{skipBtnText}}</button>
+                            </span>
+                        </div>
+
+                    </ng-template>
+                    <ng-template [appHasRole]="[role.smartLicensingPO]">
+                        <div *ngIf="initiateProcessContinues" class="mt-1">
+                            <img class="icon ml-3" src="assets/images/icons/svg/time-left.svg"> <span
+                                class="text-muted ml-1">
+                                Awaiting answer</span>
+                        </div>
+                        <div *ngIf="!initiateProcessContinues">
+                            <span class="read-only ml-3" *ngIf="slInitiateForm.value.sLReleaseChoice">{{slInitiateForm.value.sLReleaseChoice}}</span>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+            <hr />
+            <div>
+                <span>
+                    <ng-template [appHasRole]="role.pm">
+                        <span class="required-field" *ngIf="(!slInitiateForm.value.sslWebinarChoice && initiateProcessContinues) || (slInitiateForm.value.sslWebinarChoice == 'no' && !members.length && initiateProcessContinues)"></span>
+                    </ng-template>
+                    2. Has every member of your project team attended the "Getting Started with Smart Licensing"
+                    webinar ?* </span>
+            </div>
+            <div class="container  row ml-2">
+                <ng-template [appHasRole]="[role.pm]">
+                    <div class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-11">
+                        <span>
+                            <label class="radio optionSpacing">
+                                <!--optionSpacing -->
+                                <input type="radio" id="ssl-webinar-yes" value="yes"
+                                    (change)="onSslWebinarAttendChange($event)" name="sslWebinarChoice"
+                                    formControlName="sslWebinarChoice" required>
+                                <span class="radio__input"> </span>
+                                <span class="radio__label hidden-xs">Yes</span>
+                            </label>
+                            <label class="radio">
+                                <input type="radio" id="ssl-webinar-yes-no" value="no"
+                                    (change)="onSslWebinarAttendChange($event)" name="sslWebinarChoice"
+                                    formControlName="sslWebinarChoice" required>
+                                <span class="radio__input"></span>
+                                <span class="radio__label hidden-xs">No</span>
+                            </label>
+                        </span>
+
+                    </div>
+                    <div>
+                        <span class="additionalInfoHeader">Note–</span> <i>Please answer the question below if you
+                            select ‘No’.</i>
+                    </div>
+                </ng-template>
+                <ng-template [appHasRole]="[role.smartLicensingPO]">
+                    <div *ngIf="initiateProcessContinues">
+                        <img class="icon ml-3" src="assets/images/icons/svg/time-left.svg"> <span
+                            class="text-muted ml-1">
+                            Awaiting answer</span>
+                    </div>
+                    <div *ngIf="!initiateProcessContinues">
+                        <span class="read-only ml-3">{{slInitiateForm.value.sslWebinarChoice | titlecase}}</span>
+                    </div>
+                </ng-template>
+            </div>
+            <div class="subQuestion ml-3 pl-1">
+                <!-- membaer addition -->
+                <div *appHasRole="[role.pm]" [class.disabled]="sslWebinarAttend == 'yes'">
+                    <app-user-search-dir class="subQuestion__userSearch" (selectedUsers)="getSelectedMembers($event)"
+                        [slObjData]="slObj" [sslWebinarValue]="sslWebinarAttend"></app-user-search-dir>
+                </div>
+                <div *appHasRole="[role.smartLicensingPO]">
+                    <app-user-search-dir *ngIf="!sslWebinarAttend || sslWebinarAttend == 'no'" class="subQuestion__userSearch" (selectedUsers)="getSelectedMembers($event)"
+                        [slObjData]="slObj" [sslWebinarValue]="sslWebinarAttend"></app-user-search-dir>
+                </div>
+
+                <div class="row" *appHasRole="[role.pm]">
+                    <div class="ml-1">
+                        <button class=" btn btn--primary" id="sendNotificationBtn"
+                            [disabled]="members.length == 0 || sslWebinarAttend == 'yes'"
+                            (click)="sendNotification()">Send</button>
+                        <span *ngIf="showSendNotificationText" class="ml-2">Click "Send" to notify the identified members.</span>
+                        <span *ngIf="!showSendNotificationText" class="ml-2">
+                            Notification sent to the members
+                            <img class="icon" src="assets\images\icons\svg\check-mark.svg">
+                        </span>
+                    </div>
+                </div>
+                <!-- membaer addition -->
+
+            </div>
+            <hr />
+            <div>
+                <span>
+                    <ng-template [appHasRole]="role.pm">
+                        <span class="required-field" *ngIf="!slInitiateForm.value.productMonetizationChoice && initiateProcessContinues"></span>
+                    </ng-template>
+                    3. Has the monetization of the product offering been identified? *</span>
+            </div>
+            <div class="container  row ml-2">
+                <ng-template [appHasRole]="[role.pm]">
+                    <div class="form-group col-lg-3 col-md-6 col-sm-6 col-xs-12"
+                        [class.disabled]="initiateProcessContinues == false">
+                        <span>
+                            <label class="radio optionSpacing">
+                                <input type="radio" id="product-monetization-offering-yes" value="yes"
+                                    (change)="onProductMonetizationButtonChange($event)"
+                                    name="productMonetizationChoice" formControlName="productMonetizationChoice">
+                                <span class="radio__input"> </span>
+                                <span class="radio__label hidden-xs">Yes</span>
+                            </label>
+                            <label class="radio">
+                                <input type="radio" id="product-monetization-offering-no" value="no"
+                                    (change)="onProductMonetizationButtonChange($event)"
+                                    name="productMonetizationChoice" formControlName="productMonetizationChoice">
+                                <span class="radio__input"></span>
+                                <span class="radio__label hidden-xs">No</span>
+                            </label>
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template [appHasRole]="[role.smartLicensingPO]">
+                    <div *ngIf="initiateProcessContinues">
+                        <img class="icon ml-3" src="assets/images/icons/svg/time-left.svg"> <span
+                            class="text-muted ml-1">
+                            Awaiting answer</span>
+                    </div>
+                    <div *ngIf="!initiateProcessContinues">
+                        <span
+                            class="read-only ml-3">{{slInitiateForm.value.productMonetizationChoice | titlecase}}</span>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+
+    <div class="submitScreen">
+        <div class="submitScreen__container">
+            <div class="row p-2">
+                <div class="col-1">
+                    <img src="assets\images\icons\svg\checklist.svg" class="checklist-icon" />
+                </div>
+                <div class="col-11">
+                    <h3 class="submit__container">Engagement Request Form</h3>
+                    <div style="display: flex; align-items: center;" class="mt-1">
+                        <button class="btn btn--primary" (click)="openQestionnareComponent()"
+                            [disabled]="engagementFormNotSubmitted">{{engQuestionnaireBtnName}}</button>
+                        <div class="ml-1 submitScreen__container--questionnaire-state"
+                            *ngIf="questionnaireshowSuccessErrorContailer && initiateProcessContinues"> <span
+                                [ngClass]="slObj.initiate.engagementRequestForm.state === 'submitted' ? 'icon-check-outline icon-small':'icon-exclamation-triangle icon-small'"></span>
+                            <span class="ml-1" *ngIf="initiateProcessContinues">{{getQuestionniareStatus}}</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="submitBtnContainer" *appHasRole="[role.pm]">
+        <span class="mr-2" *ngIf="showSubmittedText()">Submitted
+            <img class="icon" src="assets\images\icons\svg\check-mark.svg"></span>
+        <button class="btn btn--success" (click)="onSubmit()" *ngIf="!showLoader"
+            [class.disabled]="!initiateProcessContinues || !isSubmitEnable">Submit</button>
+        <cui-loader class="loading_dots" color="muted" *ngIf="showLoader"></cui-loader>
+    </div>
+    <br />
+</div>
+<ng-template #spinner>
+    <div class="flex-center full-height">
+        <cui-spinner color="default" label="Loading"></cui-spinner>
+    </div>
+</ng-template>

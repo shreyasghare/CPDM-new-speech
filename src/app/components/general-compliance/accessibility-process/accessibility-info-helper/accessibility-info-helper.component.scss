@@ -1,0 +1,14 @@
+.custom-header {
+    display: flex;
+    justify-content: space-between;
+    // padding: 0 1rem 1rem;
+}
+
+.modalContent {
+    height:auto; 
+    overflow-y: auto;
+}
+
+.icon-close {
+    cursor: pointer;
+}

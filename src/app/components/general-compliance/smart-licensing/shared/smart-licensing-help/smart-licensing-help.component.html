@@ -1,0 +1,37 @@
+<div *ngIf="isData; else spinner" class="modal-container p-1">
+    <div class="custom-header mb-1">
+        <div class="modal__title">Smart Licensing Compliance</div>
+        <span id="close" class="icon-close icon-size-20" (click)="onClose()"></span>
+    </div>
+    <div class="modal-container__body">
+        <cui-tabs [inline]="inline" [alignment]="alignment" [bordered]="bordered" [tall]="tall" [vertical]="vertical"
+            [(activeTabIndex)]="tabIndex">
+            <cui-tab label="Policy Overview">
+                <div class="custom-min-height" *ngIf="policyOverview">
+                    <div class="text-left" [innerHTML]="policyOverview.desc">
+                    </div>
+                    <div class="text-left" [innerHTML]="policyOverview.sharepointLink" *ngIf="policyOverview.sharepointLink">
+                    </div>
+                </div>                
+            </cui-tab>
+            <cui-tab label="Mailer">
+                <div class="custom-min-height">
+                    <p><a target='_blank' href="{{mailers.mailerId}}">{{mailers.mailerId}}</a></p>
+                </div>
+            </cui-tab>
+            <cui-tab  label="Commit Recommendation">
+                <div class="custom-min-height"  *ngIf="commitRecommendation">
+                    <p *ngFor="let desc of commitRecommendation.desc" >{{desc}}</p>
+                  </div>
+            </cui-tab>
+        </cui-tabs>
+    </div>
+</div>
+<div *ngIf="isData" class="text-center">
+    <button class="btn btn--dark" (click)="onClose()">Close</button>
+</div>
+<ng-template #spinner>
+    <div class="absolute-center">
+        <cui-spinner color="default" label="Loading"></cui-spinner>
+    </div>
+</ng-template>

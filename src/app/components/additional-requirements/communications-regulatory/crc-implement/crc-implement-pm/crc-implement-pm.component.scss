@@ -1,0 +1,320 @@
+.crc_implementation {    
+    &__container {
+        width: 79%;
+        height: 100%;
+        align-items: center;
+        background-color: #fff;
+        border: 1px solid #b3b5b5;
+        margin: 1% 0;
+        &--header {
+            display: flex;
+            background-color:#b3b5b5;
+            padding: 1rem 2rem;      
+            flex-wrap: wrap;     
+        }
+        &--action {
+            display: flex;
+            flex-grow: 1;
+            label.radio {
+                flex-grow: 1;
+            }
+        }
+    }    
+}
+.rallyWorkspace {
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        h4 {
+            padding: 0;
+            margin: 0;
+        }
+    }
+    &__main-content {
+        margin-top: 2rem;
+        text-align: center;
+        height: 12rem;
+        .loading_dots {
+            width: 80% !important;
+        }
+    }
+    &__footer {
+        text-align: center;
+        margin-top: 3rem;
+    }
+}
+
+/***   ***/
+.main {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pMimplementation {
+    padding: 1rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    &__container {
+        width: 80%;
+        align-items: center;
+        background-color: #fff;        
+        &--header {
+            display: flex;
+            padding: 1rem;      
+            flex-wrap: wrap;
+            background-color: #c6c7ca;
+        }
+        &--action {
+            display: flex;
+            flex-grow: 1;
+            
+            label.radio {
+                flex-grow: 1;
+            }
+        }
+        &--body {
+            &--header{
+                display: flex;
+                padding: 1rem 0rem 0rem 1rem;;      
+                flex-wrap: wrap;
+            }
+            display:flex;
+        }
+    }
+}
+
+.pMSendimpl {
+    padding: 1rem;
+    height: 80%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    &__container {
+        display: flex;
+        flex-direction: column;
+        width: 100;
+        min-height: 75%;
+        width: 80%;
+        align-items: center;
+        background-color: #fff;
+        border: 1px solid #b3b5b5;
+        &--header {
+            background-color: #c6c7ca;
+            padding: 1rem;
+            width: 100%;      
+        }
+        &--body {
+            padding:1rem;
+            justify-content: flex-end; 
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+    }
+}
+
+.implReportworkspace{
+    display: flex;
+    width: 100%;
+}
+
+.optionSpacing{
+    padding: 0rem 3rem 0rem 1rem;
+}
+
+.navBtnContainer{
+    width: 78%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.implementNavButtonSection{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.implNavBtnContainer{
+    width: 78%;
+    display: flex;
+}
+
+.notifyText{
+    text-align: right;
+    padding: 1rem 0;
+    color: #1E4471;
+}
+
+.sendImplReportBtn{
+    justify-content: flex-end;
+    align-items: flex-end;
+    display: flex;
+    width: 85%;
+}
+
+.implementation-dialog {
+    height: auto;
+    &__header{
+        display: flex;
+        justify-content: space-between;
+        h4{
+            padding: 0;
+            margin: 0;
+        }
+    }
+
+    &__main-content{
+        margin-top: 2rem;
+        text-align: center;
+        height: 12rem;
+    }
+
+    &__footer{
+        text-align: center;
+        margin-top: 2.5rem;
+    }
+}
+
+.workSpacePath{
+    color: #1E4471;
+    margin-top: 0.5rem;
+}
+.implementationDetailesText{
+    color: #1E4471;
+}
+
+.success-populate {
+    margin-top: 5px;
+    height: 2rem;
+    width: 2.5rem;
+    opacity: 0.25;
+    padding-top: 6px;
+}
+
+.highlight{
+    &__implementationDetailesText{
+        color: #1E4471;
+    }
+    &__rejected{
+        background: #FF00004D;
+        padding: 4px;
+    }
+    &__approve{
+        background: #BAE0BD;
+        padding: 4px;
+    }
+    &__user{
+        color: #1E4471;
+
+    }
+    &__date{
+        color: #5E5E5E;
+    }
+}
+
+.rightBorder{
+    border-right: solid 1px gray;
+}
+
+.rev-rec-review {
+    app-holding-status {
+        button {
+            max-width: none;
+            margin-top: 5px;
+        }
+    }
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 100%;
+    width: 80%;
+    margin: auto;
+    
+    &__rcl, &__scoping-checklist {
+        &--action {
+            display: flex;
+            align-items: center;
+            background-color: #c6c7ca;
+            padding: 0.5rem 1rem;
+
+            .form-group {
+                display: inline-block;
+                margin-top: 0;
+            }
+        }
+
+        &--label {
+            position: relative;
+            top: -6px;
+        }
+    }
+    
+    &__rr-comments {
+        &--title {
+            background-color: #c6c7ca;
+            padding: 5px 0 0 10px;
+        }
+        &--status {
+            background-color: #c6c7ca;
+            padding: 5px 0px 5px 10px;
+            width: 20%;
+
+            i {
+                font-size: 12px;
+            }
+        }
+        &--comment {
+            textarea {
+                width: 100%;
+                padding: 10px;
+                resize: none;
+            }
+        }
+    }
+
+    &__rev-rec-comments {
+        border: solid 1px #c6c7ca;
+        background-color: #fff;
+        padding: 10px;
+    }
+
+    &__actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .buControllerDropDownItems {
+            width: 60rem;
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+}
+
+.holdingScreenContainer{
+    width: 90%;
+}
+
+.implDetailsFromControl{
+    display: flex !important;
+    flex-direction: unset !important;
+}
+
+.manualImplTemplate{
+    display: flex;
+    width: 79%;
+    justify-content: center;
+    background-color: #fff;
+    &__approve{
+        display: flex;
+        width: 90%;
+        justify-content: center;
+        background-color: #fff;
+    }
+}

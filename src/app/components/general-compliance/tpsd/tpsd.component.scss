@@ -1,0 +1,20 @@
+.tpsd-left-pane {
+    width: 20%;
+    height: 100%;
+
+    &__sidebar {
+        height: 85%;
+    }
+
+    &__reinitiate-section {
+        text-align: right;
+        height: 15%;
+    }
+}
+
+.tpsd-project-loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }

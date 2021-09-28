@@ -1,0 +1,106 @@
+<div *ngIf="isData; else spinner" class="modal-container pl-1 pr-1">
+  <div class="custom-header"> 
+    <div class="modal__title">Accessibility</div>
+    <span id="close" class="icon-close icon-size-20" (click)="onClose()"></span>
+  </div>
+  <div class="modal-container__body">
+    <cui-tabs [inline]="inline" [alignment]="alignment" [bordered]="bordered" [tall]="tall" [vertical]="vertical"
+      [(activeTabIndex)]="tabIndex">
+      <!-- NOTE cuiTabPre and cuiTabPost content is only visible if the cui-tabs [inline] input is set to true -->
+      <ng-template cuiTabPre>
+        <div class="form-group input--icon base-margin-right">
+          <div class="form-group__text">
+            <input id="input-type-search" type="search" placeholder="Search">
+            <button type="button" class="link">
+              <span class="icon-search"></span>
+            </button>
+          </div>
+        </div>
+      </ng-template>
+      <cui-tab label="Policy Overview">
+        <div class="custom-min-height"  *ngIf="policyOverview">
+          <div class="text-left"  *ngFor="let desc of policyOverview.desc">
+            <p>{{desc}}</p>
+          </div>
+          <ul class="text-left">
+            <li *ngFor="let point of policyOverview.points">{{point}}</li>
+          </ul>
+          <div class="text-left" [innerHTML]="policyOverview.sharepointLink" *ngIf="policyOverview.sharepointLink">
+          </div>
+        </div>
+      </cui-tab>
+
+      <cui-tab label="General Help">
+        <div class="custom-min-height"  *ngIf="generalHelp">
+          <div>
+            <p class="text-bold">{{generalHelp.desc}} 
+              <a target="_blank" href="{{generalHelp.link.href}}">{{generalHelp.link.text}}</a> 
+            </p>
+          </div>
+          <!-- <div *ngFor="let link of generalHelp.link">
+              <a target="_blank"
+              href="{{link.href}}">{{link.text}}</a>
+          </div> -->
+        </div>
+      </cui-tab>
+
+      <cui-tab label="Training/ Mailer">
+          <div class="custom-min-height"  *ngIf="trainingMailer">
+            <div *ngFor="let desc of trainingMailer.desc">
+              <p class="text-bold">{{desc}}</p>
+            </div>
+            <div *ngFor="let mailer of trainingMailer.mailer">
+                <p><a href="mailto:{{mailer}}">{{mailer}}</a></p>
+            </div>
+          </div>
+      </cui-tab>
+
+      <cui-tab label="Commit Recommendation">
+        <div class="custom-min-height text-left"  *ngIf="commitRecommendation">
+          <p *ngFor="let desc of commitRecommendation.desc" class="text-bold">{{desc}}</p>
+        </div>
+      </cui-tab>
+
+      <!-- NOTE cuiTabPre and cuiTabPost content is only visible if the cui-tabs [inline] input is set to true -->
+      <ng-template cuiTabPost>
+        <div class="text-right">
+          <a href="javascript:;"><span class="icon-medium-small icon-print"></span></a>
+        </div>
+      </ng-template>
+    </cui-tabs>
+    <br />
+    <div id="acceptorOwnerButtonContainer" hidden>
+      <!-- <div class="row"> -->
+      <div class="flex custom-flex">
+        <div>
+          <cui-loader *ngIf="showLoader"></cui-loader>
+          <label *ngIf="!showLoader" class="checkbox">
+            <input type="checkbox" [checked]="overviewStatus" (change)="onOverviewStatusChecked()" class="hover"
+              [(ngModel)]="overviewStatus">
+            <span class="checkbox__input"></span>
+            <span class="checkbox__label hidden-xs">Do not show again</span>
+          </label>
+        </div>
+
+        <div class="ml-4">
+          <button class="btn btn--dark" (click)="onClose()">Close</button>
+        </div>
+      </div>
+      <!-- </div> -->
+    </div>
+  </div>
+  
+    <!-- <div class="modal__footer">
+      <button class="btn" (click)="cuiModalService.hide()">Ok</button>
+  </div> -->
+  
+  <div class="text-center mt-1">
+      <button class="btn btn--dark" (click)="onClose()">Close</button>
+  </div>
+</div>
+
+<ng-template #spinner>
+  <div class="absolute-center">
+      <cui-spinner color="default" label="Loading"></cui-spinner>
+  </div>
+</ng-template>

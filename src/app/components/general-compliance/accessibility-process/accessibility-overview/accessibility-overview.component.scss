@@ -1,0 +1,23 @@
+.modal-container {
+    height: 100%;
+    
+    &__body {
+        height: 85%;
+        overflow-y: auto;
+    }
+}
+
+.custom-flex{
+    justify-content: flex-end;
+    align-items: center;
+    height: 3rem;
+}
+
+.custom-min-height{
+    height: 300px;
+}
+
+.custom-header {
+    display: flex;
+    justify-content: space-between;
+}

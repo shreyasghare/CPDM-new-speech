@@ -1,0 +1,51 @@
+<div class="manual-implementation">
+    <div class="row mt-3" *ngIf="enableAdditionalFields">
+        <div class="col text-right">
+            <div class="mr-1">Select your product language binding type:</div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" class="custom-control-input" name="manualCheckLang"
+                        [(ngModel)]="selectedLanguage" value="java">
+                    <label class="custom-control-label" for="langJava">Java (including Wrappers)</label>
+                    <input type="radio" class="custom-control-input ml-2" name="manualCheckLang"
+                        [(ngModel)]="selectedLanguage" value="c">
+                    <label class="custom-control-label" for="langC">C</label>
+                    <span class="icon-info icon-small" (click)="showInfoModal({name: 'C Language'})"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col text-right">
+            <div class="mr-1 py-1">Choose template to download:</div>
+        </div>
+        <div class="col">
+            <div class="manual-implementation__action">
+                <mat-form-field class="mr-1">
+                    <mat-label>Select an option</mat-label>
+                    <mat-select [(ngModel)]="selectedTemplate">
+                        <mat-option value="">No Selection</mat-option>
+                        <mat-option *ngFor="let element of templates" [value]="element.value">{{element.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <a class="btn btn--primary" (click)="onDownload()"
+                    [class.disabled]="!selectedTemplate">Download <span class="icon-download"></span></a>
+            </div>
+        </div>
+    </div>
+    <div class="manual-implementation__note-section mt-3">
+        <div class="manual-implementation__note-section--note"><strong>Note:</strong> This exported excel file can be
+            used as Requirements document. This exported excel file can be used to be imported into any Cisco
+            Jira or Rally instance.</div>
+    </div>
+    <div class="text-center mt-4 mb-3">
+        <label class="checkbox" [class.disabled]="!selectedTemplate || isTaskComplete">
+            <input type="checkbox" [checked]="isTaskComplete" (change)="onComplete($event)">
+            <span class="checkbox__input"></span>
+            <span class="checkbox__label hidden-xs">The implementation tasks are complete</span>
+        </label>
+    </div>
+</div>

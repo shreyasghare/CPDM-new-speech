@@ -1,0 +1,41 @@
+{
+    "success" : true,
+    "data" : {
+        "version" : {
+            "value" : 0.4,
+            "name" : "v0.4",
+            "latest" : true
+        },
+        "status" : [ 
+            "No Selection", 
+            "Adopted", 
+            "Not applicable", 
+            "Part of backlog", 
+            "Part of roadmap"
+        ],
+        "recommendations" : [
+            {
+                "position" : 1,
+                "uniqueIdentifier" : "TELE.DM.001",
+                "tag" : "Data Model & Data Management",
+                "recommendationDesc" : "The data model should have a structured / open / standard format representing every event, operational and configuration data.",
+                "priority" : "High",
+                "embeddedApps" : "false / true",
+                "onPremOffPrem" : "true / true",
+                "businessOperational" : "true / true",
+                "status" : "No Selection"
+            },
+            {
+                "position" : 2,
+                "uniqueIdentifier" : "TELE.DM.002",
+                "tag" : "Data Model & Data Management",
+                "recommendationDesc" : "Logs and traces should be accessible as part of the operational data.",
+                "priority" : "High",
+                "embeddedApps" : "true / true",
+                "onPremOffPrem" : "true / true",
+                "businessOperational" : "false / true",
+                "status" : "No Selection"
+            }
+        ]
+    }
+}

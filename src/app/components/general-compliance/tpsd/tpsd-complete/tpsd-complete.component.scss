@@ -1,0 +1,55 @@
+.complete_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+
+    &__body {
+        display: flex;
+        width: 80%;
+        background-color: #c6c7ca;
+        align-items: flex-start;
+        padding: 3rem;
+
+        &--icon {
+            width: 6%;
+            display: flex;
+            
+            img {
+                width: 35px;
+                height: 35px;
+                opacity: 0.5;
+            }
+        }
+    
+        &--details {
+            display: flex;
+            flex-direction: column;
+
+            p {
+                font-size: 22px;
+            }
+
+            img {
+                height: 6rem;
+            }
+
+            .status__note {
+                padding: 2rem 0 0 5rem;
+                display: flex;
+                align-items: center;
+            }
+        }
+    }
+}
+.error-msg {
+    width: 80%;
+    background-color: #e6c27f;
+    border-radius: 4px;
+    padding: 4px;
+}
+.unavailableText{
+    pointer-events: none;
+    color: #686868!important;
+}

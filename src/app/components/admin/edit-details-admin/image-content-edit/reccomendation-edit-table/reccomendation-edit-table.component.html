@@ -1,0 +1,159 @@
+<div class="admin-recommendation">
+	<div class="admin-recommendation__header">
+		<h4 class="text-normal">{{isReadOnly? 'Preview': 'Edit'}} Mode</h4>
+		<span id="close" class="icon-close icon-size-18 close" (click)="discardClicked()"></span>
+	</div>
+
+	<div id="adminTable" class="admin-recommendation__body">
+		<ng-container *ngIf='hideSpinner; else spinner'>
+			<form [formGroup]="recTable">
+				<table mat-table #adminTable [dataSource]="dataSource" class="admin-recommendation__table"
+					multiTemplateDataRows>
+					<ng-container matColumnDef="Unique Identifier">
+						<th class="w-100" mat-header-cell *matHeaderCellDef> Unique Identifier </th>
+						<td mat-cell *matCellDef="let element, let i = index">
+							<div *ngIf="!isReadOnly">
+								<mat-form-field floatLabel="never" class="w-100 half-padding-right">
+									<input matInput placeholder="Unique Identifier"
+										[formControl]="element.get('uniqueIdentifier')">
+								</mat-form-field>
+							</div>
+							<div *ngIf="isReadOnly">{{element.get('uniqueIdentifier').value}}</div>
+						</td>
+					</ng-container>
+					<ng-container matColumnDef="Uid Name">
+						<th class="w-140" mat-header-cell *matHeaderCellDef> Uid Name </th>
+						<td mat-cell *matCellDef="let element">
+							<div *ngIf="!isReadOnly">
+								<mat-form-field floatLabel="never" class="w-140 half-padding-right">
+									<input matInput placeholder="Uid Name" [formControl]="element.get('uidName')">
+								</mat-form-field>
+							</div>
+							<div *ngIf="isReadOnly">{{element.get('uidName').value}}</div>
+						</td>
+					</ng-container>
+					<ng-container matColumnDef="Profile">
+						<th class="w-140" mat-header-cell *matHeaderCellDef> Profile </th>
+						<td mat-cell *matCellDef="let element, let i=dataIndex">
+							<div *ngIf="!isReadOnly">
+								<mat-form-field floatLabel="never">
+									<mat-select [formControl]="element.controls['profile']"
+										(selectionChange)="onPropertyChange(element, 'profile')" placeholder="Profile">
+										<mat-option *ngFor="let profile of profileDDList" [value]='profile'>{{profile}}
+										</mat-option>
+									</mat-select>
+								</mat-form-field>
+							</div>
+							<div *ngIf="isReadOnly">{{element.get('profile').value}}</div>
+						</td>
+					</ng-container>
+
+					<ng-container matColumnDef="Recommendation">
+						<th class="w-300" mat-header-cell *matHeaderCellDef> Recommendation</th>
+						<td class="w-300 half-padding-right" mat-cell *matCellDef="let element"
+							[class.admin-recommendation__table__expanded-row]="expandedElement === element">
+							<div (click)="expandedElement = expandedElement === element ? null : element"
+								*ngIf="!isReadOnly">
+								<input matInput readonly placeholder="Add Recommendation"
+									[value]="element.get('recommendationDesc').value" class="cursor-pointer"
+									appearance='outline'>
+							</div>
+							<div *ngIf="isReadOnly">{{element.get('recommendationDesc').value}}</div>
+						</td>
+
+					</ng-container>
+					<ng-container matColumnDef="expandedRecommendation">
+						<td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+							<div class="admin-recommendation__table__element-detail-row"
+								[@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+								<div class="admin-recommendation__table__element-description"
+									[ngClass]="{'active-border': expandedElement}">
+									<ng-container>
+										<mat-form-field class="admin-recommendation__table__full-width">
+											<mat-label>Edit Recommendation</mat-label>
+											<textarea matInput
+												[formControl]="element.get('recommendationDesc')"></textarea>
+										</mat-form-field>
+										<button class="btn btn--primary"
+											(click)="expandedElement = expandedElement === element ? null : element">Done</button>
+									</ng-container>
+
+								</div>
+							</div>
+						</td>
+					</ng-container>
+					<ng-container matColumnDef="Conformance Level">
+						<th class="w-100" mat-header-cell *matHeaderCellDef> Conformance Level </th>
+						<td mat-cell *matCellDef="let element">
+							<div *ngIf="!isReadOnly">
+								<mat-form-field floatLabel="never" class="w-100">
+									<mat-select [formControl]="element.controls['conformanceLevel']" placeholder="Conformance Level"
+										(selectionChange)="onPropertyChange(element,'conformanceLevel')">
+										<mat-option *ngFor="let conformanceLevel of conformanceLevelDDList" [value]='conformanceLevel'>
+											{{conformanceLevel}}
+										</mat-option>
+									</mat-select>
+								</mat-form-field>
+							</div>
+							<div *ngIf="isReadOnly">{{element.get('conformanceLevel').value}}</div>
+						</td>
+					</ng-container>
+					<ng-container matColumnDef="Product Type">
+						<th class="w-140" mat-header-cell *matHeaderCellDef> Product Type </th>
+						<td mat-cell *matCellDef="let element; let i=dataIndex">
+							<div *ngIf="!isReadOnly">
+								<mat-form-field floatLabel="never" class="w-140 half-padding-right" appearance="none">
+									<input matInput readonly placeholder="Product Type"
+										[formControl]="element.get('productType')">
+								</mat-form-field>
+							</div>
+							<div *ngIf="isReadOnly">{{element.get('productType').value}}</div>
+						</td>
+					</ng-container>
+					<ng-container matColumnDef="Sub-Profiles">
+						<th class="w-160" mat-header-cell *matHeaderCellDef> Sub-Profiles </th>
+						<td mat-cell *matCellDef="let element">
+							<div *ngIf="!isReadOnly">
+								<mat-form-field floatLabel="never">
+									<mat-select [formControl]="element.controls['subProfiles']"
+										placeholder="Subprofiles">
+										<mat-option
+											*ngFor="let subProfiles of subProfileDDList[element.get('profile').value]"
+											[value]='subProfiles'>
+											{{subProfiles}}
+										</mat-option>
+									</mat-select>
+								</mat-form-field>
+							</div>
+							<div *ngIf="isReadOnly">{{element.get('subProfiles').value}}</div>
+						</td>
+					</ng-container>
+					<ng-container matColumnDef="actionsBtns">
+						<td mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length"
+							class="actionsBtns">
+							<button class="btn btn-small btn--primary" (click)="onAddNew()">Add new</button>
+							<button type="submit" class="btn btn-small btn--primary"
+								[disabled]="!recommendationFormArray.valid || recommendationFormArray.pristine"
+								(click)="saveDraftClicked()">Save draft</button>
+							<button class="btn btn-small btn--dark" [disabled]="recommendationFormArray.pristine"
+								(click)="discardClicked()">Discard</button>
+						</td>
+					</ng-container>
+					<tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></tr>
+					<tr mat-row *matRowDef="let row; columns: displayedColumns; let index"></tr>
+					<tr mat-row *matRowDef="let row; columns: ['expandedRecommendation']"
+						class="admin-recommendation__table__detail-row">
+					</tr>
+					<ng-container *ngIf="!isReadOnly">
+						<tr mat-footer-row *matFooterRowDef="['actionsBtns']; sticky: true"></tr>
+					</ng-container>
+				</table>
+			</form>
+		</ng-container>
+		<ng-template #spinner>
+			<div class="absolute-center">
+				<cui-spinner color="default" label="Loading"></cui-spinner>
+			</div>
+		</ng-template>
+	</div>
+</div>

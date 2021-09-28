@@ -1,0 +1,70 @@
+.appplicability-heading{
+    p{
+        margin: 0.8rem 0 0 0;
+    }
+
+    .divider{
+        margin: 1.5rem 0;
+    }
+
+}
+
+.custom-content{
+    height: 85vh;
+    position: relative;
+    .align-center{
+     position: absolute;
+     width: 100%;
+     top: 50%;
+     transform: translateY(-50%)
+    }
+ }
+
+
+.text-align-right{
+    text-align: right;
+}
+
+.col-sm-8{
+    margin-right: 5rem;
+}
+
+.panel{
+    // cursor: not-allowed;
+    cursor: pointer;
+    .checkbox__input,.checkbox{
+        // cursor: not-allowed;
+        cursor: pointer;
+    }
+    .checkbox__input:hover{
+        // cursor: not-allowed;
+        cursor: pointer;
+        border-color: none;
+    }
+}
+.icon-close {
+    font-size: x-large;
+    margin-top:-10px
+}
+#close:hover {
+    color: #017cad;
+    // background-color: red !important;
+}
+.helpMeSelect-close {
+    float:right;
+    font-size: xx-large;
+    margin-top: 0.5rem !important;
+    cursor: pointer;
+    color: #9a9797;
+}
+.modalHeader {
+    color: #363535;
+}
+.modalContent {
+    height: auto !important; 
+    overflow-y: auto;
+}
+.modalSpan{
+    display: block;
+}
+

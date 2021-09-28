@@ -1,0 +1,18 @@
+kind: "Route"
+apiVersion: "v1"
+metadata:
+  annotations:
+     haproxy.router.openshift.io/timeout:10m
+  name: "cpdmng-service-dev"
+  labels:
+     component: "cpdmng-service-dev"
+spec:
+   host: "cpdm-dev.cloudapps.cisco.com"
+   to:
+     kind: "Service"
+     name: "cpdmng-service-dev"
+   port:
+     targetPort: "web"
+   tls:
+     insecureEdgeTerminationPolicy: Allow
+     termination: edge

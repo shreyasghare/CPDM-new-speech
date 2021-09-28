@@ -1,0 +1,30 @@
+<div class="custom-modal">
+    <div class="custom-modal__header">
+        <h6>Error!</h6>
+        <button class="cursor-pointer modelCloseBtn" (click)="modalPopupClose()"><span class="icon-close"></span></button>
+    </div>
+    <p>The status of the following ADR items are not set.</p>
+    
+    <div class="custom-modal__body">
+        <table class="table--custom">
+            <thead>
+                <th class="text-left">Web</th>
+                <th class="text-left">Software</th>
+                <th class="text-left">Documentation</th>
+                <th class="text-left">Hardware</th>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let adrItem of noStatusAdrs">
+                    <td class="text-left">{{ adrItem.web }}</td>
+                    <td class="text-left">{{ adrItem.software }}</td>
+                    <td class="text-left">{{ adrItem.documentation }}</td>
+                    <td class="text-left">{{ adrItem.hardware }}</td>    
+                </tr>
+            </tbody>
+        </table>
+        <div class="custom-modal__footer">
+            <button class="btn btn--primary" (click)="modalPopupClose()">Okay</button>
+        </div>
+    </div>
+</div>

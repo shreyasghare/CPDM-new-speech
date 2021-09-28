@@ -1,0 +1,35 @@
+<div class="reviews-list mt-1">
+    <div class="reviews-list__title">
+        <span>{{currentUserRole == role.BUController ? "Your reviews" : "BU Controller's Reviews"}}</span>
+    </div>
+    <div class="reviews-list__pending-review" *ngIf="!reviews.length">
+        <span>Pending</span>
+    </div>
+    <!-- List of review history -->
+    <div class="reviews-list__reviewHistory" *ngIf="reviews.length" (scroll)="onScroll($event)">
+        <div class="reviews-list__review" *ngFor="let review of reviews">
+            <div class="reviews-list__status-container">
+                <div class="reviews-list__status-container--status">
+                    <div>Revenue Assessment: <b>{{review.RCLAssessmentStatus == 'approved' ? 'Approved' : 'Rejected'}}</b></div>
+                    <div><i>On {{review.timestamp | date: 'dd MMM y'}}</i></div>
+                </div>
+                <div class="reviews-list__status-container--status">
+                    <div>New PID List: <b>{{review.scopingChecklistStatus == 'approved' ? 'Approved' : 'Rejected'}}</b></div>
+                    <div><i>On {{review.timestamp | date: 'dd MMM y'}}</i></div>
+                </div>
+            </div>
+            <div class="reviews-list__comment-container">
+                <div>Comments by <span class="reviews-list__comment-container--user">{{currentUserCecId == review.cecId ? 'You' : review.cecId }}</span>: {{review.comment}}</div>
+            </div>
+            <!-- <hr> -->
+        </div>
+    </div>
+    <!-- Link to show review history -->
+    <div class="reviews-list__reviewHistoryLink" *ngIf="reviews && reviews.length > 1">
+        <span><hr></span>
+        <span class="ml-1 mr-1">Previous reviews
+            <span class="icon-small" [ngClass]="scrollEnd ? 'icon-chevron-up' : 'icon-chevron-down'"></span>
+        </span>
+        <span><hr></span>
+    </div>
+</div>

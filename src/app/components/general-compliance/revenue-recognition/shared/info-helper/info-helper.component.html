@@ -1,0 +1,20 @@
+<div *ngIf="isData;else spinner">
+    <div class="custom-header">  
+        <div class="modal__title">{{helperResponse.name}}</div>
+        <span id="close" class="icon-close icon-size-20" (click)="onClose()"></span>
+    </div>
+    <div *ngIf="isSingleDesc" class="mt-1">{{helperResponse.description}}</div>
+    <div *ngIf="!isSingleDesc">
+        <div class="mt-1" *ngFor="let element of helperResponse.description">
+            <span *ngIf="element.content" [innerHTML]="element.content"></span>
+            <div *ngIf="element.subcontent?.length > 0" >
+                <span class="ml-2" *ngFor="let info of element.subcontent">{{info}}</span>
+            </div>
+        </div>
+    </div>
+   
+</div>
+
+<ng-template #spinner>
+    <cui-spinner></cui-spinner>
+</ng-template>

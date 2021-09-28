@@ -1,0 +1,10 @@
+<div class="add-remove">
+    <span tabindex="0" class="label label--small label--dark label--bordered mr-1 member"
+        *ngFor="let member of members | slice:0:1 ; let i = index" data-balloon-pos="up">
+        <span class="icon-contact"></span> &nbsp;
+        <span>{{member.cecId || member.name}}</span> 
+        <span class="icon-exit" (click)="onRemove(i)"></span>
+    </span>
+    <span id="members" class="label label--small label--dark label--bordered mr-1" *ngIf="members.length > 1" (click)="showViewModal()">+ {{ members.length -1 }} more</span>
+    <span class="btn btn--primary btn--small" [class.disabled]="!memberObj.isSelected" (click)="showModal()">Add<span class="icon-plus"></span></span>
+</div> 

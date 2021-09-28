@@ -1,0 +1,686 @@
+<div class="container-fluid">
+    <div class="formInputElements" [ngClass]="saveNextButton === 'Save'?'editProjectScreen':'createProjectScreen'" id="createProjectScreen" *ngIf="createProjectFormScreen">
+        <div *ngIf="showInputFields else spinner">
+        <form class="create-project-form" [formGroup]="createProForm">
+                <div class="row" class="custom-flex">
+                    <div class="col-6">
+                        <!-- Project Name -->
+                        <div class="row control-margin-right">
+                            <div class="col-6">
+                                <label for="project-name" class="required-field">Project Name</label>
+                            </div>
+
+                            <div class="col-6" >
+                                <div class="form-group input--compressed" [ngClass]="{'form-group--error': getNgClass('projectName')}">
+                                    <div class="form-group__text">
+                                        <input placeholder="Project Name" id="project-name"
+                                        formControlName="projectName" type="text" autocomplete="off" appAutofocus>
+                                    </div>
+
+                                    <div class="help-block text-danger" role="alert">
+                                        <div *ngIf="getIsForFormInputValid('projectName')">
+                                            <span *ngIf="createProForm.get('projectName').errors?.projectNameExists">A project with this name exists - choose another</span>
+                                            <span *ngIf="createProForm.get('projectName').errors?.maxlength">Project name should not exceed 200 characters</span>
+                                            <span *ngIf="createProForm.get('projectName').errors?.required">Please enter a valid project name</span>
+                                            <span *ngIf="createProForm.get('projectName').errors?.pattern">Please remove any special characters</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project Description -->
+                        <div class="row control-margin-right">
+                            <div class="col-6">
+                                <label for="project-description" class="required-field">Description</label>
+                            </div>
+
+                            <div class="col-6" >
+                                <div class="form-group" [ngClass]="{'form-group--error': getIsForFormInputValid('projectDescription')}">
+                                    <div class="form-group__text">
+                                        <textarea id="project-description" placeholder="Project Description" class="textarea" rows="5"
+                                        formControlName="projectDescription" autocomplete="off"></textarea>
+                                    </div>
+
+                                    <div class="help-block text-danger" role="alert">
+                                        <div *ngIf="getIsForFormInputValid('projectDescription')">
+                                            <span *ngIf="createProForm.get('projectDescription').errors?.required">Please enter a valid project description</span>
+                                            <span *ngIf="createProForm.get('projectDescription').errors?.maxlength">Project description should not exceed 4000 characters</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project Code Name -->
+                        <div class="row control-margin-right">
+                            <div class="col-6 text-right">
+                                <label for="project-code-name" class="control-margin-right">Project Code Name</label>
+
+                                 <!-- <span class="icon-info icon-small"
+                                [matTooltip]="getTooltipDesc('Project Code Name')" matTooltipPosition="after"></span>  -->
+
+                            </div>
+
+                            <div class="col-6">
+                                <div class="form-group input--compressed"> <!--form-group--error-->
+                                    <div class="form-group__text">
+                                        <input id="project-code-name" type="text" placeholder="Project Code Name" formControlName="productCodeName" autocomplete="off">
+                                    </div>
+                                    <div *ngIf="getIsForFormInputValid('productCodeName')">
+                                        <div class="help-block text-danger" role="alert" tabindex="-1">
+                                            <span *ngIf="createProForm.get('productCodeName').errors?.maxlength">Project code name should not exceed 200 characters</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FCS Date -->
+                        <div class="row control-margin-right">
+                            <div class="col-6 text-right">
+                                <label for="fcs-date" class="control-margin-right">First Customer Ship/Release Date</label>
+                                <!-- <span class="icon-info icon-small"
+                                [matTooltip]="getTooltipDesc('FCS Date')" matTooltipPosition="after"></span>  -->
+                            </div>
+
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <mat-form-field class="datepicker-css">
+                                        <input matInput [matDatepicker]="picker1" formControlName="myDate" autocomplete="off" placeholder="Choose a date"><!-- [min]="getTodayDate"-->
+                                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker1></mat-datepicker>
+                                    </mat-form-field>
+                                    <!--<div class="help-block text-danger" role="alert" tabindex="-1">
+                                        <span *ngIf="createProForm.get('myDate').errors">First Customer Ship/Release Date cannot be in the past</span>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Right Column-->
+                    <div class="col-6 panel--bordered-left">
+
+                        <!-- Owner -->
+                        <div class="row mt-1">
+                            <div class="col-2" style="margin-top: 5px; margin-left: -3rem;">
+                                <span class="fa fa-microphone" style="cursor: pointer;padding: 0;" (click)="onCreateProjectFirstPage()"></span>
+                            </div>
+                            <div class="col-4 text-right">
+                                <label for="owner" class="control-margin-right">Project Owner</label>
+                                <span class="icon-info icon-small"
+                                [matTooltip]="getTooltipDesc('Owner')" matTooltipPosition="after"  [matTooltipClass]="'tooltipForInfo'"></span>
+                            </div>
+
+                            <div class="col-8">
+                            <add-remove-member header="Owner"
+                                [createProject]="createProject"
+                                [isProjectOwner]="isProjectOwner"
+                                [getOwner]="createProject"
+                                [members]="ownersArray"
+                                (onValueChange)="onAddRemoveOwner($event)"
+                                ></add-remove-member>
+                            </div>
+                        </div>
+
+                        <!-- Team -->
+                        <div class="row mt-2">
+                            <div class="col-2" style="margin: -1rem;">
+                                <div class="">
+                                    <span class="fa fa-microphone" style="cursor: pointer;
+                                    padding: 0;
+                                    position: absolute;
+                                    margin-left: -2rem;
+                                    margin-top: 1rem;" (click)="getProjectDescription()"></span>
+                                </div>
+                                <span class="icon-speaker-out-left icon-medium" style="    cursor: pointer;
+                                transform: scale(-1, 1);
+                                margin-left: -2rem;
+                                top: 6rem;
+                                font-size: 16px;" (click)="speakDescription()"></span>
+                            </div>
+                            <div class="col-4 text-right">
+                                <label for="team" class="control-margin-right">Team</label>
+                                <span class="icon-info icon-small"
+                                [matTooltip]="getTooltipDesc('Team')" matTooltipPosition="after"  [matTooltipClass]="'tooltipForInfo'"></span>
+                            </div>
+
+                            <div class="col-8">
+                                <add-remove-member header="Team"
+                                [createProject]="createProject"
+                                [isProjectOwner]="isProjectOwner"
+                                [members]="teamsArray"
+                                [getOwner]="true"
+                                (onValueChange)="onAddRemoveTeam($event)"
+                                ></add-remove-member>
+                            </div>
+                        </div>
+
+                                                <!-- Acceptors & Owner -->
+                        <div *ngIf="!createProject && ownersAcceptorsArray?.length>0" class="row mt-2 ownerAcceptors">
+                            <div class="col-4 text-right">
+                                <label for="team" class="control-margin-right">Policy Acceptors and Owners</label>
+                                <span class="icon-info icon-small" [matTooltip]="getTooltipDesc('AcceptorsOwners')" matTooltipPosition="after" [matTooltipClass]="'tooltipForInfo'"></span>
+                            </div>
+
+                            <div class="col-8 flex">
+                                <div tabindex="0" class="label label--small label--dark label--bordered mr-1 pr-1" [attr.data-balloon]="member.fullname"
+                                    *ngFor="let member of ownersAcceptorsArray | slice:0:2 ; let i = index"
+                                    data-balloon-pos="up">
+                                    <div class="{{ member.members ? 'icon-conference' : 'icon-contact'}}"></div>
+                                    <div>{{getShortName(member)}}</div>
+                                </div>
+                                <span>
+                                    <span class="label label--small label--dark label--bordered"
+                                        *ngIf="ownersAcceptorsArray.length > 2" [attr.data-balloon]="" data-balloon-break
+                                        data-balloon-pos="up" (click)="showOwnerListModal(contentUsers, 'normal')">
+                                        <span class="icon-plus margin-right"></span>{{getShowMore}}</span>
+                                </span>
+
+                            </div>
+                        </div>
+
+                        <!-- Alpha release changes for US7907, US7547-->
+                         <div class="row mt-unset mb-unset">
+                            <div class="col-4 entity-flex">
+                                <label for="business-entity" class="control-margin-right">Business Entity</label>
+                                <span class="icon-info icon-small"
+                                (click)="showModal(webApiInfoContent, 'normal', 'Business Entity')"></span>
+                            </div>
+
+                            <div class="col-4" style="padding: 1.5rem;">
+                                <div class="form-group input--compressed">
+                                    <div class="form-group__text">
+                                        <input placeholder="Business Entity" type="text" autocomplete="off">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                         <!-- Alpha release changes for US7907, US7547-->
+                         <div class="row mt-unset">
+                            <div class="col-4 entity-flex">
+                                <label for="sub-business-entity" class="control-margin-right ">Sub-Business Entity</label>
+                                  <!-- <span class="icon-info icon-small"
+                                [matTooltip]="getTooltipDesc('Sub-Business Entity')" matTooltipPosition="after"></span>    -->
+                            </div>
+
+                            <div class="col-4" style="padding: 1.5rem;">
+                                <div class="form-group input--compressed">
+                                    <div class="form-group__text">
+                                        <input placeholder="Sub-Business Entity" type="text" autocomplete="off">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 text-right" style="margin-top: 5px;">
+                                <label for="product-status" class="control-margin-right">Status</label>
+                            </div>
+
+                            <div style="padding: 0 15px; width: 25rem;">
+                                <div class="form-group dropdown" (click)="demoStatusSelect()" 
+                                    [ngClass]="isStatusDropDonwActive ? 'active':''">
+                                    <div class="form-group__text select">
+                                    <input id="select-size-default" [value]="selectedStatusValue" 
+                                        style="background: #fff;" placeholder="Select a Status">
+                                    <!-- <label for="select-size-default">Default</label> -->
+                                    </div>
+                                    <div class="dropdown__menu">
+                                        <a (click)="onDemoStatusSelect('New')">New <span class="circle-css" style="background-color: green;"></span></a>
+                                        <a (click)="onDemoStatusSelect('Existing')">Existing <span class="circle-css" style="background-color: orange;"></span></a>
+                                        <a (click)="onDemoStatusSelect('Closed')">Closed <span class="circle-css" style="background-color: red;"></span></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="padding: 8px 0px;" *ngIf="selectedStatusValue">
+                                <span class="circle-css" [ngStyle]="{'background-color' : 
+                                selectedStatusValue == 'New' ? 'green' :
+                                selectedStatusValue == 'Existing' ? 'orange' :
+                                selectedStatusValue == 'Closed' ? 'red' : '#fff'}"></span>
+                            </div>
+
+                            <div class="col-2" style="margin-top: 5px; margin-left: -3rem;">
+                                <span class="fa fa-microphone" style="cursor: pointer;padding: 0;    position: absolute;
+                                left: 4rem;
+                                top: 3px;" 
+                                    (click)="selectStatusField()">
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Product Status -->
+                        <!-- <div class="row">
+                            <div class="col-4 text-right">
+                                <label for="product-status" class="control-margin-right">Product Status</label>
+                            </div>
+
+                            <div class="col-8">
+                                <label class="switch">
+                                    <span class="switch__label" [ngClass]="{'active-switch': !createProForm.get('existingNewProduct').value}">Existing</span>
+                                    <input  type="checkbox" formControlName="existingNewProduct" [checked]="createProForm.get('existingNewProduct').value"
+                                    (change)="onChangeExistingProduct()"  id="create-project-existing-new-project" [disabled]="isProjectOwner || createProject">
+                                    <span class="switch__input" style="margin-left: 0.5rem;"></span>
+                                    <span class="switch__label" [ngClass]="{'active-switch': createProForm.get('existingNewProduct').value}">New</span>
+                                </label>
+                            </div>
+                        </div> -->
+
+                        <!-- Product Version -->
+                        <!-- <div class="row">
+                            <div class="col-4 mt-1 text-right align-center">
+                                <label for="product-version" [ngClass]="{'disabled': existingProduct == false}" class="control-margin-right">Product Version</label>
+                            </div>
+                            <div class="col-8 mt-1">
+                                <div class="form-group input--compressed">
+                                    <div class="form-group__text">
+                                        <input id="product-version" type="text" placeholder="Product Version" formControlName="productVersion"
+                                        [ngClass]="{'disabled': existingProduct == false}"  autocomplete="off" style="width: 70%;">
+                                    </div>
+                                    <div *ngIf="getIsForFormInputValid('productVersion')">
+                                        <div class="help-block text-danger" role="alert" tabindex="-1">
+                                            <span *ngIf="createProForm.get('productVersion').errors?.maxlength">Product version should not exceed 200 characters</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+                </form>
+                <!-- Project Dropdowns -->
+                <div *ngIf="saveNextButton === 'Save'">
+                        <div *ngTemplateOutlet="projectDropdowns">
+
+                        </div>
+                </div>
+            <div class="divider"></div>
+
+            <div class="row" style="padding: 15px 0;">
+                <div class="col text-right">
+                    <button id="create-project-1-cancel-btn" class="btn btn--dark" (click)="gotoHome()">Cancel</button>
+                    <button id="create-project-1-next-btn" type="button" (click)="onSaveNext()"  class="btn btn--secondary" [disabled]="isSubmitDisable">{{saveNextButton}} <span
+                        class="icon-arrow-right-tail" *ngIf="saveNextButton=='Next'"></span> </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!--Dropdowns - Business Entity & Others-->
+
+
+    <!-- Page 2 -->
+    <div class="createProjectSecondScreen" *ngIf="createProjectSecondScreen">
+        <div *ngIf="apiResponseReady else spinner"  class="custom-flex">
+            <div *ngTemplateOutlet="projectDropdowns"></div>
+            <div class="divider"></div>
+            <div class="row">
+                <!-- Alpha release changes for US7907, US7547 -->
+                <!-- <div class="col-12">
+                    <p><i>All the general compliance requirements are selected by default. If further help is needed, click on <b>Help me select</b> to answer a few questions to get a list of recommended requirements.</i></p>
+                </div> -->
+                <div class="col-12 text-center">
+                    <p>Below are the currently supported policies. More policies will be added soon.</p>
+                </div>
+                <!-- <div class="col-12" style="text-align: center;">
+                    <button id="help-me-select-btn" class="btn btn--primary btn--small mt-1" (click)="onHelpMeSelect()">Help me select</button>
+                </div> -->
+            </div>
+            <!-- <div class="divider"></div> -->
+            <div class="row">
+                <!-- General Compliance  -->
+                <div class="col-sm-4">
+                    <div class="panel panel--bordered">
+                        <div class="hero hero--mdgray">
+                            General Compliance Requirements
+                            <!--<span
+                                class="icon-info icon--custom-size"
+                                (click)="tooltip.toggle()"
+                                matTooltip="Click to view"
+                                matTooltipPosition="below"
+                                [matTooltipClass]="'tooltipForInfo'"></span>
+                            <span
+                                #tooltip="matTooltip"
+                                [matTooltip]="getTooltipDesc('General Compliance Requirements')"
+                                matTooltipPosition="below"
+                                [matTooltipClass]="'tooltipForInfo xlarge'"></span>-->
+                                <span class="icon-info icon--custom-size"
+                                (click)="showModal(webApiInfoContent, 'normal', 'General Compliance Requirements')"></span>
+                        </div>
+
+                        <div *ngFor="let generalCompliance of generalCompliances; let i = index">
+                            <label class="checkbox">
+                                <input type="checkbox" id="generalCompliance" (change)="onCAndTCheckboxChange($event,i)" [checked]="generalCompliance.selected">
+                                <span class="checkbox__input"></span>
+                                <span class="checkbox__label hidden-xs" >{{generalCompliance.name}}</span>
+                            </label>
+                            <span class="iconHelper icon-info icon-small" (click)="showModal(content, 'large', generalCompliance.name)"
+                            ></span>
+                        </div>
+                    </div>
+                </div>
+
+                    <!-- Additional Requirements -->
+                <div class="col-sm-4">
+                    <div class="panel panel--bordered">
+                        <div class="hero hero--mdgray">
+                            Additional Compliance Requirements
+                            <span class="icon-info icon--custom-size" (click)="showModal(webApiInfoContent, 'normal', 'Additional Compliance Requirements')"></span>
+                        </div>
+                         <div class="" *ngFor="let additionalRequirement of additionalRequirements; let i = index">
+                            <label class="checkbox">
+                                <input type="checkbox" id="additionalRequirement" (change)="onCAndTCheckboxChange($event,i)" [checked]="additionalRequirement.selected">
+                                <span class="checkbox__input"></span>
+                                <span class="checkbox__label hidden-xs">{{additionalRequirement.name}}</span>
+                            </label>
+                            <span class="iconHelper icon-info icon-small"
+                                (click)="showModal(content, 'large', additionalRequirement.name)" style="margin-left: 5px;cursor:pointer"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technical Best Practices -->
+                <div class="col-sm-4">
+                    <div class="panel panel--bordered">
+                        <div class="hero hero--mdgray">
+                            Technology Best Practices
+                            <span class="icon-info icon--custom-size"
+                                (click)="showModal(webApiInfoContent, 'normal', 'Technology Best Practices')"></span>
+                        </div>
+
+                         <div *ngFor="let technicalBestPractice of technicalBestPractices; let i = index">
+                            <label class="checkbox">
+                                <input type="checkbox" id="technicalBestPractice" (change)="onCAndTCheckboxChange($event,i)" [checked]="technicalBestPractice.selected">
+                                <span class="checkbox__input"></span>
+                                <span class="checkbox__label hidden-xs">{{technicalBestPractice.name}}</span>
+                            </label>
+                            <span class="iconHelper icon-info icon-small"
+                            (click)="showModal(webApiInfoContent, 'large', technicalBestPractice.name)"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="divider"></div>
+        <div class="row mt-2">
+            <div class="col text-right">
+                <button id="create-project-1-cancel-btn" class="btn btn--dark" (click)="gotoHome()">Cancel</button>
+                <button id="create-project-2-cancel-btn" class="btn btn--secondary" (click)="gotoBack()"><span
+                    class="icon-arrow-left-tail"></span> Previous</button>
+                <button id="create-project-btn" class="btn btn--success" (click)="postFinalForm()">Create</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+    <div>
+            <!-- <ng-template #applicabilityHelperPopup>
+                <div class="applicability-helper">
+                    <applicability-helper  *ngIf="initializeWizardComponent"
+                    (wizardScreen)="onWizardScreenUpdate($event)"
+                    (updateItems)="updateItemsFromWizard($event)"
+                    [modalRef]="applicabilityHelpermodalRef"
+                    ></applicability-helper>
+                </div>
+            </ng-template> -->
+
+
+    <!-- CUI Spinner -->
+    <ng-template #spinner>
+        <div  id="cuiLoaderContainer" class="absolute-center">
+            <cui-spinner color="default" label="Loading"></cui-spinner>
+        </div>
+    </ng-template>
+    <!-- End CUI Spinner -->
+
+    <ng-template #projectDropdowns>
+            <!-- Dropdowns row -->
+            <!-- <div class="row cuiDropDownItems panel--mdgray"> -->
+                <!-- Column 1 -->
+                 <!-- Alpha release changes for US7907, US7547-->
+                <!-- <div class="col-lg-4"> -->
+                    <!-- Business Entity -->
+                    <!-- <div class="row">
+                        <div class="col-5 text-right">
+                            <label for="business-entity" class="control-margin-right">Business Entity</label> -->
+
+                            <!-- <span class="icon-info icon-small"
+                             [matTooltip]="getTooltipDesc('Business Entity')" matTooltipPosition="after"></span>  -->
+                        <!-- </div> -->
+
+                        <!-- <div class="col-7 text-right">
+                            <div>
+                                <cui-select id="businessEntitySelect" [required]="false" [empty]="true" [items]="businessEntity" placeholder="No Selection" [disabled]="!createProject && !isProjectOwner"
+                                [compressed]="true" [ngModelOptions]="{standalone: true}"  [(ngModel)]="selectedBusinessEntity"
+                                (ngModelChange)="onSelectBusinessEntity()" optionsKey="businessEntity" optionsValue="_id"></cui-select>
+                            </div>
+                        </div> -->
+                    <!-- </div> -->
+
+                    <!-- Sub-Business Entity -->
+                    <!-- <div class="row">
+                        <div class="col-5 text-right">
+                            <label for="sub-business-entity" class="control-margin-right">Sub-Business Entity</label> -->
+                             <!-- <span class="icon-info icon-small"
+                            [matTooltip]="getTooltipDesc('Sub-Business Entity')" matTooltipPosition="after"></span>   -->
+                        <!-- </div> -->
+
+                            <!-- <div class="col-7 text-right">
+                                <div>
+                                    <cui-select  [required]="false"  [disabled]="iSsubBusinessEntityDisabled || !createProject && !isProjectOwner" [empty]="true"
+                                    [items]="subBusinessEntity" placeholder="No Selection" [compressed]="true" [ngModelOptions]="{standalone: true}"
+                                    [(ngModel)]="selectedSubBusinessEntity" (ngModelChange)="onSelectSubBusinessEntity()" optionsKey="name" optionsValue="value"></cui-select>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div> -->
+
+                <!-- Column 2 -->
+                <!-- <div class="col-lg-4 panel--bordered-left"> -->
+                    <!-- Product Type -->
+                    <!-- <div class="row">
+                        <div class="col-5 text-right">
+                            <label for="product-type" class="control-margin-right">Product Type</label> -->
+                            <!-- <span class="icon-info icon-small"
+                            [matTooltip]="getTooltipDesc('Product Type')" matTooltipPosition="after"></span>  -->
+                        <!-- </div> -->
+
+                        <!-- <div class="col-7 text-right">
+                            <div>
+                                <cui-select  [required]="false" [empty]="true" [items]="productTypes" placeholder="No Selection" [compressed]="true" [disabled]="!createProject && !isProjectOwner"
+                                [ngModelOptions]="{standalone: true}"  [(ngModel)]="selectedProductType" (ngModelChange)="onSelectProductType()"
+                                optionsKey="name" optionsValue="_id"></cui-select>
+                            </div>
+                        </div> -->
+                    <!-- </div> -->
+
+                    <!-- Development Style -->
+                    <!-- <div class="row">
+                        <div class="col-5 text-right">
+                            <label for="development-style" class="control-margin-right">Development Style</label> -->
+                            <!-- <span class="icon-info icon-small"
+                            [matTooltip]="getTooltipDesc('Development Style')" matTooltipPosition="after"></span>  -->
+                        <!-- </div> -->
+
+                        <!-- <div class="col-7 text-right">
+                            <div>
+                                <cui-select  [required]="false" [empty]="true" [items]="developmentStyles" placeholder="No Selection" [compressed]="true" [disabled]="!createProject && !isProjectOwner"
+                                [ngModelOptions]="{standalone: true}"  [(ngModel)]="selectedDevelopmentStyle" (ngModelChange)="onSelectDevelopmentStyle()"
+                                optionsKey="name" optionsValue="_id"></cui-select>
+                            </div>
+                        </div> -->
+                    <!-- </div>
+
+                </div> -->
+
+                <!-- Column 3 -->
+                <!-- <div class="col-lg-4 panel--bordered-left"> -->
+                    <!-- Choose Template -->
+                    <!-- <div class="row">
+                        <div class="col-5 text-right">
+                            <label for="template" class="control-margin-right">Choose Template</label> -->
+                            <!-- <span class="icon-info icon-small"></span>  -->
+                        <!-- </div> -->
+
+                        <!-- <div class="col-7 text-right">
+                            <div>
+                                <cui-select  [required]="false" [disabled]="!createProject" [empty]="true" [items]="templates" placeholder="No Selection"
+                                [compressed]="true" [ngModelOptions]="{standalone: true}"  [(ngModel)]="selectedTemplate"
+                                (ngModelChange)="onSelectTemplate()" optionsKey="name" optionsValue="_id"></cui-select>
+                            </div>
+                        </div>
+                    </div> -->
+
+                    <!-- Text -->
+                    <!-- <div class="text-right" *ngIf="createProject">
+                        <p><b>We will give you smart suggestions based on your choices</b></p>
+                    </div> -->
+                 <!-- </div>  -->
+
+                 <!-- Column 3 -->
+                <div class="col-lg-4 panel--bordered-left">
+                    <!-- Choose Template -->
+                    <div class="row">
+                        <div class="col-5">
+                            <label for="template" class="control-margin-right">Choose Template</label>
+                            <!-- <span class="icon-info icon-small"></span>  -->
+                        </div>
+
+                            <div class="col-7">
+                            <!-- <div>
+                                <cui-select  [required]="false" [disabled]="!createProject" [empty]="true" [items]="templates" placeholder="No selection" 
+                                [compressed]="true" [ngModelOptions]="{standalone: true}"  [(ngModel)]="selectedTemplate"
+                                (ngModelChange)="onSelectTemplate()" optionsKey="name" optionsValue="_id"></cui-select>                         
+                            </div> -->
+                            <div class="form-group dropdown" (click)="demoTemplateSelect()" [ngClass]="isDropDonwActive ? 'active':''">
+                                <div class="form-group__text select">
+                                <input id="select-size-default" [value]="selectedTemplateValue" 
+                                placeholder="Select a Template">
+                                <!-- <label for="select-size-default">Default</label> -->
+                                </div>
+                                <div (click)="onDemoTemplateSelect()" class="dropdown__menu">
+                                    <a>Default</a>
+                                    <a>Accessibility</a>
+                                    <a>Technology</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Text -->
+                    <div style="margin: 2rem 0px;" class="text-right" *ngIf="createProject">
+                        <p><b>We will give you smart suggestions based on your choices</b></p>
+                    </div>
+                </div>
+
+            <!-- </div> -->
+        </ng-template>
+</div> <!--container-fluid div-->
+
+<ng-template #content>
+    <a class="modal__close" (click)="cuiModalService.hide()"><span class="icon-close"></span></a>
+    <div class="modal__header"> <div class="modal__title ml-1">{{infoIconDesc.name}}</div></div>
+    <div class="modal__body" style="text-align:left;">
+        <div class="modalContent">
+            <span class="modalSpan">{{infoIconDesc.description}}</span>
+            <span class="modalSpan"><b>{{applicabilityKey | titlecase}}:</b></span>
+            <span>{{applicability.text}}</span>
+            <ol>
+                <li *ngFor="let content of applicabilityContent">
+                    <span class="modalSpan">{{content.text}}</span>
+                    <ol *ngIf="content.subContent?.length > 0">
+                        <li *ngFor="let subContent of content.subContent">
+                            <span class="modalSpan" *ngIf="subContent.text;else elseBlock2">{{subContent.text}}</span>
+                            <ng-template #elseBlock2>{{subContent}}</ng-template>
+                            <ul>
+                                <li *ngFor="let scSubContent of subContent.subContent">
+                                        <span class="modalSpan">{{scSubContent}}</span>
+                                </li>
+                            </ul>
+                        </li>
+                    </ol>
+                </li>
+            </ol>
+            <span class="modalSpan"><b>Steps to Reach Compliance:</b></span>
+            <span class="modalSpan" *ngIf="!reachCompliance.text">{{reachCompliance.text}}</span>
+            <ol>
+                <li *ngFor="let content of reachComplianceContent">
+                    <span class="modalSpan">{{content.text}}</span>
+                    <ol *ngIf="content.subContent?.length > 0">
+                        <li *ngFor="let subContent of content.subContent">
+                            <span class="modalSpan" *ngIf="subContent.text;else elseBlock">{{subContent.text}}</span>
+                            <ng-template #elseBlock>{{subContent}}</ng-template>
+                            <ul>
+                                <li *ngFor="let scSubContent of subContent.subContent">
+                                        <span class="modalSpan">{{scSubContent}}</span>
+                                </li>
+                            </ul>
+                        </li>
+                    </ol>
+                 </li>
+            </ol>
+        </div>
+        <div *ngIf="infoIconDesc.sharepointLink" class="p-1">
+            <div [innerHTML]="infoIconDesc.sharepointLink"></div>
+        </div>
+    </div>
+  </ng-template>
+
+  <ng-template #formDataLostError>
+    <a class="modal__close" (click)="cuiModalService.hide()"><span class="icon-close"></span></a>
+    <div class="modal__header mt-1">
+        <div class="modal__title pl-1">Form data will be lost</div>
+    </div>
+    <div class="modal__body">
+        <p class="modal__body--text pl-1">Do you want to discard the request?</p>
+    </div>
+    <div class="modal__footer text-center mt-4">
+        <button class="btn btn--primary" (click)="cuiModalService.hide()">No</button>
+        <button class="btn btn--primary" (click)="navigateToHome()">Yes</button>
+    </div>
+  </ng-template>
+<div class="overlay" *ngIf="isCreatingProject">
+    <div  id="cuiLoaderContainer" class="absolute-center">
+        <cui-spinner color="default" label="Loading"></cui-spinner>
+    </div>
+</div>
+<ng-template #webApiInfoContent>
+    <a class="modal__close" (click)="cuiModalService.hide()"><span class="icon-close"></span></a>
+    <div class="modal__header"> <div class="modal__title ml-1">{{infoIconDesc.name}}</div></div>
+    <div class="modal__body" style="text-align:left;">
+        <div class="modalContent">
+            <div [innerHTML]="infoIconDesc.description"></div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #contentUsers>
+    <a class="modal__close" (click)="cuiModalService.hide()"><span class="icon-close"></span></a>
+    <div class="addRemoveModalHeader">
+        <div class="modal__title">Acceptors & Owners</div>
+    </div>
+    <div class="modal__body">
+
+        <!-- <div class="loading-dots loading-dots--muted" *ngIf="showLoader" aria-label="Loading, please wait...">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        <br/>     -->
+        <hr/>
+        <span class="custom__label">
+            <span class="label label--small label--dark label--bordered mr-1" style="height: 27px" tabindex="0" data-balloon-pos="down" data-balloon-length="" data-balloon-break
+            [attr.data-balloon]="member.members ? getMembersTooltip(member.members) : member.fullname"
+            *ngFor="let member of ownersAcceptorsArray; let i = index">
+                <span class="{{ member.members ? 'icon-conference' : 'icon-contact'}}"></span> &nbsp;
+                <span>{{member.fullname || member.name || member.cecId}}</span>
+
+            </span>
+        </span>
+    </div>
+    <div class="modal__footer">
+        <button class="btn btn--secondary" (click)="hideModal()" style="background-color: #017cad;">Ok</button>
+    </div>
+</ng-template>

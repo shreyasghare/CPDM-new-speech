@@ -1,0 +1,18 @@
+[
+    {
+        "_id": "5d4916614dd6fffa132503fb",
+        "name": "Continuous"
+    },
+    {
+        "_id": "5d4916414dd6fffa132503cf",
+        "name": "Gate"
+    },
+    {
+        "_id": "5d4916564dd6fffa132503ee",
+        "name": "Iterative"
+    },
+    {
+        "_id": "5d4916a84dd6fffa13250465",
+        "name": "Solution"
+    }
+]

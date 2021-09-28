@@ -1,0 +1,311 @@
+{
+      "owners": [
+        {
+          "id": "meeshukl@cisco.com",
+          "name": "Meenal Shukla"
+        },
+        {
+          "id": "santosur@cisco.com",
+          "name": "Santosh Kumar Suresh"
+        }
+      ],
+      "teams": [
+        {
+          "id": "meeshukl@cisco.com",
+          "name": "Meenal Shukla"
+        },
+        {
+          "id": "santosur@cisco.com",
+          "name": "Santosh Kumar Suresh"
+        }
+      ],
+      "organizations": [
+        {
+          "id": 1,
+          "orgName": "Engineering Network"
+        }
+      ],
+      "productTypes": [
+        {
+          "id": 1,
+          "productType": "Hardware"
+        }
+      ],
+      "styles": [
+        {
+          "id": 1,
+          "styleName": "Solution"
+        }
+      ],
+      "templates": [
+        {
+          "id": 1,
+          "templateName": "Template 1"
+        }
+      ],
+      "complianceItems": [
+        {
+          "id": 1,
+          "name": "Accessibility",
+          "owners": [
+            {
+              "id": "meeshukl@cisco.com",
+              "name": "Meenal Shukla"
+            },
+            {
+              "id": "santosur@cisco.com",
+              "name": "Santosh Kumar Suresh"
+            }
+          ],
+          "acceptors": [
+            {
+              "id": "meeshukl@cisco.com",
+              "name": "Meenal Shukla"
+            },
+            {
+              "id": "santosur@cisco.com",
+              "name": "Santosh Kumar Suresh"
+            }
+          ],
+          "Applicability": "yes",
+          "progressStatus": "Not Started",
+          "progressScore": 1,
+          "comments": "NA"
+        }
+      ],
+      "_id": "5d3ad73a08d6bdb1181096ec",
+      "name": "Uber Elevate",
+      "desc": "Demo project for Uber Elevate",
+      "stream": null,
+      "lastUpdatedDate": "2019-07-25T01:11:18.965Z",
+      "TechnicalStandardItems": [
+        {
+          "id": 1,
+          "name": "Smart Licence",
+          "owners": [
+            {
+              "id": "meeshukl@cisco.com",
+              "name": "Meenal Shukla"
+            },
+            {
+              "id": "santosur@cisco.com",
+              "name": "Santosh Kumar Suresh"
+            }
+          ],
+          "Applicability": "yes",
+          "progressStatus": "Working",
+          "BacklogLinks": "",
+          "progressScore": 1,
+          "comments": "NA"
+        },
+        {
+          "id": 2,
+          "name": "Export Complaince",
+          "owners": [
+            {
+              "id": "meeshukl@cisco.com",
+              "name": "Meenal Shukla"
+            },
+            {
+              "id": "santosur@cisco.com",
+              "name": "Santosh Kumar Suresh"
+            }
+          ],
+          "Applicability": "yes",
+          "progressStatus": "Working",
+          "BacklogLinks": "https://cpdm-dev.cloudapps.cisco.com",
+          "progressScore": 1,
+          "comments": "NA"
+        },
+        {
+          "id": 3,
+          "name": "Revenue Recognition",
+          "owners": [
+            {
+              "id": "meeshukl@cisco.com",
+              "name": "Meenal Shukla"
+            },
+            {
+              "id": "santosur@cisco.com",
+              "name": "Santosh Kumar Suresh"
+            }
+          ],
+          "Applicability": "yes",
+          "progressStatus": "Not Applicable",
+          "BacklogLinks": "https://cpdm-dev.cloudapps.cisco.com",
+          "progressScore": 0,
+          "comments": "NA"
+        },
+        {
+          "id": 4,
+          "name": "Secure Development LifeCycle",
+          "owners": [
+            {
+              "id": "meeshukl@cisco.com",
+              "name": "Meenal Shukla"
+            },
+            {
+              "id": "santosur@cisco.com",
+              "name": "Santosh Kumar Suresh"
+            }
+          ],
+          "Applicability": "yes",
+          "progressStatus": "Not in Backlog",
+          "BacklogLinks": "https://cpdm-dev.cloudapps.cisco.com",
+          "progressScore": 0,
+          "comments": "NA"
+        },
+        {
+          "id": 5,
+          "name": "Smart Licence",
+          "owners": [
+            {
+              "id": "meeshukl@cisco.com",
+              "name": "Meenal Shukla"
+            },
+            {
+              "id": "santosur@cisco.com",
+              "name": "Santosh Kumar Suresh"
+            }
+          ],
+          "Applicability": "yes",
+          "progressStatus": "Working",
+          "BacklogLinks": "",
+          "progressScore": 1,
+          "comments": "NA"
+        },
+        {
+          "id": 6,
+          "name": "Export Complaince",
+          "owners": [
+            {
+              "id": "meeshukl@cisco.com",
+              "name": "Meenal Shukla"
+            },
+            {
+              "id": "santosur@cisco.com",
+              "name": "Santosh Kumar Suresh"
+            }
+          ],
+          "Applicability": "yes",
+          "progressStatus": "Working",
+          "BacklogLinks": "https://cpdm-dev.cloudapps.cisco.com",
+          "progressScore": 1,
+          "comments": "NA"
+        },
+        {
+          "id": 7,
+          "name": "Revenue Recognition",
+          "owners": [
+            {
+              "id": "meeshukl@cisco.com",
+              "name": "Meenal Shukla"
+            },
+            {
+              "id": "santosur@cisco.com",
+              "name": "Santosh Kumar Suresh"
+            }
+          ],
+          "Applicability": "yes",
+          "progressStatus": "Not Applicable",
+          "BacklogLinks": "https://cpdm-dev.cloudapps.cisco.com",
+          "progressScore": 0,
+          "comments": "NA"
+        },
+        {
+          "id": 8,
+          "name": "Secure Development LifeCycle",
+          "owners": [
+            {
+              "id": "meeshukl@cisco.com",
+              "name": "Meenal Shukla"
+            },
+            {
+              "id": "santosur@cisco.com",
+              "name": "Santosh Kumar Suresh"
+            }
+          ],
+          "Applicability": "yes",
+          "progressStatus": "Not in Backlog",
+          "BacklogLinks": "https://cpdm-dev.cloudapps.cisco.com",
+          "progressScore": 0,
+          "comments": "NA"
+        },
+        {
+          "id": 9,
+          "name": "Smart Licence",
+          "owners": [
+            {
+              "id": "meeshukl@cisco.com",
+              "name": "Meenal Shukla"
+            },
+            {
+              "id": "santosur@cisco.com",
+              "name": "Santosh Kumar Suresh"
+            }
+          ],
+          "Applicability": "yes",
+          "progressStatus": "Working",
+          "BacklogLinks": "",
+          "progressScore": 1,
+          "comments": "NA"
+        },
+        {
+          "id": 10,
+          "name": "Export Complaince",
+          "owners": [
+            {
+              "id": "meeshukl@cisco.com",
+              "name": "Meenal Shukla"
+            },
+            {
+              "id": "santosur@cisco.com",
+              "name": "Santosh Kumar Suresh"
+            }
+          ],
+          "Applicability": "yes",
+          "progressStatus": "Working",
+          "BacklogLinks": "https://cpdm-dev.cloudapps.cisco.com",
+          "progressScore": 1,
+          "comments": "NA"
+        },
+        {
+          "id": 11,
+          "name": "Revenue Recognition",
+          "owners": [
+            {
+              "id": "meeshukl@cisco.com",
+              "name": "Meenal Shukla"
+            },
+            {
+              "id": "santosur@cisco.com",
+              "name": "Santosh Kumar Suresh"
+            }
+          ],
+          "Applicability": "yes",
+          "progressStatus": "Not Applicable",
+          "BacklogLinks": "https://cpdm-dev.cloudapps.cisco.com",
+          "progressScore": 0,
+          "comments": "NA"
+        },
+        {
+          "id": 12,
+          "name": "Secure Development LifeCycle",
+          "owners": [
+            {
+              "id": "meeshukl@cisco.com",
+              "name": "Meenal Shukla"
+            },
+            {
+              "id": "santosur@cisco.com",
+              "name": "Santosh Kumar Suresh"
+            }
+          ],
+          "Applicability": "yes",
+          "progressStatus": "Not in Backlog",
+          "BacklogLinks": "https://cpdm-dev.cloudapps.cisco.com",
+          "progressScore": 0,
+          "comments": "NA"
+        }
+      ]
+    }

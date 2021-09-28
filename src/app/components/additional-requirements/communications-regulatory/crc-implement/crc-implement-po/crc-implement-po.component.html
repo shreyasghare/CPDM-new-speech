@@ -1,0 +1,158 @@
+<div *ngIf="implementationStatus === 'notRequired'" class="main flex full-height flex-center-vertical flex-center-horizontal">
+    <div class="holdingScreenContainer">
+        <app-holding-status [statusIcon]="naHoldingMsg.statusIcon" [status]="naHoldingMsg.status">
+            <div class="mt-2" [innerHTML]="naHoldingMsg.message"></div>
+        </app-holding-status>
+    </div>
+</div>
+
+<div class="full-height flex-center-vertical flex-center-horizontal" *ngIf="!implementationStatus">
+    <app-holding-status [statusIcon]="'wait'" [status]="'The Implementation Report is submitted after the Project Team completes the implementation of the recommendations. Please wait'"></app-holding-status>
+</div>
+
+<div *ngIf="implementationStatus === 'submit'" class="submitReviewContainer">    
+    <div class="submitReviewContainer__reviewAction">
+        <app-holding-status [statusIcon]="'submit'" [status]="'Review the following implementation report'" 
+        [className]="'light'">
+            <div class="mt-2">
+                <span>Requirements implemented:</span><br/>
+                <span class="highlight__implementationDetailesText" *ngIf="requirementsImplementedDetails">{{requirementsImplementedDetails}}</span>
+            </div>
+            <div class="mt-2">
+                <span>Defects fixed:</span><br/>
+                <span class="highlight__implementationDetailesText" *ngIf="defectsFixedDetails">{{defectsFixedDetails}}</span>
+            </div>
+        </app-holding-status>
+
+        <div class="crc-review__po--action">
+            <span><img class="review-icon" src="assets/images/icons/svg/like.svg">
+                <img class="review-icon review-icon__invert" src="assets/images/icons/svg/like.svg">
+            </span>
+            <span class="ml-1">Review: </span>
+            <div class="form-group mr-3">
+                <label class="radio ml-1">
+                    <input type="radio" [(ngModel)]="poApprove"
+                        value="approved" (change)="poApprovalChange()">
+                    <span class="radio__input"></span>
+                    <span class="radio__label hidden-xs">Approve</span>
+                </label>
+            </div>
+            <div class="form-group">
+                <label class="radio">
+                    <input type="radio" [(ngModel)]="poApprove"
+                        value="rejected" (change)="poApprovalChange()">
+                    <span class="radio__input"></span>
+                    <span class="radio__label hidden-xs">Reject</span>
+                </label>
+            </div>
+        </div>
+    </div>    
+    <div class="submitReviewContainer__reviewAction mt-1">
+        <app-holding-status [statusIcon]="'chat'" [status] ="crcStatus.comment.status">
+            <div class="crc-review__po-comments--comment">
+                <textarea rows="5" placeholder="Type here" [(ngModel)] ="poComment" (ngModelChange)="getRejectInput()"></textarea>
+            </div>
+        </app-holding-status>
+    </div>
+    <div class="submitReviewContainer__reviewAction mt-1">    
+        <app-holding-status [statusIcon]="'chooseAction'" [status] ="crcStatus.action.status" *ngIf="poApprove === 'rejected'">            
+            <div class="crc-review__po-comments--comment">
+                <div class="form-group mr-3">
+                    <label class="radio">
+                        <input type="radio" name="approve-reject-rcl"
+                            value="yes" [(ngModel)] = "moveToIdentify" (change)="getRejectInput()">
+                        <span class="radio__input"></span>
+                        <span class="radio__label hidden-xs">Change recommendations and move the process to ‘Identify’ step</span>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="radio">
+                        <input type="radio" name="approve-reject-rcl"
+                            value="no" [(ngModel)] = "moveToIdentify" (change)="getRejectInput()">
+                        <span class="radio__input"></span>
+                        <span class="radio__label hidden-xs">Address implementation gap(s)</span>
+                    </label>
+                </div>
+            </div>
+        </app-holding-status>
+    </div>
+    
+    <div class="submitReviewContainer__submitButton mt-1">        
+        <button class="btn btn--primary" (click)="updateApproval()" [disabled]="isSubmitDisabled">Submit
+        </button>
+
+    </div>
+</div>
+ 
+<div *ngIf="implementationStatus === 'rejected'" class="submitReviewContainer">
+    <div class="submitReviewContainer__reviewAction">
+        <app-holding-status [statusIcon]="'cancel'" [status]="'Regulatory Compliance Team rejected the Implementation report.
+        Engineering team will address the gaps and re-submit report.'"  >
+            <div class="mt-2">
+                <span>Requirements implemented:</span><br/>
+                <span class="highlight__implementationDetailesText" *ngIf="requirementsImplementedDetails">{{requirementsImplementedDetails}}</span>
+            </div>
+            <div class="mt-2">
+                <span>Defects fixed:</span><br/>
+                <span class="highlight__implementationDetailesText" *ngIf="defectsFixedDetails">{{defectsFixedDetails}}</span>
+            </div>           
+        </app-holding-status>        
+    </div> 
+    <div class="submitReviewContainer__reviewAction mt-1">
+        <app-holding-status [statusIcon]="'chat'" [status]="'Comments from the Regulatory Compliance Team'"  >
+            <div *ngFor="let element of poComments; let i=index">
+                <div *ngIf="!element.commentForIdentify">
+                    <div class="row">
+                        <div class="rightBorder"><span class="m-1" [ngClass]="{'status-approved': element.status === 'approved', 'status-rejected' : element.status === 'rejected' }">{{element.status}}</span></div>
+                        <div class="rightBorder"><span class="m-1">Commented by</span>&nbsp;<span class=" highlight__user mr-1"><i>{{element.commentedBy}}</i></span></div>                
+                        <div><span class="m-1 highlight__date"><i>On&nbsp;{{element.commentedOn | date:'dd MMM y'}}</i></span></div>
+                    </div>
+                    <span class="{{!element.comment ? 'text-gray-600' : ''}}">{{element.comment ? element.comment : 'NA'}}</span>
+                    <hr *ngIf="poComments.length > 1 && i < poComments.length - 1">
+                </div>                
+            </div>
+        </app-holding-status>        
+    </div>
+</div>
+
+<div *ngIf="implementationStatus === 'approved'" class="flex full-height flex-center-vertical flex-center-horizontal submitReviewContainer">
+    <div class="submitReviewContainer__reviewAction">
+        <app-holding-status [statusIcon]="'complete'" [status]="'Regulatory Compliance Team approved the Implementation report'"  >
+            <div class="mt-2">
+                <span>Requirements implemented:</span><br/>
+                <span class="highlight__implementationDetailesText" *ngIf="requirementsImplementedDetails">{{requirementsImplementedDetails}}</span>
+            </div>
+            <div class="mt-2">
+                <span>Defects fixed:</span><br/>
+                <span class="highlight__implementationDetailesText" *ngIf="defectsFixedDetails">{{defectsFixedDetails}}</span>
+            </div>
+        </app-holding-status>        
+    </div>
+    
+    <div class="submitReviewContainer__reviewAction mt-1">
+        <app-holding-status [statusIcon]="'chat'" [status]="'Comments from the Regulatory Compliance Team'"  >
+            <div *ngFor="let element of poComments; let i=index">
+                <div *ngIf="!element.commentForIdentify">
+                    <div class="row">
+                        <div class="rightBorder"><span class="m-1" [ngClass]="{'status-approved': element.status === 'approved', 'status-rejected' : element.status === 'rejected' }">{{element.status}}</span></div>
+                        <div class="rightBorder"><span class="m-1">Commented by</span>&nbsp;<span class=" highlight__user mr-1"><i>{{element.commentedBy}}</i></span></div>                
+                        <div><span class="m-1 highlight__date"><i>On&nbsp;{{element.commentedOn | date:'dd MMM y'}}</i></span></div>
+                    </div>
+                    <span class="{{!element.comment ? 'text-gray-600' : ''}}">{{element.comment ? element.comment : 'NA'}}</span>
+                    <hr *ngIf="poComments.length > 1 && i < poComments.length - 1">
+                </div>                
+            </div>      
+        </app-holding-status>        
+    </div>
+</div>
+<!-- Dialog template #2 -->
+<ng-template #conformationDialog>
+    <h2 matDialogTitle>Confirmation: Reject with additions to the Recommendations list</h2>
+    <mat-dialog-content>
+      <p>By selecting to 'Reject the Implementation Report with changes', the process will move to Step 2: Identify step.  The current recommendations list is retained and allows new recommendation(s).</p>      
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button type="button" class="btn btn-primary"  [mat-dialog-close]="false" cdkFocusInitial>Cancel</button>
+      <button type="button" class="btn btn-primary"  [mat-dialog-close]="true" cdkFocusInitial>Confirm</button>
+    </mat-dialog-actions>
+</ng-template>

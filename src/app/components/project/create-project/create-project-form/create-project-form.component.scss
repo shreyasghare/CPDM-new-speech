@@ -1,0 +1,311 @@
+.select {
+    width: 100%; 
+    height: 30px;
+}
+
+.required-field {
+    float: right;
+    &:after {
+        content:"*";
+        color:red;
+    }
+}
+
+// .text-invalid{
+//   border: 1px solid red;
+// }
+
+input,textarea{
+    padding: 0.4rem!important;
+}
+
+option:checked {
+    display: none;
+}
+
+textarea {
+    resize: none;
+    background-color: #fff !important;
+}
+
+.help-block{
+    height: 1.2rem;
+    span{
+        font-size: 1.2rem;
+        display: inline-block;
+        // margin-top: 6px;
+    }
+}
+
+
+.panel{
+    height: 30vh;
+    overflow: auto;
+}
+
+.datepicker-css {
+    margin-top: -4%;
+    max-width: 50%;
+}
+
+.control-margin-top {
+    //margin-top: 1%;
+    margin-top: 1rem;
+}
+
+.control-margin-right {
+    margin-right: 2%;
+}
+
+.entity-flex{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+
+
+.control-margin-left {
+    margin-left: 2%;
+}
+
+.container {
+    height: 100%;
+}
+
+.divider{
+    margin: 0;
+}
+
+
+p{
+    margin: 0;
+}
+
+.createProjectSecondScreen{
+    .custom-flex{
+        display: flex;
+        flex-direction: column;
+        height: 64vh; 
+    
+        & > .row{
+            margin: auto 0;  
+        }
+    }
+}
+
+
+.formInputElements{
+    & > div{
+      height: 63vh; 
+      display: flex;
+      flex-direction: column;
+      & > div,& > form{    
+        margin: auto 0; 
+      }
+    }
+
+    .create-project-form {
+        padding: 15px 0;
+        background-color: #dfdfdf;
+    }
+
+    .custom-flex{
+        height: 42vh;
+        display: flex;
+    }
+
+    .custom-flex > div{
+        display: flex;
+        flex-direction: column;
+
+        & > .row{
+            margin: auto 0;  
+        }
+    }
+}
+
+.icon-close {
+    font-size: x-large;
+    margin-top: 0
+}
+.editProjectScreen{
+    & > div{
+        height: 74vh;
+      }
+  
+      .custom-flex{
+          height: 50vh;
+      }
+}
+
+.cuiDropDownItems{
+    padding: 15px 0;
+    margin: 0;
+    & > div{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        // border: solid 1px red;
+    }
+    div > .row{
+        margin: 2% 0;
+    }
+
+    .panel--bordered-left{
+        border-color: #b6b9bb;
+    }
+}
+.checkbox {
+    margin-top:5px !important;
+}
+.iconHelper {
+    margin-top: -9px;
+    margin-left: 5px; 
+    cursor:pointer
+}
+.modalHeader {
+    color: #363535;
+}
+.modalContent {
+    max-height: auto; 
+    overflow-y: auto;
+    padding: 1rem;
+}
+.modalSpan{
+    display: block;
+}
+
+.switch input ~ .switch__input:after {
+	background: #ffffff;
+    border: 1px solid #017cad;
+}
+
+.switch .switch__input {
+    background: #017cad;
+}
+
+.active-switch {
+    color: #017cad;
+    font-weight: 700;
+}
+
+.helpMeSelect
+{
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    border-width: 1px;
+    text-align: center;
+    vertical-align: middle;
+    padding: 0 35px;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 40px;
+    height: 40px;
+    min-width: 0;
+    max-width: 300px;
+    overflow: visible;
+}
+
+#businessEntitySelect > div > div:nth-child(2) {
+    // height: 30rem !important; cui-vscroll-viewport
+    // max-height: none !important;
+    //background-color: red;
+    border: 1px solid red;
+}
+
+span{
+    cursor: pointer;
+}
+
+.ownerAcceptors {
+    span{
+        font-size: 1.3rem;
+    }
+
+    .icon-exit{
+        margin-left: 0.8rem;
+    }
+
+    .icon-plus{
+        margin-left: 0.8rem;
+    }
+
+    .margin-right{
+        margin-left: 0;
+        margin-right:0.8rem;
+    }
+
+    .show-inline{
+        display: inline-block;
+    }
+
+    .label {
+        background-color: #fff !important;
+    }
+
+    .btn-margin {
+         
+        margin-top: 5px;
+    }
+}
+.search{
+    padding-top: 3%;
+}
+
+.searchBtn{
+    padding-top: 2%;
+}
+.autoComplete-matInput{
+    width: 95%;
+}
+
+/* Change label color on focused */
+::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+    color: #017cad !important;
+}
+  
+/* underline border color on focused */
+::ng-deep .mat-focused .mat-form-field-underline .mat-form-field-ripple{
+    background-color: #017cad !important;
+}
+::ng-deep cui-modal > div.modal-container {
+    z-index: 999 !important;
+}
+
+.addRemoveModalHeader{
+    margin: 0 0 1.5rem 0;
+    text-align: left !important;
+}
+
+.modal {
+    &__footer {
+        display: flex;
+        justify-content: center;
+    }
+}
+
+
+.custom__label{
+    // margin-top: 2rem;
+    // margin: 6rem 0 0 1rem;// commented as on edit profile page "Policy Acceptors and Owners"- show more model's username chips are not left aligned
+    text-align: left;
+
+    
+    .icon-exit{
+        margin-left: 0.8rem;
+        margin-bottom:0.4rem; 
+    }
+}
+
+.align-center {
+    align-self: center;
+}
+
+.circle-css{
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 0 2rem;
+}

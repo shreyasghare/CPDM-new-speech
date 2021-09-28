@@ -1,0 +1,38 @@
+.csdl-project-modal {
+    &__header {
+        border-bottom: solid 1px gray;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        &--title {
+            display: flex;
+            align-items: baseline;
+        }
+    }
+    &__body {
+        display: flex;
+        flex-direction: column;
+        max-height: 30rem;
+        overflow-y: auto;
+        &--item {
+            display: flex;
+            .text-link:first-child {
+                min-width: 12rem;
+            }
+        }
+    }
+    &__footer {
+        display: flex;
+        min-height: 5rem;
+        justify-content: flex-end;
+        align-items: center;
+        border-top: solid 1px gray;
+    }
+}
+
+.csdl-project-loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}

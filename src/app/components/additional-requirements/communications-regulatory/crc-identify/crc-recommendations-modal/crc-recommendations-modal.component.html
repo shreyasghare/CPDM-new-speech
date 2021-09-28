@@ -1,0 +1,138 @@
+<div class="crc-recommendations-modal">
+    <div class="crc-recommendations-modal__header">
+        <div>
+            <h4 class="text-normal">Communications Regulatory Compliance recommendations</h4>
+        </div>
+        <div>
+            <span class="required-field"></span>
+            <span class="text-danger">Required fields</span>
+        </div>
+        <div class="icon-close icon-size-20" (click)="closeModal()"></div>
+    </div>
+    <form #recForm="ngForm" class="crc-recommendations-modal__form">
+        <div class="crc-recommendations-modal__body">
+            <table mat-table multiTemplateDataRows [dataSource]="crcRecommendationsDataSource" class="mat-elevation-z8 crc-recommendations-modal__table">
+                <ng-container matColumnDef="position">
+                    <th mat-header-cell *matHeaderCellDef> # </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div>{{element.position}}</div>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="title">
+                    <th mat-header-cell *matHeaderCellDef> Title</th>
+                    <td mat-cell *matCellDef="let element; let rowIndex = dataIndex;">
+                        <div class="form-group" *ngIf="!isReadOnly || (allowNewRecommendations && element.isNewRecommendation)">
+                            <div class="flex crc-recommendations-modal__table--full-width">
+                                <div class="required-field" *ngIf="title.invalid && !isLoading"></div>
+                                <div class="form-group__text crc-recommendations-modal__table--full-width">
+                                    <input
+                                        type="text"
+                                        #title="ngModel"
+                                        name="title{{element.position}}"
+                                        [(ngModel)]="element.title"
+                                        (change)="onTableDataChange(recForm)"
+                                        [required]="rowIndex !== crcRecommendationsDataSource.data.length - 1 || crcRecommendationsDataSource.data.length === 1"
+                                        placeholder="Enter title"
+                                        maxlength="200"
+                                        [appAutofocus]="rowIndex === crcRecommendationsDataSource.data.length - 1">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-left" *ngIf="(isMoveToIdentify || isUpdated) && !element.isNewRecommendation">
+                            <div class="label label--tiny">Read-only</div>
+                        </div>
+                        <div class="text-default text-left" *ngIf="isReadOnly && !(allowNewRecommendations && element.isNewRecommendation)">{{element.title}}</div>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="description">
+                    <th mat-header-cell *matHeaderCellDef> Description </th>
+                    <td mat-cell *matCellDef="let element; let rowIndex = dataIndex;">
+                        <div class="form-group" *ngIf="!isReadOnly || (allowNewRecommendations && element.isNewRecommendation)">
+                            <div class="flex crc-recommendations-modal__table--full-width">
+                                <div class="required-field" *ngIf="description.invalid && !isLoading"></div>
+                                <div class="form-group__text crc-recommendations-modal__table--full-width">
+                                    <textarea
+                                        class="textarea"
+                                        rows="2"
+                                        #description="ngModel"
+                                        name="description{{element.position}}"
+                                        [(ngModel)]="element.description"
+                                        (change)="onTableDataChange(recForm)"
+                                        [required]="rowIndex !== crcRecommendationsDataSource.data.length - 1 || crcRecommendationsDataSource.data.length === 1"
+                                        maxlength="20000"
+                                        placeholder="Enter description"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-default text-left" *ngIf="isReadOnly && !(allowNewRecommendations && element.isNewRecommendation)">{{element.description}}</div>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="comments">
+                    <th mat-header-cell *matHeaderCellDef> Comments </th>
+                    <td mat-cell *matCellDef="let element; let rowIndex = dataIndex;"
+                        [class.crc-recommendations-modal__table__expanded-row]="expandedElement === element"
+                        (click)="expandedElement = expandedElement === element ? null : element; clearCommentIndicator(element);">
+                        <img
+                            *ngIf="element.commentsChangedBy && element.commentsChangedBy !== currentRole; else noIndicator"
+                            src="assets/images/icons/comments/new-comment.png"
+                            alt="Comment"
+                            class="cursor-pointer">
+                        <ng-template #noIndicator>
+                            <img
+                                src="{{element.comments ? 'assets/images/icons/comments/Comment.png' : 'assets/images/icons/comments/No+comment.png'}}"
+                                alt="Comment"
+                                class="cursor-pointer">
+                        </ng-template>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="expandedComment">
+                    <td mat-cell *matCellDef="let element; let rowIndex = dataIndex;" [attr.colspan]="displayedColumns.length">
+                      <div class="crc-recommendations-modal__table__element-detail-row" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                        <div class="crc-recommendations-modal__table__element-description" [ngClass]="{'active-border': expandedElement}">
+                            <ng-container *ngIf="!disableComments || (!disableComments && element.isNewRecommendation) || (allowNewRecommendations && element.isNewRecommendation)">
+                                <div class="text-left">
+                                    <mat-form-field class="crc-recommendations-modal__table__comment-width">
+                                        <mat-label>Leave a comment</mat-label>
+                                        <textarea
+                                            matInput
+                                            name="comments{{rowIndex}}"
+                                            [(ngModel)]="element.comments"
+                                            (change)="OnCommentChange(element)"
+                                            rows="3"
+                                            required="false"></textarea>
+                                    </mat-form-field> 
+                                    <button class="btn btn--primary" (click)="expandedElement = expandedElement === element ? null : element">Done</button>
+                                </div>
+                            </ng-container>
+                            <div *ngIf="(disableComments && !(allowNewRecommendations && element.isNewRecommendation)) || (isUpdated && !element.isNewRecommendation)" class="text-left">
+                                <strong>Comment: </strong>
+                                <span class="text-gray-600 text-break ">{{element.comments ? element.comments : 'NA'}}</span>
+                            </div>
+                        </div>
+                      </div>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="delete">
+                    <th mat-header-cell *matHeaderCellDef> Delete </th>
+                    <td mat-cell *matCellDef="let element; let rowIndex = dataIndex;">
+                        <span class="icon-delete cursor-pointer" [ngClass]="{'disabled': (rowIndex === crcRecommendationsDataSource.data.length - 1 && isEmptyRowAvailable) || (isReadOnly && (!element.isNewRecommendation || currentRole === role.pm)) || (isReadOnly && !allowNewRecommendations)}" (click)="deleteRecommendation(rowIndex)"></span>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                <tr mat-row *matRowDef="let row; columns: ['expandedComment']" class="crc-recommendations-modal__table__detail-row"></tr>
+            </table>
+        </div>
+        <div class="crc-recommendations-modal__footer">
+            <div>
+                <button class="btn btn--dark" (click)="closeModal()">Close</button>
+                <button class="btn btn--primary" *ngIf="showSaveBtn || allowNewRecommendations" [disabled]="recForm.invalid" (click)="save()">Save</button>
+            </div>
+        </div>
+    </form>
+</div>
+<ng-container *ngIf="isLoading">
+    <div class="flex-center full-height overlay">
+        <cui-spinner color="default" label="Loading"></cui-spinner>
+    </div>
+</ng-container>

@@ -1,0 +1,24 @@
+<ng-container>
+    <div class="crc-identify full-height flex-center-horizontal pt-4" [ngClass]="{ 'flex-center-vertical': currentRole === role.pm }">
+        <div class="crc-identify__body">
+            <!-- PM view -->
+            <ng-container *appHasRole="[role.pm]">
+                <app-crc-identify-pm
+                    (openRecommendationsDialog)="openRecommendationsDialog()"
+                    (submitRecommendations)="submit($event)"></app-crc-identify-pm>
+            </ng-container>
+
+            <!-- Communications Regulatory PO view -->
+            <ng-container *appHasRole="[role.communicationsRegulatoryPO]">
+                <app-crc-identify-po
+                    (openRecommendationsDialog)="openRecommendationsDialog()"
+                    (submitRecommendations)="submit($event)"></app-crc-identify-po>
+            </ng-container>
+        </div>
+    </div>
+</ng-container>
+<ng-container *ngIf="showLoader">
+    <div class="flex-center full-height overlay">
+        <cui-spinner color="default" label="Loading"></cui-spinner>
+    </div>
+</ng-container>

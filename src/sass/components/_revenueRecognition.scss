@@ -1,0 +1,20 @@
+.revenue-recognition .connector {
+    // min-height: 13rem !important;
+    min-height: 10rem !important;
+}
+
+.revenue-recognition .custom-sidebar .workflowTime .stepCompletionStatus{
+    margin-top: 0 !important;
+}
+
+.revenue-recognition .custom-sidebar .workflowTime{
+    align-items: flex-start !important;
+}
+
+.rev-rec-holding-status {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}

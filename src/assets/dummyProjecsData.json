@@ -1,0 +1,36 @@
+{
+  "docs": [
+    {
+      "_id": "5d37eb134dd6fffa131e14c0",
+      "name": "Facebook ARIES",
+      "stream": null,
+      "lastUpdatedDate": "2019-07-21T01:11:18.965Z",
+      "progress": 61.833333333333336
+    },
+    {
+      "_id": "5d3ad73a08d6bdb1181096ec",
+      "name": "Uber Elevate",
+      "stream": null,
+      "lastUpdatedDate": "2019-07-25T01:11:18.965Z",
+      "progress": 1
+    },
+    {
+      "_id": "5d37ead04dd6fffa131e149c",
+      "name": "The Boring Company - Howthorne Tunnel",
+      "stream": null,
+      "lastUpdatedDate": "2019-07-22T01:11:18.965Z",
+      "progress": 1
+    },
+    {
+      "_id": "5d354e9289b558b4ad9a8a00",
+      "name": "Uber Elevate",
+      "stream": null,
+      "lastUpdatedDate": "2019-07-25T01:11:18.965Z",
+      "progress": 1
+    }
+  ],
+  "total": 40,
+  "pages": 1,
+  "page": 1,
+  "limit": 10
+}

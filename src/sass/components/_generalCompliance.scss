@@ -1,0 +1,188 @@
+.top-bar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    //padding: 0 1%;
+
+    &__navigation{
+       span{
+           margin: 0 0.3rem;
+       }
+    }
+}
+
+.content{
+    height: 82vh;
+    display: flex;
+    flex-direction: column;
+
+    & > .row{
+        height: 100%;
+    }
+    & > .row > div:first-child{
+        background-color: #c6c7ca;
+        padding: 1% 2% 0 2%;
+    }
+    & > .row > div:last-child{
+        background-color: #dfdfdf;
+        padding: 1% 2% 0 2%;
+    }
+
+    
+}
+
+.gc-content-area {
+    display: flex;
+    flex-direction: column;
+    //justify-content: space-evenly;
+    justify-content: space-around;
+    margin: auto;
+    width: 80%;
+    height: 100%;
+}
+
+.icon-message{
+    cursor: pointer;
+    font-size: 3rem;
+}
+
+.icon-message-new{
+    font-size: 3rem;
+    cursor: pointer;
+    color: white;
+    -webkit-text-stroke: 1px black;
+}
+
+.general-compliance {
+    &__left-pane {
+        width:20%;
+        height: 100%;
+        overflow: auto;
+    }
+    &__right-pane {
+        width:80%;
+        height: 100%;
+    }
+    &--view{
+        height: 100%;
+    
+        &__content{
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        // & > div{
+        //     // margin: auto 0;
+        // }
+    
+         &--header{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            // height: 15%;
+        }
+    
+        &--body{
+            display:flex;
+            flex-direction: column;
+            height: 75%;
+    
+            & > div:first-child{
+               height: 42vh;
+            }
+    
+            & > div:last-child{
+                height: 10vh;
+                width: 100%;
+                align-self: flex-end;
+             }
+        }
+    
+        &--footer{
+            border-top:1.5px solid #c6c7ca;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 15%;
+    
+            & > button{
+                margin-top: 1rem;
+            }
+        }
+    
+        &--bottom--buttons{
+    
+            display: flex;
+            justify-content: space-between;
+            align-items:center;
+        }
+    }
+    }
+}
+.container-fluid{
+    padding: 0 5%;
+}
+
+.dynamic-component{
+    height: 85%;
+    width: 100%;
+    overflow-y: auto;
+    margin-bottom: 2rem;
+}
+
+submit .modal__dialog {
+    max-width: unset !important;
+}	
+
+submit .modal .modal__content, .cui .modal .modal-content {
+    text-align: unset !important;
+}
+
+submit .modal {
+    top: 5% !important;
+}
+
+//Accessibility adr list approval edcs upload 
+#accessibility__adr--approval-edcs{
+    div:first-child > div  {
+        text-align: left;
+        width: 15rem !important;
+        padding: 0rem !important;
+    }
+}
+
+.previousBtn {
+    display: flex;
+    justify-content: flex-start;
+}
+.nextBtn {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    & > span {
+        padding-right: 1rem;
+    }
+}
+
+// Accessibility Implementation nav bar custom width.
+.implementation{
+    &__navbar{
+        .custom-tab{
+            &__polygon{
+             width: 40%!important;
+            }
+        }
+    }
+}
+// ---------------------------------------------------
+.customMatTooltip {
+    font-size: 12px !important;
+}
+
+.text-red {
+    color: #ff0000;
+}
+
+.text-green {
+    color: #008000;
+}

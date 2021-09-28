@@ -1,0 +1,28 @@
+<div *ngIf="isData; else spinner" class="tabContainer">
+    <div class="custom-header mb-1 headerCss">
+        <div class="modal__title">{{data.complianceData && data.complianceData.title}}</div>
+        <span id="close" class="icon-close close cursor-pointer" (click)="onClose()"></span>
+    </div>
+    <div [ngClass]="data.isLargeModal ? 'tabContainer__body-modal-large' : 'tabContainer__body-modal-normal'" class="mb-1">
+        <cui-tabs [inline]="inline" [alignment]="alignment" [bordered]="bordered" [tall]="tall" [vertical]="vertical"
+            [(activeTabIndex)]="tabIndex">
+            <div *ngFor="let tab of modalTabs">
+                <cui-tab label="{{tab.title}}">
+                    <div class="custom-min-height custom-padding"
+                        [ngClass]="data.isLargeModal ? 'tabContainer__body-modal-large--content' : 'tabContainer__body-modal-normal--content'">
+                        <div class="text-left" [innerHTML]="tab.desc">
+                        </div>
+                    </div>
+                </cui-tab>
+            </div>
+        </cui-tabs>
+    </div>
+    <div class="tabContainer__footer">
+        <button class="btn btn--dark" (click)="onClose()">Close</button>
+    </div>
+</div>
+<ng-template #spinner>
+    <div class="absolute-center">
+        <cui-spinner color="default" label="Loading"></cui-spinner>
+    </div>
+</ng-template>

@@ -1,0 +1,18 @@
+<div class="main gc-content-area" *ngIf="data">
+    <div>
+        <div *appHasRole="[role.pm]" class="mb-2">Complete the following tasks.</div>
+        <div *appHasRole="[role.smartLicensingPO]" class="mb-2">Project Manager will complete the following tasks.</div>
+        <div class="main__container">
+            <div *ngFor="let info of data">
+                <p class="ml-1" [innerHTML]="info.text"></p>
+                <div *ngIf="info.subtext?.length > 0" >
+                    <p class="ml-2" *ngFor="let subtext of info.subtext" [innerHTML]="subtext"></p>
+                </div>
+            </div>
+        </div>
+        <div *appHasRole="[role.pm]" [class.disabled]="isCompletedByPm" class="mt-2">
+            <input type="checkbox" id="checkbox" [checked]="isCompletedByPm" (click)="completeSLWorkflow($event)" class="checkbox_input">
+            <label for="checkbox" class="main__checkbox_pointer">All the above tasks are complete</label>
+        </div>
+    </div>
+</div>

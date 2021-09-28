@@ -1,0 +1,397 @@
+<div class="serviceability-recommendations">
+    <div class="serviceability-recommendations__header">
+        <div class="serviceability-recommendations__header--title">
+            <h4 class="text-normal">Serviceability Recommendation</h4>
+            <button class="btn btn--primary ml-2" #filterTableBtn [disabled]="!isRecommendationsDataLoaded" (click)="toggleFilterDialog()">
+                Filter table <span class="icon-filter"></span>
+            </button>
+        </div>
+    </div>
+    <div class="serviceability-recommendations__filter-table overlay" [class.active]="showFilterTable">
+        <div #filterTableDiv class="serviceability-recommendations__filter-table--container">
+            <table mat-table [dataSource]="filterTableRows" class="mat-elevation-z8 serviceability-recommendations__filter-table--table">
+                <!-- Product Type Column -->
+                <ng-container matColumnDef="Product Type">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <div>
+                            <div>
+                                <mat-checkbox
+                                    color="primary"
+                                    (change)="checkUncheckFilterColumn($event, 'productType')"
+                                    [checked]="tempSelectedFilters.productType.length === savedFilters.productType.length"
+                                    [indeterminate]="tempSelectedFilters.productType.length && tempSelectedFilters.productType.length !== savedFilters.productType.length">Product Type</mat-checkbox>
+                            </div>
+                        </div>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div>
+                            <div>
+                                <mat-checkbox
+                                    *ngIf="element.productType.name"
+                                    color="primary"
+                                    [(ngModel)]="element.productType.selected"
+                                    (ngModelChange)="setTempSelectedFilters(false, 'productType')"><span [class.text-bold]="element.productType.selected">{{element.productType.name}}</span></mat-checkbox>
+                            </div>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <!-- Profile Column -->
+                <ng-container matColumnDef="Profile">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <div>
+                            <div>
+                                <mat-checkbox
+                                    color="primary"
+                                    (change)="checkUncheckFilterColumn($event, 'profile')"
+                                    [checked]="tempSelectedFilters.profile.length === savedFilters.profile.length"
+                                    [indeterminate]="tempSelectedFilters.profile.length && tempSelectedFilters.profile.length !== savedFilters.profile.length">Profile</mat-checkbox>
+                            </div>
+                        </div>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div>
+                            <div>
+                                <mat-checkbox
+                                    *ngIf="element.profile.name"
+                                    color="primary"
+                                    [(ngModel)]="element.profile.selected"
+                                    (ngModelChange)="setTempSelectedFilters(false, 'profile');">
+                                    <span [class.text-bold]="element.profile.selected">{{element.profile.name}}</span>
+                                    <span
+                                        [matTooltip]="getSubProfileText(element.profile.name)"
+                                        matTooltipPosition="below"
+                                        [matTooltipClass]="'tooltipForInfo large'"
+                                        class="label label--tiny count-badge"
+                                        *ngIf="selectedSubProfileCount[element.profile.name] && selectedSubProfileCount[element.profile.name].length">
+                                        {{selectedSubProfileCount[element.profile.name].length}}
+                                    </span>
+                                </mat-checkbox>
+                            </div>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <!-- Sub-Profile Column -->
+                <ng-container matColumnDef="Sub Profile">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <div>
+                            <div>
+                                <mat-checkbox
+                                    color="primary"
+                                    (change)="checkUncheckFilterColumn($event, 'subProfiles')"
+                                    [checked]="tempSelectedFilters.subProfiles.length && tempSelectedFilters.subProfiles.length === savedFilters.subProfiles.length"
+                                    [indeterminate]="tempSelectedFilters.subProfiles.length && tempSelectedFilters.subProfiles.length !== savedFilters.subProfiles.length">Sub-Profile</mat-checkbox>
+                            </div>
+                        </div>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div>
+                            <div>
+                                <mat-checkbox
+                                    *ngIf="element.subProfiles.name"
+                                    color="primary"
+                                    [(ngModel)]="element.subProfiles.selected"
+                                    (ngModelChange)="setTempSelectedFilters(false, 'subProfiles');">
+                                    <span [class.text-bold]="element.subProfiles.selected">{{element.subProfiles.name}}</span>
+                                </mat-checkbox>
+                            </div>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <!-- Conformance Level Column -->
+                <ng-container matColumnDef="Conformance Level">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <div>
+                            <div>
+                                <mat-checkbox
+                                    color="primary"
+                                    (change)="checkUncheckFilterColumn($event, 'conformanceLevel')"
+                                    [checked]="tempSelectedFilters.conformanceLevel.length == savedFilters.conformanceLevel.length"
+                                    [indeterminate]="tempSelectedFilters.conformanceLevel.length && tempSelectedFilters.conformanceLevel.length !== savedFilters.conformanceLevel.length">Conformance Level</mat-checkbox>
+                            </div>
+                        </div>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div>
+                            <div>
+                                <mat-checkbox
+                                    *ngIf="element.conformanceLevel.name"
+                                    color="primary"
+                                    [(ngModel)]="element.conformanceLevel.selected"
+                                    (ngModelChange)="setTempSelectedFilters()"><span [class.text-bold]="element.conformanceLevel.selected">{{element.conformanceLevel.name}}</span></mat-checkbox>
+                            </div>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <!-- Status Column -->
+                <ng-container matColumnDef="Status">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <div>
+                            <div>
+                                <mat-checkbox color="primary"
+                                (change)="checkUncheckFilterColumn($event, 'status')"
+                                [checked]="tempSelectedFilters.status.length == savedFilters.status.length"
+                                [indeterminate]="tempSelectedFilters.status.length && tempSelectedFilters.status.length !== savedFilters.status.length">Status</mat-checkbox>
+                            </div>
+                        </div>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div>
+                            <div>
+                                <mat-checkbox
+                                    *ngIf="element.status.name"    
+                                    color="primary"
+                                    [(ngModel)]="element.status.selected"
+                                    (ngModelChange)="setTempSelectedFilters()"><span [class.text-bold]="element.status.selected">{{element.status.name}}</span></mat-checkbox>
+                            </div>
+                        </div>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="filterTableHeaderText; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: filterTableHeaderText;"></tr>
+            </table>
+        </div>
+        <div class="filter-spinner flex-center" *ngIf="!isFiltersApplied">
+            <cui-spinner color="default" label="Loading"></cui-spinner>
+        </div>
+        <div class="text-right serviceability-recommendations__filter-table--actions" #filterTableActionsDiv>
+            <button class="btn btn--dark" (click)="clearFilters()" [disabled]="isDefaultFilter">Reset</button>
+            <button class="btn btn--primary" (click)="applyFilters()" [disabled]="!filtersChanged">Apply</button>
+        </div>
+    </div>
+    <div class="serviceability-recommendations__applied-filters" *ngIf="isRecommendationsDataLoaded">
+        <div class="serviceability-recommendations__applied-filters--text">
+            <span class="text-left text-large text-bold">Applied Filters: </span>
+            <span class="text-medium text-bold" *ngIf="selectedFilters.productType.length">Product Type: </span>
+            <ng-container *ngFor="let item of selectedFilters.productType; let last = last">
+                <span class="text-italic">{{item}}{{!last ? ', ' : ''}}</span>
+            </ng-container>
+            <span class="text-medium text-bold" *ngIf="selectedFilters.profile.length"> | Profile: </span>
+            <span class="text-italic" *ngIf="selectedFilters.profile.length">
+                {{selectedFilters.profile[0]}}
+                <span
+                    [matTooltip]="getSubProfileText(selectedFilters.profile[0])"
+                    matTooltipPosition="below"
+                    [matTooltipClass]="'tooltipForInfo large'"
+                    class="label label--tiny"
+                    *ngIf="selectedSubProfileCount[selectedFilters.profile[0]] && selectedSubProfileCount[selectedFilters.profile[0]].length">
+                    {{selectedSubProfileCount[selectedFilters.profile[0]].length}}
+                </span>
+                {{selectedFilters.profile.length > 1 ? ', ' : ''}}
+                <!-- "more..." link for more than 1 profile selected -->
+                <a
+                    *ngIf="selectedFilters.profile.length > 1"
+                    matTooltip="Click to view"
+                    [matTooltipClass]="'tooltipForInfo'"
+                    [matMenuTriggerFor]="menu">more...</a>
+                <!-- Main menu with profiles -->
+                <mat-menu #menu="matMenu" xPosition="before">
+                    <ul class="ml-1">
+                        <ng-container *ngFor="let profile of selectedFilters.profile">
+                            <!-- matMenuTriggerFor used only if sub-menu exists -->
+                            <li *ngIf="selectedSubProfileCount[profile] && selectedSubProfileCount[profile].length">
+                                <button mat-menu-item (mouseenter)="getSubMenuItems(profile)" [matMenuTriggerFor]="submenu">
+                                    {{profile}} 
+                                    <span
+                                        class="badge badge--light mat-menu-count-badge"
+                                        [class.active]="profile===activeMenuProfile">
+                                            {{selectedSubProfileCount[profile].length}}
+                                    </span>
+                                </button>
+                            </li>
+                            <li *ngIf="selectedSubProfileCount[profile] && !selectedSubProfileCount[profile].length">
+                                <button mat-menu-item (mouseenter)="getSubMenuItems(profile)">{{profile}}</button>
+                            </li>
+                        </ng-container>
+                    </ul>
+                </mat-menu>
+                <!-- sub-menu with sub-profiles -->
+                <mat-menu #submenu="matMenu">
+                    <ul class="ml-1">
+                        <ng-container *ngFor="let item of submenuItems">
+                            <li>
+                                <button mat-menu-item>{{item}}</button>
+                            </li>
+                        </ng-container>
+                    </ul>
+                </mat-menu>
+            </span>
+            <span class="text-medium text-bold" *ngIf="selectedFilters.conformanceLevel.length"> | Conformance Level: </span>
+            <ng-container *ngFor="let item of selectedFilters.conformanceLevel; let last = last">
+                <span class="text-italic">{{item}}{{!last ? ', ' : ''}}</span>
+            </ng-container>
+            <span class="text-medium text-bold" *ngIf="selectedFilters.status.length"> | Status: </span>
+            <span class="text-italic" *ngIf="selectedFilters.status.length">
+                {{selectedFilters.status[0]}}{{selectedFilters.status.length > 1 ? ', ' : ''}}
+                <a
+                    *ngIf="selectedFilters.status.length > 1"
+                    [matTooltip]="selectedFilters.status.join(', ')"
+                    [matTooltipClass]="'tooltipForInfo large'">more...</a>
+            </span>
+        </div>
+        <div>
+            <button class="btn btn--dark" *ngIf="!isDefaultFilter" (click)="clearFilters(true); applyFilters();">Reset</button>
+        </div>
+    </div>
+    <div class="serviceability-recommendations__body">
+        <table matSort [hidden]="!isRecommendationsDataLoaded" multiTemplateDataRows mat-table 
+            [dataSource]="recommendationsDataSource" class="mat-elevation-z8 serviceability-recommendations__table"
+            [@.disabled]="true" id="matSortCustomeIcon">
+            <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef class="text-center">
+                    <mat-checkbox color="primary"
+                        (change)="$event ? masterToggle() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()"
+                        [disabled]="isReadOnly"></mat-checkbox>
+                </th>
+                <td mat-cell *matCellDef="let row">
+                    <mat-checkbox color="primary" 
+                        color="primary"
+                        (click)="$event.stopPropagation()"
+                        (change)="$event ? selection.toggle(row) : null"
+                        [checked]="selection.isSelected(row)"
+                        [disabled]="isReadOnly">
+                    </mat-checkbox>
+                </td>
+            </ng-container>
+            <ng-container  matColumnDef="position">
+                <th mat-header-cell *matHeaderCellDef>
+                    <div class="text-center">
+                        <div>#</div>
+                        <div>({{recommendationsDataSource?.data?.length}})</div>
+                    </div>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <div class="text-center">
+                        <div>{{element.position}}</div>
+                    </div>
+                </td>
+            </ng-container>
+            <ng-container  matColumnDef="uidName">
+                <th mat-header-cell *matHeaderCellDef>
+                    <p>UID</p>
+                    <p class="sub-text-header text-italic">Profile</p>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <div>
+                        <p>{{element.uidName}}</p>
+                        <p class="sub-text-row text-italic">{{element.profile}}</p>
+                    </div>
+                </td>
+            </ng-container>
+            <ng-container  matColumnDef="subProfiles">
+                <th mat-header-cell *matHeaderCellDef>Sub Profiles</th>
+                <td mat-cell *matCellDef="let element">
+                    <div>
+                        <div>{{element.subProfiles}}</div>
+                    </div>
+                </td>
+            </ng-container>
+            <ng-container  matColumnDef="recommendationDesc">
+                <th mat-header-cell *matHeaderCellDef>Recommendation</th>
+                <td mat-cell *matCellDef="let element">
+                    <div>
+                        <div>{{element.recommendationDesc}}</div>
+                    </div>
+                </td>
+            </ng-container>
+            <ng-container  matColumnDef="conformanceLevel">
+                <th mat-header-cell *matHeaderCellDef>
+                    <p>Conformance Level
+                        <span class="icon-info" 
+                            [matTooltip]="resForInfoIcon['serviceability_conformanceLevel']" matTooltipPosition="below"
+                            [matTooltipClass]="'tooltipForInfo large'">
+                    </span>
+                    </p>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <div>
+                        <p>{{element.conformanceLevel}}</p>
+                    </div>
+                </td>
+            </ng-container>
+            <ng-container  matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef>
+                    Status
+                    <span class="icon-info" 
+                        [matTooltip]="resForInfoIcon['serviceability_status']" matTooltipPosition="below"
+                        [matTooltipClass]="'tooltipForInfo'">
+                    </span>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <div *ngIf="!isReadOnly" class="text-center">
+                        <mat-form-field>
+                            <mat-label>Set status</mat-label>
+                            <mat-select [(ngModel)]="element.status" (ngModelChange)="onTableDataChange(element)">
+                                <mat-option *ngFor="let status of statusArray" [value]="status">
+                                    {{status}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div *ngIf="isReadOnly">{{element.status}}</div>
+                </td>
+            </ng-container>
+            <ng-container  matColumnDef="comments">
+                <th mat-header-cell *matHeaderCellDef>Comments </th>
+                <td mat-cell *matCellDef="let element" [class.serviceability-recommendations__table__expanded-row]="expandedElement === element"
+                (click)="expandedElement = expandedElement === element ? null : element">
+                    <div><img src="{{getImageSrc(element)}}" alt="No Comment" class="cursor-pointer"></div>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="expandedComment">
+                <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+                  <div class="serviceability-recommendations__table__element-detail-row" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                    <div class="serviceability-recommendations__table__element-description" [ngClass]="{'active-border': expandedElement}">
+                        <ng-container *ngIf="!isReadOnly">
+                            <mat-form-field class="serviceability-recommendations__table__full-width">
+                                <mat-label>Leave a comment</mat-label>
+                                <textarea matInput [(ngModel)]="element.comment" (ngModelChange)="onTableDataChange(element)" rows="3"></textarea>
+                              </mat-form-field> 
+                            <button class="btn btn--primary" (click)="expandedElement = expandedElement === element ? null : element">Done</button>
+                        </ng-container>
+                        <div *ngIf="isReadOnly">
+                            <strong>Comment: </strong>
+                            <span class="text-muted text-break ">{{element.comment ? element.comment : 'NA'}}</span>
+                        </div>
+                    </div>
+                  </div>
+                </td>
+              </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['expandedComment']" class="serviceability-recommendations__table__detail-row"></tr>
+        </table>
+        <div class="serviceability-recommendations__body--empty-table-view" *ngIf="isRecommendationsDataLoaded && !recommendationsDataSource.data.length">
+            <h1>No Data Found For Applied Filter</h1>
+        </div>
+        <ng-container *ngIf="!isRecommendationsDataLoaded">
+            <div class="flex-center full-height">
+                <cui-spinner color="default" label="Loading"></cui-spinner>
+            </div>
+        </ng-container>
+    </div>
+    <div class="serviceability-recommendations__footer">
+        <div>
+            <ng-container *ngIf="!isReadOnly">
+                <mat-form-field class="half-padding-right">
+                    <mat-label>Set status</mat-label>
+                    <mat-select [(ngModel)]="selectedStatusForBulkUpdate">
+                        <mat-option *ngFor="let status of statusArray" [value]="status">
+                            {{status}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <button class="btn btn--primary" (click)="updateBulkStatus()" [disabled]="!(selection.hasValue() && selectedStatusForBulkUpdate !== null)">Apply</button>
+            </ng-container>
+        </div>
+        <div>
+            <button class="btn btn--dark" (click)="closeModal()" [disabled]="!isCloseBtnEnabled">Close</button>
+            <button *ngIf="!isReadOnly" class="btn btn--primary" (click)="saveRecommendations()" [disabled]="!isSaveBtnEnabled">Save</button>
+        </div>
+    </div>
+</div>

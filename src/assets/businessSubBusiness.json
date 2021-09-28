@@ -1,0 +1,87 @@
+[
+    {
+        "_id": "5d4915774dd6fffa132502fc",
+        "name": "Analytics",
+        "subBusinessEntity": [
+            "Monitoring and Analytics"
+        ]
+    },
+    {
+        "_id": "5d4a99494dd6fffa1326960e",
+        "name": "Collaboration",
+        "subBusinessEntity": [
+            "Conferencings",
+            "Contact Center",
+            "Other Collaboration",
+            "TP Endpoints",
+            "TP Multiparty Conferencing",
+            "UC Endpoints",
+            "UC Infrastructure Applications"
+        ]
+    },
+    {
+        "_id": "5d4a9c9aabdfd16ca7007c6b",
+        "name": "Data Center Group",
+        "subBusinessEntity": [
+            "Computing Systems",
+            "Data Center Networking"
+        ]
+    },
+    {
+        "_id": "5d4a9d17abdfd16ca7007c6c",
+        "name": "Enterprise Networking",
+        "subBusinessEntity": [
+            "Enterprise Routing",
+            "Enterprise Switching",
+            "Meraki",
+            "Wireless"
+        ]
+    },
+    {
+        "_id": "5d4a9d5aabdfd16ca7007c6d",
+        "name": "IOT",
+        "subBusinessEntity": [
+            "IOT Jasper Platform",
+            "IOT Kinetic",
+            "Industrial IOT Networking"
+        ]
+    },
+    {
+        "_id": "5d4a9dcdabdfd16ca7007c6e",
+        "name": "Security",
+        "subBusinessEntity": [
+            "Advanced Threat Security",
+            "Cloud Security",
+            "Duo Security",
+            "Identify & Access",
+            "Network Security",
+            "Web Security",
+            "Workload"
+        ]
+    },
+    {
+        "_id": "5d4a9e40abdfd16ca7007c70",
+        "name": "Service Provider",
+        "subBusinessEntity": [
+            "Automation",
+            "Cable Access & Infra",
+            "Mobility",
+            "Optical",
+            "Optics – SP Routing Allocation",
+            "SP Access & Aggregation",
+            "SP Core Routing",
+            "SP Edge Routing",
+            "SP Segment Mobility Solutions"
+        ]
+    },
+    {
+        "_id": "5d4a9e90abdfd16ca7007c71",
+        "name": "Services",
+        "subBusinessEntity": [
+            "Cloud Services",
+            "Services ASS_L1",
+            "Services TSS_L1"
+        ]
+    }
+]
+

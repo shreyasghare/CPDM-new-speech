@@ -1,0 +1,50 @@
+$toast-width: 20rem;
+
+.cui-toasts{
+    position: fixed;
+    top: 3rem;
+    right: 3rem;
+    z-index: 10000;
+    width: 300px;
+}
+
+.toast{
+    position: relative;
+    padding: 1.5rem;
+    height: auto;
+}
+
+.icon-close {
+    font-size: medium;
+}
+
+.toast__body{
+    width: 100%;
+    min-height: 4rem;
+}
+
+.close-button {
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
+.toast__percentage{
+    position: absolute;
+	bottom: 8px;
+	left: 12px
+}
+
+.margin-left{
+    margin-left: 2.4rem !important;
+}
+
+.progressbar{
+    width: $toast-width;
+    margin: 7px 0;
+}
+
+.toast__message{
+    width: $toast-width;
+    word-wrap: break-word;
+}

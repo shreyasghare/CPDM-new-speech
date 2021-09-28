@@ -1,0 +1,445 @@
+<div class="assessment-questionnaire">
+    <div class="assessment-questionnaire__header pb-2">
+      <div class="modal__title">RCL Assessment Questionnaire</div>
+      <div id="close" class="icon-close icon-size-20" (click)="onCancel()"></div>
+    </div>
+    <div class="assessment-questionnaire__content">
+      <div class="assessment-questionnaire__content__field">
+        <div class="assessment-questionnaire__content__nav">
+          <div
+            (click)="onNavigateHtml(navBar.id)"
+            [class.active]="navBar.isActive"
+            class="assessment-questionnaire__content__nav--tab"
+            *ngFor="let navBar of navBarItems"
+          >
+            <div>
+              {{ navBar.tabNumber }}
+            </div>
+            <div>
+              {{ navBar.tabName }}
+            </div>
+          </div>
+        </div>
+        <div class="required-questions mt-2 mr-2">
+          <span class="required-field"></span>
+          <span class="ml-1">required questions</span>
+        </div>
+      </div>
+      <div
+        class="assessment-questionnaire__content__main"
+        #divToScroll
+        (scroll)="onScroll($event)"
+      >
+        <div>
+          <ol>
+            <li
+              [id]="question.sectionName ? question.sectionName : ''"
+              *ngFor="let question of questionsFromNode; let i = index"
+            >
+                <div [ngClass]="{'mt-2':i==0}">
+              <div class="counter__custom-flex">
+                <span class="required-field" [ngStyle]="{'visibility': ((question.isQuestionDisabled || question.answer?.isQuestionAnswered) || (question.questionNumber === 18 && ! getIsFirstSeventeenHasYesValue()) || (question.questionNumber === 18 && question.answer?.isQuestionAnswered))    ? 'hidden'  : 'visible'}"></span>
+                <span class="li-counter">{{i+1}}.</span>
+              </div>
+              <div class="required-question-list" [innerHTML]="question.question.html"></div>
+            </div>
+  
+  
+              <div *ngIf="!data.isReadonly" class="radio-btn-container">
+                <div
+                  class="form-group form-group--inline"
+                  *ngFor="let radio of question.options"
+                >
+                  <label class="radio">
+                    <input
+                      type="radio"
+                      (change)="patchRadioButton(question, radio.value)"
+                      [checked]="getIsChecked(question, radio.value)"
+                      name="questionNumber{{question.questionNumber}}"
+                    />
+                    <span class="radio__input"></span>
+                    <span class="radio__label hidden-xs">{{ radio.value }}</span>
+                  </label>
+                </div>
+                <button
+                  *ngIf="question.options?.length && i!==3"
+                  class="add-comment-link btn btn--ghost ml-2"
+                  [ngClass]="{'active': activeQuestion[i]}"
+                  (click)="toggleCommentField(i)">
+                    {{commentBtnName[i]}}
+                </button>
+                <button
+                  *ngIf="question.options?.length && i==3"
+                  class="add-comment-link btn btn--ghost ml-2"
+                  [ngClass]="{'active': activeQuestion[i]}"
+                  (click)="toggleCommentField(i)">
+                    {{commentBtnName[i]}}
+                </button>
+                <p *ngIf="question.additionalInfo?.length && i==3 && question.answer?.value=='Yes'" class="my-1 ml-2 note">
+                  <span *ngFor="let info of question.additionalInfo"
+                    >Note:<span [innerHTML]="info"></span
+                  ></span>
+                </p>
+              </div>
+              <span
+                *ngIf="question.answer && question.answer.value && data.isReadonly">
+                  <b>Answer: <span *ngIf="i<20" >{{ question.answer.value }}</span></b>
+              </span>
+              <!-- Allow BUController and revRecPO to enter comments until RCL gets approved -->
+              <ng-container *appHasRole="[role.BUController, role.revRecPO]">
+                <button
+                  *ngIf="question.options?.length && i!==3 && !isRCLApproved"
+                  class="add-comment-link btn btn--ghost mt-1"
+                  [ngClass]="{'active': activeQuestion[i]}"
+                  (click)="toggleCommentField(i)">
+                    {{commentBtnName[i]}}
+                </button>
+                <button
+                  *ngIf="question.options?.length && i==3 && !isRCLApproved"
+                  class="add-comment-link btn btn--ghost mt-1"
+                  [ngClass]="{'active': activeQuestion[i]}"
+                  (click)="toggleCommentField(i)">
+                    {{commentBtnName[i]}}
+                </button>
+              </ng-container>
+              <div class="expandable-comment-field" *ngIf="question.options?.length">
+                <div
+                  class="form-group label--floated"
+                  *ngFor="let reviewComment of question.reviewComment">
+                    <textarea
+                      class="textarea mt-1"
+                      [ngClass]="activeQuestion[i] ? 'show' : ''"
+                      [(ngModel)]="reviewComment.text"
+                      (change)="onChangeReviewComment(question)"
+                      placeholder="Add comments here (if any)"></textarea>
+                </div>
+                <ng-container *ngIf="i==3">
+                  <div
+                    class="form-group label--floated"
+                    *ngFor="let comment of question.comment">
+                      <textarea
+                        class="textarea mt-1"
+                        [ngClass]="activeQuestion[i] ? 'show' : ''"
+                        (change)="onChangeComment(question, comment.text)"
+                        [(ngModel)]="comment.text"
+                        [required]="question?.answer?.value === 'Yes'"
+                        placeholder="Please type your comment here..."></textarea>
+                  </div>
+                </ng-container>
+              </div>
+              <!-- Read-only view for PM when submits RCL (Questions from 1 to 17) -->
+              <ng-container *appHasRole="[role.pm]">
+                <span
+                  *ngIf="question.comment.length && question.comment[0].text && data.isReadonly && i==3">
+                    <pre><b>Comments: </b>{{ question.comment[0].text }}</pre>
+                </span>
+  
+                <div
+                  *ngIf="question.options?.length && question.reviewComment.length && question.reviewComment[0].text && data.isReadonly"
+                  >
+                    <pre><b>Comments: </b>{{ question.reviewComment[0].text }}</pre>
+                </div>
+              </ng-container>
+              <!-- Read-only view for BUController and revRecPO when approved (Questions from 1 to 17) -->
+              <ng-container *appHasRole="[role.BUController, role.revRecPO]">
+                <span
+                  *ngIf="question.comment.length && question.comment[0].text && i==3 && isRCLApproved">
+                    <pre><b>Comments: </b>{{ question.comment[0].text }}</pre>
+                </span>
+                <div
+                  *ngIf="question.options?.length && question.reviewComment.length && question.reviewComment[0].text && isRCLApproved"
+                  >
+                    <pre><b>Comments: </b>{{ question.reviewComment[0].text }}</pre>
+                </div>
+              </ng-container>
+              <p *ngIf="question.additionalInfo?.length && i!==3" class="mt-1 note">
+                <span *ngFor="let info of question.additionalInfo"
+                  >Note:<span [innerHTML]="info"></span
+                ></span>
+              </p>
+  
+              <div
+                *ngIf="question.options"
+                [class.disabled]="question?.isSubQuestionDisabled"
+              >
+                <!-- <p class="mt-1"> -->
+                <ng-container *ngIf="!data.isReadonly">
+                  <span *ngFor="let subQue of question.options">
+                    <span
+                      *ngIf="subQue.question"
+                      [innerHTML]="subQue.question.question"
+                    ></span>
+  
+                    <div
+                      class="form-group form-group--inline"
+                      *ngFor="let radio of subQue.question?.options"
+                    >
+                      <label class="radio">
+                        <input
+                          type="radio"
+                          [tabindex]="question?.isSubQuestionDisabled ? -1 : 0"
+                          (change)="patchRadioButton(question, radio.value, true)"
+                          [checked]="
+                            getIsSubQuestionChecked(question, radio.value)
+                          "
+                          name="questionNumber{{subQue.questionNumber}}"
+                        />
+                        <span class="radio__input"></span>
+                        <span class="radio__label hidden-xs">{{
+                          radio?.value
+                        }}</span>
+                      </label>
+                    </div>
+                  </span>
+                </ng-container>
+                <span
+                  *ngIf="
+                    question.answer &&
+                    question.answer.question &&
+                    question.answer.question.answer.value &&
+                    data.isReadonly
+                  "
+                  class="read-only"
+                  >{{ question.answer.question.answer.value }}</span
+                >
+                <!-- </p> -->
+              </div>
+              <div>
+                <div *ngIf="question.comment && i!==3 && i<20" style="width: 90%;">
+                  <div *ngFor="let comment of question.comment">
+                    <div [innerHTML]="comment.question" *ngIf="comment.question"></div>
+                    <div class="form-group label--floated" style="padding: 0;">
+                      <div class="form-group__text">
+                        <textarea
+                          id="input-layout-floated-textarea"
+                          (change)="onChangeComment(question, comment.text)"
+                          [tabindex]="question?.isCommentDisabled || data.isReadonly ? -1 : 0"
+                          [(ngModel)]="comment.text"
+                          class="textarea"
+                          rows="5"
+                          required
+                          [readonly]="data.isReadonly"
+                          [disabled]="question?.isCommentDisabled || question.isQuestionDisabled"
+                        ></textarea>
+                        <label
+                          *ngIf="!data.isReadonly"
+                          for="input-layout-floated-textarea"
+                          >Please type your answer here</label
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="question.comment && i>=20" style="width: 90%;">
+                  <div *ngFor="let comment of question.comment">
+                    <div [innerHTML]="comment.question" *ngIf="comment.question"></div>
+                    <div class="form-group label--floated">
+                      <div class="form-group__text">
+                        <textarea
+                          id="input-layout-floated-textarea"
+                          (change)="onChangeComment(question, comment.text)"
+                          [tabindex]="question?.isCommentDisabled || data.isReadonly ? -1 : 0"
+                          [(ngModel)]="comment.text"
+                          class="textarea"
+                          rows="5"
+                          [readonly]="data.isReadonly"
+                          [disabled]="question.isQuestionDisabled"></textarea>
+                        <label
+                          *ngIf="!data.isReadonly"
+                          for="input-layout-floated-textarea">
+                            Please type your answer here</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+  
+              <div *ngIf="attachmentState(question)" class="file-attachment mt-2">
+                <ng-container *appHasRole="[role.pm]"> 
+                  <div *ngIf="!data.isReadonly">
+                    <span class="icon-attachment icon-medium mr-2"></span>
+                    <input *ngIf="!docCentralObject" type="file" tabindex="0" (change)="onFilePicked($event)"/>
+                    <span *ngIf="docCentralObject" class="mr-2"><a (click)="onDownload()">{{docCentralObject.fileName}}</a><a (click)="onRemoveDocCentral(question)" class="icon-close ml-1" *ngIf="!data.isReadonly"></a></span>
+                  </div>
+                  <div *ngIf="docCentralObject && data.isReadonly">
+                    <span class="icon-attachment icon-medium mr-2"></span>
+                    <span class="mr-2"><a (click)="onDownload()">{{docCentralObject.fileName}}</a></span>
+                  </div>
+                </ng-container>
+                
+                <ng-container *appHasRole="[role.BUController, role.revRecPO]">
+                  <span class="icon-attachment icon-medium mr-2"></span>
+                  <span *ngIf="docCentralObject" class="mr-2"><a (click)="onDownload()">{{docCentralObject.fileName}}</a></span>
+                </ng-container>
+                
+                <div>
+                  <cui-loader color="info" *ngIf="uploadClicked"></cui-loader>
+                  <button
+                    class="btn btn--primary"
+                    *ngIf="isFilePicked && !uploadClicked && !docCentralObject"
+                    (click)="onUploadClicked(question)"
+                  >
+                    Upload
+                  </button>
+                </div>
+              </div>
+  
+              <div *ngIf="question.table.length > 0">
+                <div
+                  *ngIf="question.table[0].column"
+                  style="display: flex; width: 80%;"
+                >
+                  <div *ngFor="let column of question.table; let i = index">
+                    <div
+                      style="background-color: #7f7f86; color: white; padding: 0.5rem 0 0.5rem 0.5rem;"
+                    >
+                      {{ column.column }}
+                    </div>
+                    <div class="table--currency">
+                      <div class="table--currency--icon">
+                        <span>$</span>
+                      </div>
+                      <div class="rcl-form-group form-group input--compressed" style="width:80%">
+                        <div class="form-group__text">
+                          <input
+                            [disabled]="question.isQuestionDisabled"
+                            id="input-size-compressed"
+                            type="number"
+                            onpaste="return false"
+                            onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                            [tabindex]="data.isReadonly ? -1 : 0"
+                            (change)="onChangeTable(question)"
+                            [(ngModel)]="column.value"
+                            [readonly]="data.isReadonly"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+  
+                <div *ngIf="question.table[0].row">
+                  <div
+                    *ngFor="let column of question.table"
+                    style="display: flex;"
+                  >
+                    <div
+                      style="background-color: #7f7f86; color: white; padding: 0.5rem; width: 10%; display: flex; align-items: center; justify-content: flex-start;"
+                    >
+                      {{ column.row }}
+                    </div>
+                    <div style="padding: 0.8rem;">
+                      <mat-form-field *ngIf="!data.isReadonly">
+                        <input
+                          [disabled]="question.isQuestionDisabled"
+                          matInput
+                          [(ngModel)]="column.value"
+                          [matDatepicker]="picker"
+                          (dateChange)="onChangeTable(question)"
+                          placeholder="Choose a date"
+                           
+                        />
+                        <mat-datepicker-toggle
+                          matSuffix
+                          [for]="picker"
+                        ></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>
+                      <span
+                        *ngIf="data.isReadonly && column.value"
+                        class="read-only"
+                        >{{ column.value | date:'shortDate' }}</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Show comment toggle to PM if RCL not submitted yet (Questions from 18 to 26) -->
+              <ng-container *appHasRole="[role.pm]">
+                <button *ngIf="!question.options?.length && !data.isReadonly" class="add-comment-link btn btn--ghost mt-2" (click)="toggleCommentField(i)">
+                  {{commentBtnName[i]}}
+                </button>
+              </ng-container>
+              <!-- Show comment toggle to BUController and revRecPO if RCL not yet approved (Questions from 18 to 26) -->
+              <ng-container *appHasRole="[role.BUController, role.revRecPO]">
+                <button *ngIf="!question.options?.length && !isRCLApproved" class="add-comment-link btn btn--ghost mt-2" (click)="toggleCommentField(i)">
+                  {{commentBtnName[i]}}
+                </button>
+              </ng-container>
+              <div class="expandable-comment-field" *ngIf="!question.options?.length">
+                <div
+                  class="form-group label--floated"
+                  *ngFor="let reviewComment of question.reviewComment">
+                    <textarea
+                      class="textarea mt-1"
+                      [ngClass]="activeQuestion[i] ? 'show' : ''"
+                      [(ngModel)]="reviewComment.text"
+                      (change)="onChangeReviewComment(question)"
+                      placeholder="Add comments here (if any)"></textarea>
+                </div>
+              </div>
+              <!-- Read-only view for PM when submits RCL (Questions from 18 to 26) -->
+              <ng-container *appHasRole="[role.pm]">
+                <div
+                  *ngIf="!question.options?.length && question.reviewComment.length && question.reviewComment[0].text && data.isReadonly"
+                  class="mt-1">
+                    <pre><b>Comments: </b>{{ question.reviewComment[0].text }}</pre>
+                </div>
+              </ng-container>
+              <!-- Read-only view for BUController and revRecPO when he approved (Questions from 18 to 26) -->
+              <ng-container *appHasRole="[role.BUController, role.revRecPO]">
+                <div
+                  *ngIf="!question.options?.length && question.reviewComment.length && question.reviewComment[0].text && isRCLApproved"
+                  class="mt-1">
+                    <pre><b>Comments: </b>{{ question.reviewComment[0].text }}</pre>
+                </div>
+              </ng-container>
+              <p *ngIf="question.notes?.length" class="mt-1">
+                <span *ngFor="let note of question.notes"
+                  ><b>Note- </b><b [innerHTML]="note"></b
+                ></span>
+              </p>
+              <div class="divider" style="width: 95%;"></div>
+            </li>
+          </ol>
+        </div>
+        <ng-container *ngIf="!questionsFromNode || isSpinner">
+          <div class="overlay">
+            <div class="absolute-center"><cui-spinner></cui-spinner></div>
+          </div>
+        </ng-container>
+      </div>
+  
+      <div class="assessment-questionnaire__content__field">
+        <div class="ml-2 mt-1">
+          <span *ngIf="rclQuestionnaireStatus" [ngClass]=" remainingQuestionCount === 0 ? 'icon-check-outline icon-small' : 'icon-exclamation-triangle icon-small' "></span>
+          {{rclQuestionnaireStatus}}
+        </div>
+        <div class="assessment-questionnaire__content__footer mr-2">
+          <button class="btn btn--dark" (click)="onCancel()">
+            {{ data.isReadonly ? "Close" : "Cancel" }}
+          </button>
+          <button
+            class="btn btn--secondary"
+            (click)="submitRclQuestionnareForm()"
+            *ngIf="!data.isReadonly"
+          >
+            Save
+          </button>
+          <ng-container *ngIf="!isRCLApproved">
+            <button
+              class="btn btn--secondary"
+              (click)="submitRclQuestionnareForm()"
+              [disabled]="questionsFromNode[3]?.answer.value == 'Yes' && !questionsFromNode[3]?.comment[0].text"
+              *appHasRole="[role.BUController, role.revRecPO]"
+            >
+              Save
+            </button>
+          </ng-container>
+
+        </div>
+      </div>
+      <!-- </form> -->
+    </div>
+  </div>
+  

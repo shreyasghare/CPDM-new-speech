@@ -1,0 +1,70 @@
+<div class="acceptorOwnerModelHeaderDiv">
+    <div class="modal__header">
+        <div class="modal__title">{{objectDtls.adrItem.name}}</div>
+    </div>
+    <a class="modal__close" (click)="commentPopUpClose()"><span class="icon-close"></span></a>
+</div>
+<form [formGroup]="commentForm" (ngSubmit)="onSubmit()" class="commentForm">
+    <div class="form-group text-left">
+        <span class="text-bold">Description</span>
+        <p class="">{{objectDtls.adrItem.description}}</p>
+    </div>
+    
+    <div class="form-group text-left mt-3">
+        <div  *ngIf="objectDtls.state == 'identifyAdr'">
+            <span class="text-bold">Applicable</span>
+            <div>
+                <label class="checkbox mt-1 cursorNotAllowed">
+                    <input type="checkbox" [checked]="applicable" (change)="onChangeCheckbox()" disabled>
+                    <span class="checkbox__input"></span>
+                </label>
+            </div>            
+        </div>
+        <div  *ngIf="objectDtls.state == 'adrApprove'">
+            <span class="text-bold">Status</span> 
+            <div *ngIf="objectDtls.isPmScreen">
+                 <!-- <cui-select [required]="false" [empty]="true" [items]="adrStatus"
+                 placeholder="No Selection" [compressed]="true" [ngModelOptions]="{standalone: true}"
+                 [(ngModel)]="status" (ngModelChange)="onSelectStatusType()"
+                 optionsKey="name" optionsValue="name" class="form-control"></cui-select>  -->
+
+                
+                 <mat-form-field  >
+                    <mat-label>Select an option</mat-label>
+                    <mat-select  [ngModelOptions]="{standalone: true}"
+                   [(ngModel)]="status" (ngModelChange)="onSelectStatusType()">
+                    <mat-option value="No Selection" >No Selection</mat-option>
+                    <mat-option *ngFor="let element of adrStatus" [value]="element.name">{{element.name}}</mat-option> 
+                    </mat-select>
+                </mat-form-field>   
+            
+                             
+            </div>
+            <div *ngIf="!objectDtls.isPmScreen">
+                 {{status}}     
+            </div>
+       </div>
+        
+    </div>
+    <div id="remarkTextBoxContainer" class="mt-3">
+        <div class="form-group">
+            <span class="text-bold text-left mt-3">Comments</span> 
+            <p class="pt-1 pr-1" *ngIf="(!objectDtls.isPmScreen && (objectDtls.state != 'adrApprove' || objectDtls.state == 'identifyAdr')) || adrApprovalSubmitPMViewList" id="userCommentPara">
+                {{userComment}}
+            </p>
+            <div class="form-group__text">
+                <textarea id="textarea-state-default" rows="5" type="text" formControlName="comment"
+                    placeholder="Write here"></textarea>
+                <!-- <div *ngIf="f.comment.errors  && (f.comment.dirty || f.comment.touched)" class="invalid-feedback">
+                    <span class="err-msg" *ngIf="f.comment.errors.required">Comment is required</span>
+                </div> -->
+            </div>
+            <!-- <textarea id="input-layout-default-textarea" type="text"  *ngIf="((objectDtls.isPmScreen || objectDtls.state == 'adrApprove') && !adrApprovalSubmitPMViewList)" 
+            formControlName="comment" class="form-control textarea" rows="5" placeholder="Write here"></textarea> -->
+        </div>
+    </div>
+    <div id="acceptorOwnerButtonContainer"   *ngIf="(objectDtls.isPmScreen ||  objectDtls.state == 'adrApprove') && !adrApprovalSubmitPMViewList">       
+        <button type="button" class="btn btn--dark" (click)="commentPopUpClose()">Cancel</button>
+        <button type="submit" class="btn btn--secondary" [disabled]="f.comment.errors">Save</button>
+    </div>
+</form>

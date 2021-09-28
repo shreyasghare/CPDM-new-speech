@@ -1,0 +1,249 @@
+@import "node_modules/cisco-ui/src/scss/build/variables";
+
+
+.span-margin{
+    // margin-left: 1rem;
+    margin-left: 0rem;
+}
+
+.height--auto{
+    height: auto !important;
+}
+
+.height--medium{
+    height: 45vh !important;
+}
+
+
+.switch{
+    margin: auto;
+}
+
+.custom-flex{
+    display: flex;
+    justify-content: space-between;
+    /* align-items: center; */
+}
+
+.custom-flex-2{
+    display: flex;
+    //justify-content: center;
+    align-items: center;
+}
+
+.progressbar{
+    display: inline-block;
+    width: 65%;
+}
+
+    tbody tr td{
+        border-right:1px solid #dfdfdf;
+    }
+    
+
+
+.compliance--table--size,.technical--table--size{
+    tr > td:nth-child(1),tr > th:nth-child(1){
+        width: 17.5%;
+    }
+
+    tr > td:nth-child(2),tr > th:nth-child(2){
+        width: 17%;
+    }
+
+    tr > td:nth-child(3),tr > th:nth-child(3){
+        width: 15%;
+    }
+
+    tr > td:last-child,tr > th:last-child{
+        width: 10%;
+    }    
+}
+
+.modalPadding{
+    padding: 0% !important;
+}
+
+.project-name-column{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .online-commit-btn {
+        padding: 3px 15px;
+        margin-left: auto;
+    }
+}
+ 
+.labelBtn{
+    border: 1px solid #a4a2a2;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.manageCompliances{
+    position: absolute;
+    right: 0%;
+    bottom: 2%;
+    background: transparent;
+    border: 1px solid #58585b;
+    color: #58585b;
+    border-radius: 0px;
+    padding: 5px 10px;
+    cursor: pointer;
+    // padding: 0.2% 0.5%;
+}
+
+.createCommit{
+    background: transparent;
+    border: 1px solid #58585b;
+    color: #58585b;
+    border-radius: 0px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-left: auto;	
+}
+
+.manageCompliancesSpan{
+    // position: absolute;
+    // right: 7%;
+    text-align: right;
+    padding-right: 0rem;
+
+    .manageComplianceLabel {
+        padding: 9px;
+    }
+
+    button.btn {
+        // padding: 3px 15px;
+    }
+}
+.progressStatusDots{
+    margin: auto;
+    padding: 5px !important;
+}
+.exclamationMarkClass{
+    vertical-align: 0.5em !important;
+    font-size: 1.5em;
+    font-weight: 700;
+}
+
+.selectedItem{
+    color: #0175a2;
+}
+
+.export-btn {
+    background-color: transparent;
+    cursor: pointer;  
+    border: 1px solid #58585b;
+    color: #58585b;
+    padding: 0.3% 0.5%;
+    margin-left: 1%;
+}
+.model-padding{
+    padding: 0% !important;
+}
+
+.my-modal{
+    background-color: #3283e3;
+}
+
+
+#project-Compliance-Table > tbody{
+    height: auto !important;
+    overflow-y: scroll;
+    // tr > td:nth-child(1){
+    //     width: 14.8%;
+    // }
+
+    // tr > td:nth-child(2){
+    //     width: 19.8%;
+    // }
+
+    // tr > td:nth-child(3){
+    //     width: 19.8%;
+    // }
+
+    // tr > td:nth-child(4){
+    //     width: 18.3%;
+    // }
+
+    // tr > td:nth-child(5){
+    //     width: 18%;
+    // }
+
+    // tr > td:last-child{
+    //     width: 7.5%;
+    // }
+}
+
+.divider--custom{
+    position: relative;
+    text-align: center;
+    border-top: 1px solid #dfdfdf;
+    margin: 0;
+    margin-bottom: 2rem !important;
+}
+
+.sectionHeader{
+    margin-left: 0% !important;
+    margin-right: 0% !important;
+}
+
+/* Styles for the ink bar */
+.mat-ink-bar {
+    background-color: #017cad !important;
+    height: 3px !important;
+}
+
+.icon-exclamation-circle-red{
+    color: red;
+}
+
+#tooltipDetailContainer {
+    text-align: left !important;
+    overflow-y: auto;
+    display: block;
+    max-height: auto;
+    padding: 0 1rem;
+}
+
+.tooltipSectionHeading{
+    font-weight: bold;
+    margin: 0px !important;
+}
+
+.complianceTooltipModelHeaderDiv {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+}
+.modalHeader {
+    padding: 1rem;
+    color: #363535;
+}
+.complianceTooltipModelCloseBtn {
+    color: #868585;
+    background-color: transparent;
+    border: none;
+}
+.icon-close {
+    color: #868585;
+}
+.complianceModelHeaderDiv{
+    &__header{
+        display: flex;
+        justify-content: space-between;
+    }
+}
+.complianceItemText{
+    cursor: pointer;
+}
+
+.labelBackground{
+    background-color: #b3ebf9;
+    padding: 6px 3px;
+    border-radius: 5px;
+    margin-left: 1rem;
+}

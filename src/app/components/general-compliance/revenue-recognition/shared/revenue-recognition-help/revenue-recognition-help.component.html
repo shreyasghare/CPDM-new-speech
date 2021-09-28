@@ -1,0 +1,52 @@
+<div *ngIf="isData; else spinner" class="model-container p-1">
+    <div class="custom-header mb-1">
+        <div class="modal__title">Revenue Recognition Compliance</div>
+        <span id="close" class="icon-close icon-size-20" (click)="onClose()"></span>
+    </div>
+    <div class="model-container__body">
+        <cui-tabs [inline]="inline"
+            [alignment]="alignment"
+            [bordered]="bordered"
+            [tall]="tall"
+            [vertical]="vertical"
+            [(activeTabIndex)]="tabIndex">
+
+        <cui-tab label="Policy Overview">
+            <div class="custom-min-height"  *ngIf="policyOverview">
+                <div class="text-left"  *ngFor="let desc of policyOverview.desc">
+                <p>{{desc}}</p>
+                </div>          
+                <ul class="text-left">
+                <li *ngFor="let point of policyOverview.points">{{point}}</li>
+                </ul>
+                <div class="text-left" [innerHTML]="policyOverview.sharepointLink" *ngIf="policyOverview.sharepointLink">
+                </div>
+            </div>
+        </cui-tab>
+        <!--<cui-tab label="General Help">
+            <div class="custom-min-height"  *ngIf="generalHelp">
+                <div *ngFor="let desc of generalHelp.desc">
+                <p class="text-bold">{{desc}}</p>
+                </div>
+                <div *ngFor="let link of generalHelp.link">
+                    <a target="_blank"
+                    href="{{link.href}}">{{link.text}}</a>
+                </div>
+            </div>
+        </cui-tab>-->
+        <cui-tab label="Mailer" class="ml-3">
+            <div class="custom-min-height text-left">
+            <p><a href="mailto:{{mailers.mailerId}}">{{mailers.mailerId}}</a></p>
+            </div>
+        </cui-tab>
+        </cui-tabs>
+    </div>
+    <div *ngIf="isData" class="text-center">
+        <button class="btn btn--dark" (click)="onClose()">Close</button>
+    </div>
+</div>
+<ng-template #spinner>
+    <div class="absolute-center">
+        <cui-spinner color="default" label="Loading"></cui-spinner>
+    </div>
+</ng-template>

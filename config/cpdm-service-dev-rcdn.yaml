@@ -1,0 +1,92 @@
+kind: "Service"
+apiVersion: "v1"
+metadata:
+  name: "cpdmng-service-dev"
+spec:
+  ports:
+    -
+      name: "web"
+      protocol: "TCP"
+      port: 4200
+  selector:
+    name: "cpdmng-service-dev"
+  type: "ClusterIP"
+  sessionAffinity: "None"
+---
+kind: "DeploymentConfig"
+apiVersion: "v1"
+metadata:
+  name: "cpdmng-service-dev"
+spec:
+  template:
+    metadata:
+      labels:
+        name: "cpdmng-service-dev"
+      annotations:
+        app_version: 'latest'
+    spec:
+      containers:
+        -
+          name: "cpdmng-service-dev"
+          image: "containers.cisco.com/it_gats_it_architecture_cpdm-service/cpdm-service_cpdm-service:__IMAGETAG__"
+          ports:
+            -
+              containerPort: 4200
+              protocol: "TCP"
+          env:
+            -
+              name: "OPENSHIFT_APP_NAME"
+              value: "CPDM-ng"
+            -
+              name: "CISCO_LC"
+              value: "dev"
+          volumeMounts:
+            -
+              name: podinfo
+              mountPath: /etc/metadata
+              readOnly: false
+          imagePullPolicy: "IfNotPresent"
+          securityContext:
+            capabilities: {}
+            privileged: false
+          #readinessProbe:
+          #  httpGet:
+          #    path: "/"
+          #    port: 4200
+          #  initialDelaySeconds: 15
+          #  timeoutSeconds: 1
+          #livenessProbe:
+          #  exec:
+          #    command:
+          #      - "/bin/true"
+          #  initialDelaySeconds: 15
+          #  timeoutSeconds: 1
+      volumes:
+        -
+          name: podinfo
+          downwardAPI:
+            items:
+              -
+                path: "labels"
+                fieldRef:
+                  fieldPath: metadata.labels
+              -
+                path: "annotations"
+                fieldRef:
+                  fieldPath: metadata.annotations
+      imagePullSecrets:
+        - name: "it-gats-it-architecture-cpdm-service-cpdm-service-pull-secret"
+      restartPolicy: "Always"
+      dnsPolicy: "ClusterFirst"
+  replicas: 1
+ # selector:
+ #   name: "tpsdqwui"
+  triggers:
+    -
+      type: "ConfigChange"
+  strategy:
+    type: "Rolling"
+    rollingParams:
+      updatePeriodSeconds: 1
+      intervalSeconds: 1
+      timeoutSeconds: 300

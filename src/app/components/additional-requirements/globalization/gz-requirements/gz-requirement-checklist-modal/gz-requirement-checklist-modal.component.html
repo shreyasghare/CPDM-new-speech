@@ -1,0 +1,72 @@
+<div class="requirement-checklist-modal">
+    <div class="requirement-checklist-modal__header">
+        <div class="modal__title">Requirements Checklist
+            <div class="text-size-14">
+                Check off each completed requirement
+            </div>
+        </div>
+        <div class="icon-close icon-size-20 mt-1" (click)="closeModal()"></div>
+    </div>
+    <form [formGroup]="checkListForm" class="requirement-checklist-modal__content">
+        <div class="requirement-checklist-modal__content__main">
+            <div>
+                <div class="ml-2 mt-2 mb-2">
+                    <p class="text-size-18">Translation</p>
+                    <span class="ml-1" [innerHTML]="translationTitle"></span>
+                </div>
+                <div *ngFor="let item of checkListArr">
+                    
+                    <div class="ml-2">
+                        <span class="mandatory-field" [ngStyle]="{'visibility': ((item.checklistNumber !== 5 && item.checklistSelected) || (item.checklistNumber === 5 && hasPocCecId))  ? 'hidden' : 'visible'}"></span>
+                        <mat-checkbox (change)="onAddingCheckListItems($event,item.checklistNumber)"
+                         formControlName="requirementChkList{{item.checklistNumber}}">
+                            <span>{{item.checklistText}}</span>
+                        </mat-checkbox>
+                    </div>
+                    <div *ngIf="item.checklistNumber === 3"class="border-line mt-2 mb-2"></div>
+                    <div *ngIf="item.checklistNumber === 3" class="ml-2 mt-2 mb-2">
+                        <p class="text-size-18">Localization Acceptance Testing (LAT)</p>
+                        <span class="ml-1" [innerHTML]="translationTitle"></span>
+                    </div>
+                    <div *ngIf="item.checklistNumber === 4" class="border-line mt-2 mb-2"></div>
+                    <div  *ngIf="item.checklistNumber === 5" class="ml-6 mb-2">
+                        <div class="form-group input--icon">
+                            <input type="input" class="user-input" formControlName="engineeringPOC"
+                            [matAutocomplete]="auto1" placeholder="Search" [ngClass]="{'disabled': (selectedUserList['engineeringPOC'].length || disablePocCecId)}">
+                            <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="selectMatOption($event.option.value, 'engineeringPOC')" [displayWith]="getSelectedUserName">
+                                <mat-option *ngFor="let user of dropdownUsers" [value]="user">
+                                    {{ user.name }} <span *ngIf="user.cecId">({{user.cecId}})</span>
+                                </mat-option>
+                            </mat-autocomplete>
+                            <button class="btn btn--primary mx-1" (click)="addSelectedUsers('engineeringPOC')" [disabled]="!selectedUser['engineeringPOC'] || selectedUserList['engineeringPOC'].length">Add</button>
+                            <span class="label label--small label--dark label--bordered userTab mr-1" [ngClass]="{'form-group__text--invalid-user': user == invalidUser}" [attr.data-balloon]="user"
+                                *ngFor="let user of selectedUserList.engineeringPOC; let i = index" data-balloon-pos="up">
+                                <span>{{user}}</span> &nbsp;
+                                <span class="icon-exit cursor-pointer" (click)="removeUser(i,'engineeringPOC')"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+            <div class="mb-2 border-line"></div>
+            <div class="ml-4 mb-4 mt-2" [innerHTML]="importantNote"></div>
+
+            <ng-container *ngIf="!checkListArr || isSpinner">
+                <div class="overlay">
+                  <div class="absolute-center"><cui-spinner></cui-spinner></div>
+                </div>
+            </ng-container>
+        </div>
+        <div class="requirement-checklist-modal__content__field">
+            <div class="mt-1">
+                <span *ngIf="checkListItemStatus" [ngClass]=" remainingCheKlistCount === 0 ? 'icon-check-outline icon-small' : 'icon-exclamation-triangle icon-small' "></span>
+                {{checkListItemStatus}}
+            </div>
+            <div class="requirement-checklist-modal__content__footer mt-1">
+                <button class="btn btn--dark" (click)="closeModal()"> Cancel</button>
+                <button class="btn btn--secondary" (click)="saveChekList()"> Save </button>
+            </div>
+        </div>
+    </form>
+</div>
+  

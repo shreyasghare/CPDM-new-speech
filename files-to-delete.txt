@@ -1,0 +1,15 @@
+# This txt file can be used to track Frontend, Backend, Mongodb unused/unwanted components, files, collections.
+# Please delete all the references of deleted component in the application. 
+
+########### TODO ###############
+# AccessibilityOverviewComponent - Saurabh
+# db.getCollection('helpOverlay').find({"complianceType" : "accessibility"}) - Saurabh
+# Delete all .json files other than ' admin ' module. - Saurabh
+# RevenueRecognitionHelpComponent - Saurabh
+# SmartLicensingHelpComponent - Saurabh
+# admin-data folder under assets - Saurabh
+
+
+
+############ DONE ###############
+#

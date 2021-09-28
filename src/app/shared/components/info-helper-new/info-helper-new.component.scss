@@ -1,0 +1,19 @@
+.custom-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.container {
+    padding-right: 0;
+    
+    &__body {
+        max-height: 82vh;
+        overflow-y: auto;
+        padding-right: 3px;
+
+        p {
+            margin: 9px 0 0;
+        }
+    }
+
+}

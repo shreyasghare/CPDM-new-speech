@@ -1,0 +1,148 @@
+<div class="container-fluid">
+    <div class="base-margin-top create-project-admin-search-row">
+        <span  class="text-bold text-large cursor-pointer"  (click)="onUpdate(searchText)"> My Projects                          
+            <!-- <span class="badge">{{totalItems ? totalItems : '0'}}</span> -->
+        </span>
+        <ng-template [appHasRole]="[role.pm]">
+            <a class="btn btn--secondary" *ngIf="tableData.length" routerLink="/project/create-project"
+                id="createNewProjectButton">Create New &nbsp;<span class="icon-plus"></span></a>
+        </ng-template>
+        
+        <span class="fa fa-microphone" style="cursor: pointer;" (click)="onListen()"></span>
+
+        <ng-container *ngIf="isAdmin">
+            <a routerLink="/admin/edit-modals-info-icons" matTooltip="Admin" matTooltipPosition="right" [matTooltipClass]="'tooltipForInfo'">
+                <img id="admin-edit-modals-imageTag" src="assets\images\icons\forward.png"/>
+            </a>
+        </ng-container>
+        <ng-template [appHasRole]="allowSearchFilters">
+            <cui-search class="cui-search-input" [placeholder]="searchPlaceholderText" [debounce]="500" [compressed]="true" (onUpdate)="onUpdate($event)"></cui-search>
+        </ng-template>
+    </div>
+
+
+    <div id="projectDataTableContainer" *ngIf="!loading; else spinner" class="base-margin-top full-screen cui">
+         <!-- below commented part is used in ng-template to get a spinner at center of the screen -->
+        <!-- <div  id="cuiLoaderContainer" *ngIf="loading" class="absolute-center">
+            <cui-spinner color="default" label="Loading">
+            </cui-spinner> 
+        </div> -->  
+
+        <div class="custom-table" [ngClass]="isUserPm?'custom-table--pm':
+                                            isRevRecPo? 'custom-table--rr-po':
+                                            isRevRecEngSox? 'custom-table--rr-eng-sox':
+                                            isRevRecBu? 'custom-table--rr-bu':
+                                            'custom-table--po'">
+            <cui-table id="projectDataTable" [options]="tableOptions" [data]="tableData" [limit]="tableLimit"
+                [offset]="tableOffset" (onSortingChanged)="onTableSortingChanged($event)" *ngIf="!loading"></cui-table>
+        </div>
+        <div *ngIf="!tableData.length && !loading" class="noProject">
+            <!-- <span class="noProjectText">You don't have any project</span> -->
+            <div class="noProject__container">
+                <span class="noProjectText" *appHasRole="[role.accessibilityPO, role.smartLicensingPO, role.communicationsRegulatoryPO]">The search could not find a match in the Project Name, Project Owner or Assigned To columns. Try shortening your search phrase.</span>
+                <span class="noProjectText" *appHasRole="[role.revRecPO, role.engSox, role.BUController]">The search could not find a match in the Project Name, Project Owner, Assigned To or Business Unit columns. Try shortening your search phrase.</span>
+                <span class="noProjectText" *appHasRole="[role.pm]">No projects have been created</span>
+                <div class="mt-2" *appHasRole="[role.pm]">
+                    <a class="btn btn--secondary" routerLink="/project/create-project"
+                        id="createNewProjectButton">Create New &nbsp;<span class="icon-plus"></span></a></div>
+            </div>
+        </div> 
+        <div class="section"> 
+            <cui-pager showDetails="false" id="projectDataTablePagination" *ngIf="tableData.length" [page]="tableOffset" [limit]="tableLimit" [totalItems]="totalItems" [showPageDetails]="showPageDetails"
+                (onPageChanged)="onPagerUpdated($event)"></cui-pager>
+        </div>
+    </div>
+
+</div>
+<!-- <div class="footer__fixed">
+    <app-footer></app-footer>
+</div> -->
+
+<ng-template id="spinnerTemplate" #spinner>
+    <div class="absolute-center">
+        <cui-spinner color="default" label="Loading">
+        </cui-spinner> 
+    </div>
+</ng-template>
+<ng-template id="projectNameTemplate" #projectName let-item="celldata">
+    <div class="project-name">
+        <span>{{item.name}}</span>
+        <!-- (click)="navigateTo(item)" -->
+    </div>
+</ng-template>
+
+<ng-template id="projectNameTemplate" #projectOwner let-item="celldata">
+    <show-owners-custom-tooltip [owners]="item.owners"></show-owners-custom-tooltip>
+</ng-template>
+
+<ng-template id="projectStatusTemplate" #projectStatus let-item="celldata">
+    <div class="custom__progressbar">
+        <div class="custom__progressbar--value">{{item.progress | number:'1.0-0'}}%</div>
+        <div class="custom__progressbar--bar" [ngClass]="isUserPm ? 'pmScreen' : 'poScreen'">
+            <div class="progressbar progressbar--large" attr.data-percentage="{{item.progress | number:'1.0-0'}}">
+                <div class="progressbar__fill"></div>
+            </div>
+        </div>
+        <div class="custom__progressbar--status" *ngIf="item && item.progress >= 0">{{isUserPm ? (item.progress > 0 && item.progress < 100) ? 'Started' : pmProgressScoreText[item.progress] : item.status}}</div>
+    </div>
+</ng-template>
+
+<ng-template id="projectNameTemplate" #assignMembers let-item="celldata">
+    <div class="assign-members">
+        <!-- <cui-select
+            [id]="item.projectId"
+            [required]="false"
+            [empty]="true"
+            [items]="dropdownUserList"
+            placeholder="No selection"
+            [compressed]="true"
+            [(ngModel)]="selectedUser[item.projectId]" 
+            (ngModelChange)="onUserSelection(item)"
+            optionsKey="name"
+            optionsValue="userId"></cui-select> -->
+            <mat-form-field>
+                <mat-label>Select an option</mat-label>
+                <mat-select [(ngModel)]="selectedUser[item.projectId]" (ngModelChange)="onUserSelection($event, item)">
+                  <mat-option value="No Selection">No Selection</mat-option>
+                  <mat-option *ngFor="let user of dropdownUserList" [value]="user.userId">{{user.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+    </div>
+</ng-template>
+
+<ng-template id="assigned-on" #assignedOn let-item="celldata">
+    <div class="text-center">
+        <span>{{item.lastUpdatedDate| date:'dd'}}<sup>th </sup>{{item.lastUpdatedDate| date:'LLL yyyy'}}</span>
+    </div>
+</ng-template>
+
+<ng-template id="projectCompliance" #projectCompliance let-item="celldata">
+    <div class="text-center">
+        <button class="btn btn--primary btn--small" (click)="navigateTo(item)">View</button>
+    </div>
+</ng-template>
+
+<ng-template id="projectActionTemplate" #action let-item="celldata">
+    <div class="custom--dropdown">
+        <div class="dropdown dropdown--tail dropdown--left" addActiveClass>
+            <span class="icon-more icon-small"></span>
+            <div class="dropdown__menu">
+                <a routerLink="/project/edit-profile/{{item.projectId}}">Edit Profile</a>
+                <a class="disabled">Archive / Delete</a>
+            </div>
+        </div>
+    </div>
+
+   
+
+</ng-template>
+
+<ng-template id="rrBusinessUnitTemplate" #rrBusinessUnit let-item="celldata">
+<div class="rr-business-unit">
+        {{item.rrBusinessUnit}}
+    </div>
+</ng-template>
+
+<ng-template id="projectNameTemplate" #projectNamePM let-item="celldata">
+        <span  class="projectNameText" (click)="navigateTo(item)"><u>{{ item.name }}</u></span>    
+</ng-template>

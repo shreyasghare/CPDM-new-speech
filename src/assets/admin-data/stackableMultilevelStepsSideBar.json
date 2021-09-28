@@ -1,0 +1,61 @@
+{
+    "success": true,
+    "data": [    
+        {
+            "heading": "",
+            "menuStack": [{
+                "menu": "Project Dashboard",
+                "subMenu": ["Applicable Requirements", "Technology Best Practices"]
+            }]
+        },
+        {
+            "heading": "Applicable Requirements",
+            "menuStack": [
+                {
+                    "menu": "Accessibility",
+                    "subMenu": [
+                        { "title": "Overview", "name": "overview", "path": "assets/admin-data/accessibility/admin-accessibility-overview.json" }, 
+                        { "title": "Step 1 : Identify ADRs", "name": "identifyAdrs", "modalSize": "large", "path": "assets/admin-data/accessibility/admin-accessibility-identify-adr.json" },
+                        { "title": "Step 2 : ADR List Approval", "name": "adrListApproval", "modalSize": "large", "path": "assets/admin-data/accessibility/admin-accessibility-adr-list-approval.json" },
+                        { "title": "Step 3 : Implement", "name": "Implement", "path": "assets/admin-data/accessibility/admin-accessibility-implement.json" },
+                        { "title": "Step 4 : Policy Testing", "name": "policyTesting", "modalSize": "normal", "path": "assets/admin-data/accessibility/admin-accessibility-policy-testing.json" },
+                        { "title": "Step 5 : Prepare VPAT", "name": "prepareVpat", "modalSize": "normal", "path": "assets/admin-data/accessibility/admin-accessibility-prepare-vpat.json" },
+                        { "title": "Step 6 : Release VPAT", "name": "releaseVpat", "path": "assets/admin-data/accessibility/admin-accessibility-release-vpat.json" }
+                    ]
+                },
+            {
+                "menu": "Revenue Recognition",
+                 "qsubMenu": ["Overview", "Step 1 : RCL/PID Submit", "Step 2 : RCL/PID Approve", "Step 3 : FMV Assessment", "Step 4 : Complete"],
+                "subMenu": [
+                    { "title": "Overview", "name": "overview" }, 
+                    { "title": "Step 1 : RCL/PID Submit", "name": "rclPidSubmit" },
+                    { "title": "Step 2 : RCL/PID Approve", "name": "rclPidApprove" },
+                    { "title": "Step 3 : FMV Assessment", "name": "fmvAssessment" },
+                    { "title": "Step 4 : Complete", "name": "complete" }
+                ]
+            },
+            {
+                "menu": "Smart Licensing",
+                "subMenu": ["Overview", "Step 1 : Initiate", "Step 2 : Engineering Interlock", "Step 3 : Engineering Response",
+                "Step 4 : Implement", "Step 5 : Demo to ELO", "Step 6 : Testing", "Step 7 : Operational Readiness"]
+            }]
+        },
+        {
+            "heading": "Technology Best Practices",
+            "menuStack": [{
+                "menu": "API Products",
+                "subMenu": ["Overview", "Step 1 : Plan", "Step 2 : Implement", "Step 3 : Complete", "Step 4 : Re-Initiate"]
+            },
+            {
+                "menu": "IPV6",
+                "subMenu": ["Overview", "Step 1 : Plan", "Step 2 : Implement", "Step 3 : Complete", "Step 4 : Re-Initiate"]
+            },
+            {
+                "menu": "Telemetry",
+                "subMenu": ["Overview", "Step 1 : Plan", "Step 2 : Implement", "Step 3 : Complete", "Step 4 : Re-Initiate"]
+            }]
+        }
+    ]
+}
+
+

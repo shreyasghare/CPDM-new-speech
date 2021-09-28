@@ -1,0 +1,203 @@
+<div class="engagement-form__header">
+    <div class="modal__title">Engagement Request Form​</div>
+    <span class="icon-close icon-size-20" (click)="onCancel()"></span>
+</div>
+<!--<questionnaire-navigation-tabs [navBarItems]="navBarItems" (navigation)="onNavigate($event)">
+</questionnaire-navigation-tabs> -->
+<div class="engagement-form">
+    <form [formGroup]="questionnaireForm" spellcheck="false">
+        <div class="engagement-form__container">
+            <!-- #divToScroll
+            (scroll)="onScroll($event)"> -->
+            <div *ngIf="dbResponseReady; else spinner"></div>
+            <div class="engagement-form__container__question">
+                <ol>
+                    <li [class.required-field]="questionsFromDb[i].mandatory && !questionnaireForm.value.items[i].answer.length && !isReadOnly"
+                        formArrayName="items" *ngFor="let item of formData.controls; let i = index;"
+                        [id]="questionsFromDb[i].section?.alias">
+                        <span>{{ questionsFromDb[i].question }}</span>
+                        <span *ngIf="questionsFromDb[i].isToolTip" class="icon-info icon-small"
+                            [matTooltip]="questionsFromDb[i].toolTipDescription">
+                        </span>
+                        <div [formGroupName]="i">
+                            <div class="mt-1 mb-1" *ngIf="enableInputType('text',i)">
+                                <ng-template [ngIf]="!isReadOnly">
+                                    <mat-form-field class="textField">
+                                        <input matInput placeholder="Enter a value" formControlName="answer"
+                                            (change)="onInputChange(i)">
+                                    </mat-form-field>
+                                </ng-template>
+                                <ng-template [ngIf]="isReadOnly">
+                                    <span
+                                        class="read-only">{{questionnaireForm.value.items[i].answer ? questionnaireForm.value.items[i].answer : 'Not answered'}}</span>
+                                </ng-template>
+                            </div>
+
+                            <div *ngIf="enableInputType('radio',i)" class="mt-2 mb-2">
+                                <ng-template [ngIf]="!isReadOnly">
+                                    <mat-radio-group formControlName="answer">
+                                        <mat-radio-button color="primary" class="mr-2"
+                                            *ngFor="let radio of questionsFromDb[i].options" [value]="radio"
+                                            (change)="onInputChange(i, radio)">{{radio}}</mat-radio-button>
+                                    </mat-radio-group>
+                                </ng-template>
+                                <ng-template [ngIf]="isReadOnly">
+                                    <span
+                                        class="read-only">{{questionnaireForm.value.items[i].answer ? questionnaireForm.value.items[i].answer : 'Not answered'}}</span>
+                                </ng-template>
+                            </div>
+
+                            <!-- <div *ngIf="questionsFromDb[i]?.additionalInfo">
+                                <p><span style="font-weight: bold;">Note-</span>{{questionsFromDb[i]?.additionalInfo}}
+                                </p>
+                            </div> -->
+                            <div formArrayName="subQuestion">
+                                <div *ngIf="questionsFromDb[i].subQuestion.length > 0">
+                                    <div *ngFor="let question of getSubquestions(item); let x = index"
+                                        [formGroupName]="x">
+                                        <div *ngIf="question.value.additionalInfo">
+                                            <p> 
+                                                <span class="additionalInfoHeader">Note-</span><i>{{question.value.additionalInfo}}</i>
+                                            </p>
+                                        </div>
+                                        <p>{{question.value.question}}</p>
+                                        <div *ngIf="question.value.inputType === 'dropdown'">
+                                            <ng-template [ngIf]="!isReadOnly">
+                                                <mat-form-field>
+                                                    <mat-label>Select</mat-label>
+                                                    <mat-select formControlName="answer">
+                                                        <mat-option
+                                                            *ngFor="let option of questionsFromDb[i].subQuestion[x].options"
+                                                            [value]="option.name">
+                                                            {{option.name}}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </ng-template>
+                                            <ng-template [ngIf]="isReadOnly">
+                                                <span
+                                                    class="read-only">{{questionnaireForm.value.items[i].subQuestion[x].answer ? questionnaireForm.value.items[i].subQuestion[x].answer : 'Not answered'}}</span>
+                                            </ng-template>
+                                        </div>
+                                        <div *ngIf="question.value.inputType === 'text'">
+                                            <div class="mt-1 mb-1">
+                                                <ng-template [ngIf]="!isReadOnly">
+                                                    <mat-form-field>
+                                                        <input matInput placeholder="Enter a value"
+                                                            formControlName="answer">
+                                                    </mat-form-field>
+                                                </ng-template>
+                                                <ng-template [ngIf]="isReadOnly">
+                                                    <span
+                                                        class="read-only">{{questionnaireForm.value.items[i].subQuestion[x].answer ? questionnaireForm.value.items[i].subQuestion[x].answer : 'Not answered'}}</span>
+                                                </ng-template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div *ngIf="enableInputType('search',i)" class="mt-1 mb-1">
+                                <app-user-search-dir *ngIf="!isReadOnly" (selectedUsers)="getSelectedMembers($event, i)"
+                                    [slObjData]="questionsFromDb[i]" [initiateProcessContinues]="!isReadOnly">
+                                </app-user-search-dir>
+                                <div *ngIf="isReadOnly">
+                                    <span class="read-only mr-1" *ngFor="let answer of questionsFromDb[i].answer"
+                                        [attr.data-balloon]="answer.fullname" data-balloon-pos="up"><span
+                                            class="icon-contact mr-1"></span>{{answer.name}}</span>
+                                    <span class="read-only" *ngIf="!questionsFromDb[i].answer">Not answered</span>
+                                </div>
+                            </div>
+                            <div *ngIf="enableInputType('date',i)" class="mt-1 mb-1">
+                                <ng-template [ngIf]="!isReadOnly">
+                                    <mat-form-field>
+                                        <input matInput [matDatepicker]="picker" 
+                                            formControlName="answer" placeholder="Choose a date"
+                                            (dateChange)="onDateChange($event, i)">
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker></mat-datepicker>
+                                    </mat-form-field>
+                                </ng-template>
+                                <ng-template [ngIf]="isReadOnly">
+                                    <span class="read-only"
+                                        *ngIf="questionnaireForm.value.items[i].answer">{{questionnaireForm.value.items[i].answer | date:'M/dd/yyyy'}}</span>
+                                    <span class="read-only" *ngIf="!questionnaireForm.value.items[i].answer">Not
+                                        answered</span>
+                                </ng-template>
+                                <div *ngIf="invalidDateWarning && questionsFromDb[i].questionNumber === 6"
+                                    class="warning-text">
+                                    <span class="icon-info icon-small"></span>
+                                    <span class="ml-1">Needs to be expedited given the date is under 60 days.</span>
+                                </div>                                
+                            </div>
+
+                            <div *ngIf="enableInputType('checkbox',i)" class="mt-1 mb-1">
+                                <ng-template [ngIf]="!isReadOnly">
+                                    <mat-checkbox color="primary" class="mr-2"
+                                        *ngFor="let checkbox of questionsFromDb[i].options" formControlName="answer">
+                                        {{checkbox}}</mat-checkbox>
+                                </ng-template>
+                                <ng-template [ngIf]="isReadOnly">
+                                    <span class="read-only"
+                                        *ngIf="questionnaireForm.value.items[i].answer == true">{{questionnaireForm.value.items[i].answer == true ? 'Yes' : 'No'}}</span>
+                                    <span class="read-only" *ngIf="!questionnaireForm.value.items[i].answer">Not
+                                        answered</span>
+                                </ng-template>
+                            </div>
+                            <div *ngIf="questionsFromDb[i]?.additionalInfo">
+                                <p *ngIf="i !== 6 && i !== 4">
+                                    <span class="additionalInfoHeader">Note-</span><i>{{questionsFromDb[i]?.additionalInfo}}</i>
+                                </p>
+                                <p *ngIf="i === 4">
+                                    <span class="additionalInfoHeader">Note-</span><span [innerHTML]='questionsFromDb[i]?.additionalInfo'></span>
+                                </p>                                
+                                <div *ngIf="i === 6">
+                                    <ng-template [appHasRole]="[role.pm]">
+                                        <div class="row">
+                                            <div class="col-10">
+                                                <p class="sEEMNotificationTextContainer"><span class="additionalInfoHeader">Note-</span><i>{{questionsFromDb[i]?.additionalInfo}}</i></p>
+                                            </div>
+                                            <div class="col-2" class="nppmNotifyButton">                                        
+                                                <button class=" btn btn--primary btn--small" id="sendSEEMNotification"
+                                                [disabled]= "seemIdentifierNotificationDisabled || isReadOnly" 
+                                                (click)="sendSEEMNotification()">Notify NPPM</button>
+                                            </div>
+                                        </div>        
+                                    </ng-template>  
+                                    <ng-template [appHasRole]="[role.smartLicensingPO]">
+                                        <p><span class="additionalInfoHeader">Note-</span><i>{{questionsFromDb[i]?.additionalInfo}}</i></p>
+                                    </ng-template>                                     
+                                </div>
+                            </div>
+                            <div class="divider"></div>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <div class="engagement-form__footer">
+            <div class="p-2">
+                <ng-container *ngIf="!isReadOnly">
+                    <span *ngIf="remainingQuestionCount > -1"
+                        [ngClass]="remainingQuestionCount === 0 ? 'icon-check-outline icon-small' : 'icon-exclamation-triangle icon-small' "></span>
+                    {{engFormStatus}}
+                </ng-container>
+            </div>
+            <div class="text-center p-1">                
+                <button *ngIf="!isReadOnly" type="button" [disabled]="!dbResponseReady" class="btn btn--dark"
+                    (click)="onCancel()">Cancel</button>
+                <button *ngIf="!isReadOnly" type="submit" [disabled]="!dbResponseReady" class="btn btn--secondary"
+                    (click)="onSave()">Save</button>
+                <button *ngIf="isReadOnly" type="button" class="btn btn--negative" (click)="onCancel()">Close</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<ng-template #spinner>
+    <div class="overlay">
+        <div class="absolute-center">
+            <cui-spinner color="default" label="Loading"></cui-spinner>
+        </div>
+    </div>
+</ng-template>

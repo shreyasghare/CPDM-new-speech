@@ -1,0 +1,344 @@
+//****************Global Helper class***************
+
+//Add border to any icon----------------------------
+.icon-border{
+    border: 1px solid;
+    border-color: #9e9ea2;
+    border-radius: 0.5rem;
+    padding: 0.3rem ;
+}
+
+mat-tooltip-component {
+    @extend .fancy-scrollbar;
+    .tooltipForInfo {
+        background-color: #343a40;
+        font-size: 13px;
+        white-space: pre-line !important;
+        &.xlarge {
+            max-width: 40vw !important;
+            height: 50vh;
+            overflow-y: auto;
+            pointer-events: auto;
+        }
+        &.large {
+            max-width: 40vw !important;
+            max-height: 45vh;
+            overflow-y: auto;
+            pointer-events: auto;
+        }
+    }
+}
+
+.tooltipResForInfo{
+    white-space: pre-line !important;
+}
+
+.pager-row{
+    float: right;
+    margin: 2rem 0;
+    // position: absolute;
+    // bottom: 5rem;
+    // right: 0;
+    // margin-right: 3rem;
+    // z-index: 2;
+}
+
+// To add margin or padding to any element just use the below classes
+// Array of elements 
+$spaceamounts: (1,2,3,4,5,6,7,8,10);
+
+@each $space in $spaceamounts {
+    //Margin helper classes*****************************************
+    // Margin evenly
+    .m-#{$space} {
+        margin: #{$space}rem !important;
+    }
+
+    // Margin top and bottom #{$space} and 0 for let and right
+    .my-#{$space} {
+        margin:  #{$space}rem 0 !important;
+    }
+
+    // Margin top and bottom 0 and #{$space} for let and right
+    .mx-#{$space} {
+        margin:  0 #{$space}rem !important;
+    }
+
+    // Margin top
+    .mt-#{$space} {
+        margin-top: #{$space}rem !important;
+    }
+
+    // Margin bottom 
+    .mb-#{$space} {
+        margin-bottom: #{$space}rem !important;
+    }
+
+    // Margin right
+    .mr-#{$space} {
+        margin-right: #{$space}rem !important;
+    }
+
+    // Margin left
+    .ml-#{$space} {
+        margin-left: #{$space}rem !important;
+    }
+
+    // **************************************************************
+
+    //Padding helper classes*****************************************
+    // Padding evenly
+    .p-#{$space} {
+        padding: #{$space}rem !important;
+    }
+
+    // Padding top and bottom #{$space} and 0 for let and right
+    .py-#{$space} {
+        padding: #{$space}rem 0 !important;
+    }
+
+    // Padding top and bottom 0 and #{$space} for let and right
+    .px-#{$space} {
+        padding:  0 #{$space}rem !important;
+    }
+
+    // Padding top
+    .pt-#{$space} {
+        padding-top: #{$space}rem !important;
+    }
+
+    // Padding right
+    .pr-#{$space} {
+        padding-right: #{$space}rem !important;
+    }
+
+    // Padding bottom
+    .pb-#{$space} {
+        padding-bottom: #{$space}rem !important;
+    }
+
+    // Padding left
+    .pl-#{$space} {
+        padding-left: #{$space}rem !important;
+    }
+    //***************************************************************
+}
+
+
+
+.mt-minus-0-5 {
+    margin-top: -0.5rem !important;
+}
+
+.ml-0-5{
+    margin-left: 0.5rem!important;
+}
+
+
+
+
+.full-height {
+    height: 100%;
+}
+
+.badge {
+    display: inline-block;
+    min-width: 10px;
+    padding: 2px 5px 0px 5px;
+    font-size: 12px;
+    color: #58585b;
+    vertical-align: middle;
+    background-color: #c6c7ca;
+    border-radius: 10px;
+    line-height: 1.5;
+}
+
+.overlay {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1000000;
+    background-color: rgba(0,0,0,0.1);
+}
+
+//**************************************************
+
+.content{
+    padding-bottom: 2rem;
+    background: #fff !important;
+}
+
+
+.footer__fixed{
+ position: fixed;
+ bottom: 0;
+ width: 100%;   
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.icon-info {
+    margin-left: 5px;
+    cursor: pointer;
+    color: #58585b;
+}
+
+.icon-info.icon-small:before {
+    font-size: 15px !important;
+    color: #7f7f86;
+}
+
+.hide-button {
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+}
+.cui-toast .close-button {
+    top: 18px !important;
+    right: 12px !important;
+}
+
+mat-dialog-container.mat-dialog-container {
+    min-height: 125px;
+}
+
+.icon--custom-size{
+    font-size: 18.5px;
+}
+
+.cui .form-group.input--compressed .form-group__text input {
+    padding-right: 30px !important;
+    background-color: #fff !important;
+}
+
+//[US15763](https://rally1.rallydev.com/#/detail/userstory/415206734508?fdp=true): Rework the beta tagging UI
+.betaTag{
+font-family: CiscoSans;
+padding: 1px 6px;
+font-size: 10px;
+align-items: center;
+text-align: center;
+letter-spacing: 0.16em;
+color: #383838;
+align-self: center;
+margin: 10px 0px;
+border: 1px solid #383838;
+}
+
+.fancy-scrollbar {
+    /* width */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+    
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #00a3d2;
+    }
+    
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #1ad6ff;
+    }
+}
+
+// Define Angular Material Dialog CSS Structure
+.custom-dialog {
+    &__header {
+        h3 {
+            font-weight: 300 !important;
+        }
+
+        position: relative;
+
+        .icon-close {
+        position: absolute;
+        right: -5px;
+        top: -6px;
+        font-size: 2.1rem;
+        cursor: pointer;
+        }
+    }
+
+
+    &__body {
+        padding: 1.3rem;
+    }
+
+    &__footer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+// Max height for tab content with scroll
+// .tbp-container cui-tabs .tab-content {
+//     max-height: 20rem;
+//     overflow: auto;
+// }
+
+.ar-container cui-tabs .tab-content {
+    max-height: 32rem;
+    overflow: auto;
+}
+
+.i-close {
+    font-size: 2rem; 
+    padding: 1rem;
+}
+
+.icon-close {
+    cursor: pointer;
+}
+
+.icon-close:hover {
+    color: #017cad;
+}
+
+.mt-unset {
+    margin-top: unset !important;
+}
+
+.mb-unset {
+    margin-bottom: unset !important;
+}
+
+.status-rejected {
+    text-transform: capitalize;
+    background-color: lightcoral;
+    padding: 1px 5px;
+}
+
+.status-approved {
+    text-transform: capitalize;
+    background-color: darkseagreen;
+    padding: 1px 5px;
+}
+
+.text-seperator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 1rem 0;
+    &--line {
+        flex: 2 1 0;
+        border-top: solid 1px gray;
+    }
+    &--text {
+        margin: 0 1rem;
+    }
+}
+
+.important-note-color {
+    color: #437f2d;
+}

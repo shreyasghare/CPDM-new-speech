@@ -1,0 +1,16 @@
+<div class="cui-toasts" [@.disabled]="!showAnimation">
+    <div class="toast mb-2" [@slideInOut]="showAnimation"  *ngFor="let toast of toasts; let i = index">
+        <div class="toast__icon" [ngClass]="toastIconClass(toast.severity)"></div>
+        <div class="toast__percentage" *ngIf="toast.showProgressBar">{{toast.progressBarPercentage}}%</div>
+        <div class="toast__body" [ngClass]="{'margin-left':toast.showProgressBar}">
+            <div class="toast__title">{{toast.title}}</div>
+            <div class="toast__message" [innerHTML]="toast.message"></div>
+            <div class="progressbar" *ngIf="toast.showProgressBar" [attr.data-percentage]="toast.progressBarPercentage">
+                <div class="progressbar__fill"></div>
+            </div>
+        </div>
+        <div class="toast__icon-close">
+            <span class="close-button link icon-close" (click)="removeToastByIndex(i)"></span>
+        </div>
+    </div> 
+</div>

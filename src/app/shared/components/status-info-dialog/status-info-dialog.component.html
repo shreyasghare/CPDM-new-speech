@@ -1,0 +1,15 @@
+<div class="status-info-dialog">
+    <a class="modal__close pull-right" (click)="onClose()"><span class="icon-close"></span></a>
+    <div class="modal__header"> <div class="modal__title pl-1">Supporting Feature (Status) Terminology</div></div>
+    <div class="status-info-dialog__main--body">
+        <div class="container-fluid">
+            <div class="row status-info-dialog__header">
+                <span class="col" *ngFor="let column of columns">{{column}}</span>
+            </div>
+            <div class="row status-info-dialog__body" *ngFor="let row of rows">
+                <span class="col"><b>{{row.title}}</b></span>
+                <span class="col">{{row.description}}</span>
+            </div>
+        </div>
+    </div>
+</div>

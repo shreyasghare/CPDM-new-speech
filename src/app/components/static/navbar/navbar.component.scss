@@ -1,0 +1,42 @@
+.header {
+    height: 7rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+   
+    &__bar {
+        display: flex;
+        justify-content: space-between;
+
+        &__logo {
+            &--img {
+                width: auto;
+                height: 6rem;
+            }
+        }
+
+        &__user-details {
+            display: flex;
+            align-items: center;
+
+            &__profile { 
+                height: auto;
+                display: flex;
+                align-items: center;
+                a{
+                    font-size: 1.6rem;
+                    text-align: right;
+                    text-decoration: none;
+                    cursor: pointer;
+                    color:#495057;                  
+                }  
+
+                &--role-selection {
+                    cursor: pointer !important;
+                    width: 25rem !important;
+                }
+            }
+        }
+    }
+}
+

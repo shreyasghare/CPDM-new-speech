@@ -1,0 +1,29 @@
+<div class="confirm-popup">
+    <div class="confirm-popup__header">
+        <div class="confirm-popup__header--text">
+            <div class="modal__title ml-1 mb-1">Confirm Action</div>
+        </div>
+        <span id="close" [class.disabled]="showLoader" class="icon-close close" (click)="onCancel()"></span>
+    </div>
+    <div class="confirm-popup__content">
+        <div class="ml-1">
+            <p *ngIf="!isReinitiate && !isSLDemotoELO && !isSubmitConfirmation && !isReviewConfirmation" class="confirm-text">Are you sure you want to <b>submit</b> the RCL Assessment and the New PID List?</p>
+            <p *ngIf="isReinitiate" class="confirm-text">Select 'Confirm' to update and re-submit the RCL, PID List, or both for approval. A notification is sent to users associated with this project's policy.<br/><br/> Select 'Cancel' to close this window</p>
+            <p *ngIf="isSubmitConfirmation" class="confirm-text" [innerHTML]=data.confirmationMsg></p>
+            <p *ngIf="isReviewConfirmation" class="confirm-text">Are you sure you want to <b>submit the review</b> for RCL assessment and New PID List?</p>
+        </div>
+        <div *ngIf="!isReinitiate" class="confirm-popup__content__btn mt-3">
+            <button [disabled]="showLoader" class="btn btn--primary confirm-popup__content__btn--cancel" (click)="onCancel()">No</button>
+            <button *ngIf="!showLoader; else resLoader" class="btn btn--primary
+            confirm-popup__content__btn--confirm" (click)="onConfirm()">Yes</button>
+        </div>
+        <div *ngIf="isReinitiate" class="confirm-popup__content__btn mt-3">
+            <button [disabled]="showLoader" class="btn btn--primary confirm-popup__content__btn--cancel" (click)="onCancel()">Cancel</button>
+            <button *ngIf="!showLoader; else resLoader" class="btn btn--primary
+            confirm-popup__content__btn--confirm" (click)="onConfirm()">Confirm</button>
+        </div>
+    </div>
+</div>
+<ng-template #resLoader>
+    <cui-loader></cui-loader>
+</ng-template>

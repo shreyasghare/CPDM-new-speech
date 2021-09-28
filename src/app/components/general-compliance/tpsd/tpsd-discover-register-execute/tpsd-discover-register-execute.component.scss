@@ -1,0 +1,73 @@
+.discoverExecuteContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100%;
+    width: 100%;
+    &__title {
+        width: 80%;
+        letter-spacing: 0.4375px;
+    }
+
+    &__error-msg {
+        width: 80%;
+        background-color: #e6c27f;
+        border-radius: 4px;
+        padding: 4px;
+    }
+    &__body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 80%;
+        background-color: #c6c7ca;
+        padding: 1.3rem;
+        & > div {
+            display: flex;
+            width: 100%;
+            padding: 1.25rem;
+            font-size: 14px;
+            letter-spacing: 0.3px;
+            & > div:first-child {
+                display: flex;
+                justify-content: flex-end;
+                width: 10%;
+            }
+            & > div:last-child {
+                padding-left: 2rem;
+                width: 50%;
+                color: #017CAD;
+                display: flex;
+            }
+        }
+    }
+    &__footer {
+        width: 80%;
+        padding: 1rem 0;
+        .form-group {
+            justify-content: space-between;
+            align-items: center;
+            &__text {
+                width:82%;
+            }
+            &--submitted .icon-check-outline {
+                color: forestgreen;
+            }
+        }
+    }
+    .disabledFooter {
+        pointer-events: none;
+        opacity: 0;
+    }
+}
+.unavailableText{
+    pointer-events: none;
+    color: #686868!important;
+}
+.required-field {
+    &:before {
+        content: "*";
+        color:red;
+    }
+}

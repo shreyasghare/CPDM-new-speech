@@ -1,0 +1,178 @@
+.assessment-questionnaire{
+    &__content{
+
+        &__field{
+          display: flex;
+          justify-content: space-between;
+
+          .required-questions{
+            color: red;
+          }
+        }
+
+        &__nav{
+            display: flex;
+            width: 90%;
+            a{
+              color: white;
+              text-decoration: none;
+            }
+            &--tab{
+              display: flex;
+              align-items: center;
+              margin-right: 1%;
+              height: 4rem; 
+              width: auto;
+              color: white;
+              cursor: pointer;
+
+              & > div:nth-child(1){
+                padding: 0.8rem 1.4rem;
+                background-color: #A9A9A9;
+              }
+              
+
+              & > div:nth-child(2){
+                padding: 0.8rem;
+                background-color: #BFBFBF;
+              }
+           }
+        }
+
+        &__main{
+           border-top: 1px solid #636363; 
+           border-bottom: 2px solid #636363; 
+           height: 65vh;
+           overflow-y: auto;
+           overflow-x: hidden;
+           margin: 1% 0;
+           
+           ol{
+            padding: 0 0 0 40px !important;
+           }
+
+           .table--currency {
+            border: 1px solid #7f7f86; 
+            // border-left: 1px solid #7f7f86; 
+            // border-bottom: 1px solid #7f7f86; 
+            display: flex; 
+            padding: 0.5rem; 
+            justify-content: space-between;
+            align-items: center
+
+             span{
+               font-size: 1.8rem;
+             }
+
+             &--icon{
+               display: flex;
+               align-items: center;
+               justify-content: center;
+              width: 20%;
+             }
+            
+           }
+
+           .radio-btn-container {
+              display: flex;
+              align-items: center;
+            }
+            button.add-comment-link {
+              display: block;
+              padding: 0 15px;
+            }
+
+           .expandable-comment-field {
+             .form-group {
+               width: 90%;
+               padding: 0;
+              textarea.textarea {
+                height: 0;
+                min-height: 0;
+                visibility: hidden;
+                transition: ease-in 0.25s;
+                padding: 0;
+                &.show {
+                  height: 90px;
+                  padding: 10px;
+                  visibility: visible;
+                  transition: ease-in 0.25s;
+                }
+              }
+             }
+           }
+
+           .note {
+            color: #017cad;
+           }
+
+           .read-only {
+            background-color: #bfbfbf;
+            padding: 6px 7px 2px 7px;
+            color: #636363;
+           }
+        }
+
+        &__footer{
+            text-align: center;
+         }
+    }
+
+    &__header {
+      display: flex;
+      justify-content: space-between;
+    }
+}
+
+.active > div:first-child{
+    background-color: #636363!important;
+}
+
+.active > div:last-child{
+  background-color: #868686!important;
+}
+
+.file-attachment{
+  display: flex;
+  height: auto;
+}
+
+.required-field {
+  height: 1rem;
+  width: 1rem;
+  background-color: rgb(255, 1, 1);
+  border-radius: 50%;
+  display: inline-block;
+  margin-left: -4rem;
+}
+
+.required-question-list{
+  margin-top: -2.1rem;
+}
+
+::ng-deep .required-question-list ol,
+::ng-deep .required-question-list ul {
+  margin-bottom: 1rem;
+}
+
+.rcl-form-group.form-group.input--compressed .form-group__text input {
+  padding: 5px !important;
+}
+
+ol {
+  list-style-type: none;
+}
+
+.li-counter{
+  font-weight: bold;
+  font-size: 14px;
+  margin-right: 7px;
+  margin-top: 3px;
+}
+
+.counter__custom-flex{
+  width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

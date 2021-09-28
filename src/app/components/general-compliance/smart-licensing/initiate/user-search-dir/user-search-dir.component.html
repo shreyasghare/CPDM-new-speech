@@ -1,0 +1,90 @@
+<div *ngIf="slObjData.inputType != 'search'">
+    <ng-template [appHasRole]="role.pm">
+        <span>a. Please identify the project team members that need to attend the webinar.</span>
+    </ng-template>
+    <ng-template [appHasRole]="role.smartLicensingPO">
+        <span *ngIf="userMembers.length">a. Please identify the all project/engineering team members that need to attend.</span>
+    </ng-template>
+</div>
+<div id="addMemnerContainer">
+    <ng-template [appHasRole]="[role.pm]">
+        <div class="row">
+            <div class="col-5">
+                <div class="form-group" [ngClass]="errorOccurred?'form-group--error':''">
+                    <div class="row">
+                        <!--<div class="col-8 form-group">
+                            <input class="userNameSearchBox" (key.enter)="onMemberAddition()"  *ngIf="slObjData.inputType != 'search'"
+                                placeholder="Search" [(ngModel)]="inputValue" type="text" [readonly]="showLoader" [disabled]="sslWebinarValue == 'yes' ">
+                            
+                            <input class="userNameSearchBox" (key.enter)="onMemberAddition()"  *ngIf="slObjData.inputType == 'search'"
+                                placeholder="Search" [(ngModel)]="inputValue" type="text" [readonly]="showLoader" [disabled]="!initiateProcessContinues">
+                        </div>
+                        <div class="col-4">
+                            <div class="loading-dots loading-dots--muted" *ngIf="showLoader"
+                                aria-label="Loading, please wait...">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <div class="form-group input--compressed" *ngIf="!showLoader">
+                                <button class="btn btn--primary btn--small" [disabled]="!inputValue"
+                                    (click)="onMemberAddition()">Add</button>
+                            </div>
+                        </div>-->
+                        <div class="col-9">
+                            <form spellcheck="false">
+                                <mat-form-field class="autoComplete-matInput">
+                                    <input type="text" placeholder="Search..." *ngIf="slObjData.inputType != 'search'" matInput
+                                        [formControl]="searchMember" [matAutocomplete]="auto" [disabled]="sslWebinarValue == 'yes' ">
+                                    <input type="text" placeholder="Search..." *ngIf="slObjData.inputType == 'search'" matInput
+                                        [formControl]="searchMember" [matAutocomplete]="auto" [disabled]="!initiateProcessContinues">
+                                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="matOptionSelected($event.option.value)" 
+                                        [displayWith]="getSelectedUserName">
+                                      <mat-option *ngFor="let user of users" [value]="user">
+                                        {{ user.name }} <span *ngIf="user.cecId">({{user.cecId}})</span>
+                                      </mat-option>
+                                    </mat-autocomplete>                        
+                                </mat-form-field>                    
+                            </form>
+                        </div>
+                        <div class="col-3 addMemberControl">
+                            <div class="loading-dots loading-dots--muted" *ngIf="showLoader"
+                                aria-label="Loading, please wait...">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <div class="form-group input--compressed" *ngIf="!showLoader">
+                                <button class="btn btn--primary" [disabled]="!inputValue"
+                                    (click)="onMemberAddition()">Add</button>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+            <div class="col-7 addMemberControl" *ngIf="showMembers">
+                <span tabindex="0" class="label label--small label--dark label--bordered userTab mr-1" [attr.data-balloon]="member.fullname"
+                    *ngFor="let member of userMembers; let i = index" data-balloon-pos="up">
+                    <span class="icon-contact"></span> &nbsp;
+                    <span>{{member.cecId || member.name}}</span> &nbsp;
+                    <span class="icon-exit removeUserIcon" (click)="onRemove(i)" *ngIf="initiateProcessContinues || sslWebinarValue == 'no' "></span>
+                </span>
+            </div>
+        </div>
+        <div class="help-block text-danger pull-left" role="alert" *ngIf="errorOccurred">
+            <span>{{getErrorMessage}}</span>
+        </div>
+    </ng-template>
+    <ng-template [appHasRole]="[role.smartLicensingPO]">
+        <div *ngIf="initiateProcessContinues">            
+            <img class="icon ml-2" src="assets/images/icons/svg/time-left.svg"> <span class="text-muted ml-1"> Awaiting
+                answer</span>
+        </div>
+        <div *ngIf="!initiateProcessContinues  && showMembers">
+            <span tabindex="0" class="read-only ml-1" [attr.data-balloon]="member.fullname"
+                *ngFor="let member of userMembers; let i = index" data-balloon-pos="up">
+                <span class="mr-1"><span class="icon-contact mr-1"></span>{{member.cecId || member.name}}</span>
+            </span>
+        </div>
+    </ng-template>
+</div>

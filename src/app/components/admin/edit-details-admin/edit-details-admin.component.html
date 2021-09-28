@@ -1,0 +1,19 @@
+<div class="container-fluid">
+    <div class="top-bar">
+        <div class="top-bar__navigation">
+            <h6 class="section"> <a (click)="onHomeLink()">Home</a>
+                <span class="icon-small icon-chevron-right"></span>Edit Modals & Info Icons</h6>
+        </div>
+    </div>
+    <div class="content">
+        <div class="row">
+            <div id="custom-expandable-panel-div">
+                <p class="text-large text-center text-bold noHover">PAGES / STEPS</p>
+                <stackable-multilevel-steps-sidebar [multilevelSteps]="multilevelSteps" (menuSubmenuSelected)="menuChanged($event)"></stackable-multilevel-steps-sidebar>
+            </div>
+            <div id="content-div">
+                <image-content-edit (isEditorContentChanged)="onEditorContentChange($event)"></image-content-edit>
+            </div>
+        </div>
+    </div>
+</div>

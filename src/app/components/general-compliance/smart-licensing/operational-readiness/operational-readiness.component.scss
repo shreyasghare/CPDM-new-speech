@@ -1,0 +1,17 @@
+// Put scss in smart-licensing.component.scss
+.main {
+    &__container {
+        align-items: center;
+        border: 1px solid #9e9ea2;
+        background-color: white;
+        padding: 1.5rem 1rem 0;
+    }
+
+    &__checkbox_pointer {
+        cursor: pointer;
+    }
+
+    span {
+        padding: 1rem 0;
+    }
+}

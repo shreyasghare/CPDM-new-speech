@@ -1,0 +1,457 @@
+<div class="rev-rec-review" [style.height]="getHeight()"
+    *ngIf="hasPmSubmitted!=undefined || isRevRecPOReviewSent!=undefined || isBUReviewed!=undefined else spinner">
+    <!-- PM review-start -->
+    <ng-container *appHasRole="[role.pm]">
+        <div class="rev-rec-review__rcl">
+            <app-holding-status *ngIf="hasPmSubmitted || isApprovedByBU || isRejectedByBU"
+                [statusIcon]="reviewStatus.pmWaiting.icon" [status]="reviewStatus.pmWaiting.status"
+                [message]="reviewStatus.pmWaiting.message">
+                <div class="mt-2">
+                    <button class="btn btn--primary" (click)="viewSubmission()">View Submission</button>
+                    <span class="mt-1 ml-2">
+                        <a (click)="downloadAssessmentChecklist()" matTooltip="Download RCL Assessment">{{assessmentChecklistObj.edcsID}}</a>
+                    </span>
+                <!-- <button class="btn btn--dark"
+                        (click)="OnReinitiateProcess()">Update</button>&nbsp;&nbsp;&nbsp;RCL / PID-List / BU Controller -->
+
+                </div>
+            </app-holding-status>
+        </div>
+        <!-- BUController reviews -->
+        <app-review-list [reviews]="BUControllerData"></app-review-list>
+        <!-- revRecPO add comments -->
+        <app-comment-list [comments]="revRecPOData"></app-comment-list>
+    </ng-container>
+    <!-- PM review-end -->
+
+    <!-- revRecPO role start -->
+    <ng-container *appHasRole="[role.revRecPO]">
+        <p>Review the RCL and PID list, then approve or reject each document. </p>
+        <!-- revRecPO view submission -->
+        <div class="rev-rec-review__rcl" *ngIf="!isRevRecPOReviewSent">
+            <app-holding-status [statusIcon]="'submit'" [status]="'Review RCL Assessment'" [className]="'light'">
+                <div class="row">
+                    <div>
+                        <button class="btn btn--primary" (click)="viewSubmission()">View Submission</button>
+                    </div>
+                    <div class="mt-1 ml-2">
+                        <a (click)="downloadAssessmentChecklist()" matTooltip="Download RCL Assessment">{{assessmentChecklistObj.edcsID}}</a>
+                    </div>
+                </div>
+            </app-holding-status>
+        </div>
+        <!-- revRecPO download scoping checklist -->
+        <div class="rev-rec-review__scoping-checklist" *ngIf="!isRevRecPOReviewSent">
+            <div  *ngIf="!revRecData.skipPidListUpload.flag">
+            <app-holding-status [statusIcon]="'submit'" [status]="'Review New PID List'" [className]="'light'">
+                <button class="btn btn--primary btn" (click)="downloadScopingChecklist()">Download</button>
+            </app-holding-status>
+            </div>
+
+            <div *ngIf="revRecData.skipPidListUpload.flag">
+                <app-holding-status [statusIcon]="'submit'" [status]="'PID List upload skipped'" [className]="'light'">
+                    Comments: {{revRecData.skipPidListUpload.comments}}
+                </app-holding-status>
+             </div>   
+        </div>
+        <!-- Current review status - reviewd/rejected/revised/approved -->
+        <div class="rev-rec-review__holding-status" *ngIf="isRevRecPOReviewSent">
+            <app-holding-status [statusIcon]="currentReviewStatus.icon" [status]="currentReviewStatus.status"
+                [message]="currentReviewStatus.message">
+                <button class="btn btn--primary" (click)="viewSubmission()"
+                    *ngIf="currentReviewStatus.status != 'RCL Assessment revised'">View RCL</button>
+                <button class="btn btn--primary" (click)="downloadScopingChecklist()"
+                    *ngIf="currentReviewStatus.status != 'RCL Assessment revised' && !revRecData.skipPidListUpload.flag">Download New PID List</button>
+                <div *ngIf="currentReviewStatus.status != 'RCL Assessment revised' && revRecData.skipPidListUpload.flag"> 
+                       <br>PID List upload skipped <br>Comments: {{revRecData.skipPidListUpload.comments}}
+                </div>
+                <button class="btn btn--primary" (click)="isRevRecPOReviewSent = false; rrComment=''"
+                    *ngIf="currentReviewStatus.status == 'RCL Assessment revised'">Review</button>
+            </app-holding-status>
+        </div>
+        <!-- BUController reviews -->
+        <app-review-list *ngIf="isRevRecPOReviewSent" [reviews]="BUControllerData"></app-review-list>
+        <!-- revRecPO add comments -->
+        <ng-container *appHasRole="[role.revRecPO]">
+            <div class="rev-rec-review__rr-comments" *ngIf="!isRevRecPOReviewSent">
+                <div class="rev-rec-review__rr-comments--title">
+                    <span>Your Comments</span>
+                </div>
+                <div class="rev-rec-review__rr-comments--comment">
+                    <textarea rows="5" [(ngModel)]="rrComment"></textarea>
+                </div>
+            </div>
+        </ng-container>
+        <app-comment-list *ngIf="isRevRecPOReviewSent" [comments]="revRecPOData"></app-comment-list>
+        <!-- Send/Resend review button -->
+        <ng-container *appHasRole="[role.revRecPO]">
+            <div class="rev-rec-review__actions">
+                <div class="buControllerDropDownItems">
+                    <div class="dropdownBU">
+                        <div class="mr-2">
+                            <label for="buControllers" class="required-field "><b>BU Controller</b></label>
+                        </div>
+                        <div>
+                            <span>{{selectedBuController}}</span>
+                        </div>
+                    </div>
+
+                    <div class="dropdownBU">
+                        <div class="mr-2">
+                            <label for="buControllers"><b>Alternate Approver</b></label>
+                        </div>
+                        <div *ngIf="revRecData && revRecData.alternateProxy">
+                            <span>{{revRecData.alternateProxy.name}}</span>
+                        </div>
+                    </div>
+
+                    <div class="dropdownBU" class="mr-8" *ngIf="selectedBU">
+                        <div class="mr-2">
+                            <label for="buDropdown"><b>BU</b></label>
+                        </div>
+                        <div>
+                            <span>{{selectedBU}}</span>
+                        </div>
+                    </div>
+                </div>
+                <button *ngIf="!isRevRecPOReviewSent" class="btn btn--success"
+                    (click)="confirmAction('rrReview')"
+                    [disabled]="!rrComment.length">{{revRecData.rclPidSubmit && revRecData.rclPidSubmit.status == 'revised' && currentRole == role.BUController ? 'Resend review' : 'Send review'}}</button>
+            </div>
+        </ng-container>
+    </ng-container>
+
+    <!-- Eng.Sox role start -->
+    <ng-container *appHasRole="[role.engSox]">
+        <p>Review the RCL and PID list, then approve or reject each document. </p>
+        <!-- Current review status - reviewd/rejected/revised/approved -->
+        <div class="rev-rec-review__holding-status">
+            <app-holding-status [statusIcon]="currentReviewStatus.icon" [status]="currentReviewStatus.status"
+                [message]="currentReviewStatus.message">
+                <button class="btn btn--primary" (click)="viewSubmission()">View RCL</button>
+                <button class="btn btn--primary" (click)="downloadScopingChecklist()"
+                    *ngIf="!(revRecData.skipPidListUpload.flag)">Download New PID List</button>
+                <span class="mt-1 ml-2">
+                     <a (click)="downloadAssessmentChecklist()" matTooltip="Download RCL Assessment">{{assessmentChecklistObj.edcsID}}</a>
+                </span>
+                 <div *ngIf="revRecData.skipPidListUpload.flag"> 
+                        <br>PID List upload skipped <br>Comments: {{revRecData.skipPidListUpload.comments}}
+                 </div>
+            </app-holding-status>
+        </div>
+        <!-- BUController reviews -->
+        <app-review-list [reviews]="BUControllerData"></app-review-list>
+        <!-- revRecPO add comments -->
+        <app-comment-list [comments]="revRecPOData"></app-comment-list>
+        
+        <div class="rev-rec-review__actions">
+            <div class="buControllerDropDownItems">
+                <div class="dropdownBU">
+                    <div class="mr-2">
+                        <label for="buControllers" class="required-field "><b>BU Controller</b></label>
+                    </div>
+                    <div>
+                        <span>{{selectedBuController}}</span>
+                    </div>
+                </div>
+
+                <div class="dropdownBU">
+                    <div class="mr-2">
+                        <label for="buControllers"><b>Alternate Approver</b></label>
+                    </div>
+                    <div *ngIf="revRecData && revRecData.alternateProxy">
+                        <span>{{revRecData.alternateProxy.name}}</span>
+                    </div>
+                </div>
+
+                <div class="dropdownBU" class="mr-8" *ngIf="selectedBU">
+                    <div class="mr-2">
+                        <label for="buDropdown"><b>BU</b></label>
+                    </div>
+                    <div>
+                        <span>{{selectedBU}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>        
+    </ng-container>
+
+    <!-- BUController role start -->
+    <ng-container *appHasRole="[role.BUController]">
+        <p class="mt-3">Review the RCL and PID list, then approve or reject each document.</p>
+        <!-- View Submission approve/reject action  -->
+        <div class="rev-rec-review__rcl" *ngIf="!isBUReviewed">
+            <app-holding-status [statusIcon]="'submit'" [status]="'Review RCL Assessment'" [className]="'light'">
+                <!-- <button class="btn btn--primary" (click)="viewSubmission()">View Submission</button> -->
+                <div class="row">
+                    <div>
+                        <button class="btn btn--primary" (click)="viewSubmission()">View Submission</button>
+                    </div>
+                    <div class="mt-1 ml-2">
+                        <a (click)="downloadAssessmentChecklist()" matTooltip="Download RCL Assessment">{{assessmentChecklistObj.edcsID}}</a>
+                    </div>
+                </div>
+            </app-holding-status>
+            <div class="rev-rec-review__rcl--action">
+                <span class="mr-1">Review: </span>
+                <div class="form-group mr-3">
+                    <label class="radio">
+                        <input type="radio" name="approve-reject-rcl" [(ngModel)]="RCLAssessmentStatus"
+                            value="approved">
+                        <span class="radio__input"></span>
+                        <span class="radio__label hidden-xs">Approve</span>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="radio">
+                        <input type="radio" name="approve-reject-rcl" [(ngModel)]="RCLAssessmentStatus"
+                            value="rejected">
+                        <span class="radio__input"></span>
+                        <span class="radio__label hidden-xs">Reject</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <!-- Scoping Checklist (the New PID List) approve/reject action  -->
+        <div class="rev-rec-review__scoping-checklist mt-1" *ngIf="!isBUReviewed">
+            <div *ngIf="!revRecData.skipPidListUpload.flag">
+            <app-holding-status [statusIcon]="'submit'" [status]="'Review New PID List'" [className]="'light'">
+                <button class="btn btn--primary" (click)="downloadScopingChecklist()">Download</button>
+            </app-holding-status>
+            </div>
+            
+            <div *ngIf="revRecData.skipPidListUpload.flag">
+                <app-holding-status [statusIcon]="'submit'" [status]="'PID List upload skipped'" [className]="'light'" >
+                    Comments: {{revRecData.skipPidListUpload.comments}}
+                </app-holding-status>
+             </div> 
+
+           
+            <div class="rev-rec-review__scoping-checklist--action">
+                <span class="mr-1">Review: </span>
+                <div class="form-group mr-3">
+                    <label class="radio">
+                        <input type="radio" name="approve-reject-scoping-checklist" [(ngModel)]="scopingChecklistStatus"
+                            value="approved">
+                        <span class="radio__input"></span>
+                        <span class="radio__label hidden-xs">Approve</span>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="radio">
+                        <input type="radio" name="approve-reject-scoping-checklist" [(ngModel)]="scopingChecklistStatus"
+                            value="rejected">
+                        <span class="radio__input"></span>
+                        <span class="radio__label hidden-xs">Reject</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <!-- BUController add comments -->
+        <div class="rev-rec-review__rr-comments mt-1" *ngIf="!isBUReviewed">
+            <div class="rev-rec-review__rr-comments--title" *ngIf="RCLAssessmentStatus =='rejected' || scopingChecklistStatus =='rejected'">
+                <span [class.required-field]="RCLAssessmentStatus =='rejected' || scopingChecklistStatus =='rejected'">Comment is required when a document is rejected</span>                
+            </div>
+            <div class="rev-rec-review__rr-comments--title" *ngIf="!(RCLAssessmentStatus =='rejected' || scopingChecklistStatus =='rejected')">
+                <span>Your Comments</span>
+            </div>
+            <div class="rev-rec-review__rr-comments--comment">
+                <textarea rows="5" [readonly]="isBUReviewed" [(ngModel)]="buComment"></textarea>
+            </div>
+        </div>
+        <!-- Review sent status -->
+        <div class="rev-rec-review__rcl"
+            *ngIf="isBUReviewed && revRecData.rclPidSubmit && (revRecData.rclPidSubmit.status == 'submitted' || revRecData.rclPidSubmit.status == 'rejected')">
+            <app-holding-status [statusIcon]="'complete'" [status]="'Review sent'"
+                [message]="'Project Manager will revise the RCL assessment and will resubmit.'">
+                <button class="btn btn--primary" (click)="viewSubmission()">View RCL</button>
+                <button *ngIf="!revRecData.skipPidListUpload.flag" class="btn btn--primary" (click)="downloadScopingChecklist()">Download New PID
+                    List</button>
+                <div *ngIf="revRecData.skipPidListUpload.flag"> 
+                        <br>PID List upload skipped <br> Comments: {{revRecData.skipPidListUpload.comments}}
+                </div>
+            </app-holding-status>
+        </div>
+        <!-- RCL Assessment revised status -->
+        <div class="rev-rec-review__rcl"
+            *ngIf="isBUReviewed && revRecData.rclPidSubmit && revRecData.rclPidSubmit.status == 'revised'">
+            <app-holding-status [statusIcon]="'submit'" [status]="'RCL Assessment revised'"
+                [message]="'Project Manager has revised the RCL assessment. Click on review.'">
+                <button class="btn btn--primary" (click)="isBUReviewed = false; buComment=''">Review</button>
+            </app-holding-status>
+        </div>
+        <!-- Approved status -->
+        <div class="rev-rec-review__rcl"
+            *ngIf="isBUReviewed && revRecData.rclPidSubmit && (revRecData.rclPidSubmit.status == 'approved' || revRecData.rclPidSubmit.status == 'reviewed')">
+            <app-holding-status [statusIcon]="'complete'" [status]="'Approved'"
+                [message]="holdingScreenBUMessageOnAPproval">
+                <button class="btn btn--primary" (click)="viewSubmission()">View RCL</button>
+                <button *ngIf="!revRecData.skipPidListUpload.flag" class="btn btn--primary" (click)="downloadScopingChecklist()">Download New PID
+                    List</button>
+                <div *ngIf="revRecData.skipPidListUpload.flag"> 
+                        <br>PID List upload skipped <br>Comments: {{revRecData.skipPidListUpload.comments}}
+                </div>
+            </app-holding-status>
+        </div>
+        <!-- BUController reviews -->
+        <app-review-list *ngIf="isBUReviewed" [reviews]="BUControllerData"></app-review-list>
+        <!-- revRecPO comments modal -->
+        <app-comment-list *ngIf="isBUReviewed" [comments]="revRecPOData"></app-comment-list>
+        <!-- Send/Resend review button -->
+        <div class="rev-rec-review__actions">
+            <!-- BU Controller and Business Unit -->
+            <div class="buControllerDropDownItems" style="width: 75rem;">
+                <div class="dropdownBU" style="display: block; width: 20%;">
+                    <div class="mr-2">
+                        <label for="buControllers" ><b>BU Controller</b></label>
+                    </div>
+                    <div class="mt-2">
+                        <span>{{selectedBuController}}</span>
+                    </div>
+                </div>
+
+                <!-- Alternate Approver -->
+                <div class="dropdownBU"  [class.disabled]="reinitiateBtn == 'Re-initiate' ? true : false">
+                    <div class="mr-2">
+                        <label for="buControllers"><b>Alternate Approver</b></label><span
+                        class="icon-info icon--custom-size"
+                        [matTooltip]="getTooltipDesc('RevenueRecognition_AlternateBuController')" matTooltipPosition="right" [matTooltipClass]="'tooltipForInfo'"></span>
+                    </div>
+                    <div>
+                        <div>
+                            <div class="form-group inline-display"  [ngClass]="errorOccurred?'form-group--error':''">
+                                <form class=" inline-display">
+                                    <mat-form-field  class="autoComplete-matInput" style="width:60%">
+                                        <input type="text" placeholder="Search..."
+                                            matInput
+                                            [formControl]="searchMember"
+                                            [matAutocomplete]="auto">
+                                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="matOptionSelected($event.option.value)" [displayWith]="getSelectedUserName"> <!--getPosts($event.option.value)-->
+                                          <mat-option *ngFor="let user of users" [value]="user">
+                                            {{ user.name }} <span *ngIf="user.cecId">({{user.cecId}})</span>
+                                          </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                </form>
+                            </div>
+                            <!--loader part -->
+                            <div class="loading-dots loading-dots--muted" *ngIf="showLoader" aria-label="Loading, please wait...">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <div class="form-group input--compressed inline-display"   *ngIf="!showLoader">
+                                <button class=" btn btn--primary" [disabled]="!inputValue" (click)="onMemberAddition()">Add</button>
+                            </div>
+                        </div>
+                        <!-- <div class="help-block text-danger" role="alert">
+                            <span>{{getErrorMessage}}</span>
+                        </div> -->
+                    </div>
+                    <div class="panel panel--ltgray panel--loose" id="acceptorOwnerList" style="background-color: transparent;padding:0">
+                        <!-- <br /> -->
+                        <span tabindex="0" class="label label--dark label--bordered userTab" [attr.data-balloon]="member.fullName"
+                            *ngFor="let member of members; let i = index" data-balloon-pos="up">
+                            <span class="icon-contact"></span> &nbsp;
+                            <span>{{member.name}}</span> &nbsp;
+                            <span class="icon-exit removeUserIcon" (click)="onRemove(i)" *ngIf="!typeView"></span>
+                        </span>
+                        <div class="help-block text-danger" role="alert" style="margin-left: 1rem;">
+                            <span>{{getErrorMessage}}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dropdownBU" style="display: block; width: 20%;">
+                    <div class="mr-2">
+                        <label for="buDropdown"><b>Choose BU</b></label>
+                    </div>
+
+                    <div>
+                        <mat-form-field>
+                            <mat-label>Select an option</mat-label>
+                            <mat-select [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedBU"
+                                (ngModelChange)="onSelectionBusinessUnit()">
+                                <mat-option value="No Selection">No Selection</mat-option>
+                                <mat-option *ngFor="let element of businessUnitList" [value]="element.name">
+                                    {{element.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="!isBUReviewed" class="action-button">
+                <button class="btn btn--success" (click)="confirmAction('buReview')"
+                    *ngIf="RCLAssessmentStatus!='approved'|| scopingChecklistStatus!='approved'"
+                    [disabled]="!(RCLAssessmentStatus && scopingChecklistStatus && buComment.trim().length)">
+                        {{revRecData.rclPidSubmit && revRecData.rclPidSubmit.status == 'revised' ? 'Resubmit' : 'Submit'}}</button>
+                <button class="btn btn--success" (click)="confirmAction('buReview')"
+                    *ngIf="RCLAssessmentStatus=='approved' && scopingChecklistStatus=='approved'">
+                        {{revRecData.rclPidSubmit && revRecData.rclPidSubmit.status == 'revised' ? 'Resubmit' : 'Submit'}}</button>
+            </div>
+        </div>
+    </ng-container>
+</div>
+
+<!-- spinner start -->
+<ng-template #spinner>
+    <div class="flex-center full-height">
+        <cui-spinner color="default" label="Loading"></cui-spinner>
+    </div>
+</ng-template>
+
+<!-- CUI loader -->
+<ng-template #resLoader>
+    <div style="display: inline-block;">
+        <cui-loader></cui-loader>
+    </div>
+</ng-template>
+
+<!-- confirm action modal start -->
+<!-- <ng-template #content>
+    <a class="modal__close" (click)="cuiModalService.hide(); showLoader=false;"><span class="icon-close"></span></a>
+    <div class="revRecCommentHeader modal__header">
+        <h1 class="modal__title">Confirm action</h1>
+    </div>
+    <div class="modal__body">
+        <p class="subtitle">Are you sure you want to <b>send the review</b> for RCL assessment and New PID List?</p>
+    </div>
+    <div class="modal__footer">
+        <button class="btn btn--negative" (click)="cuiModalService.hide(); showLoader=false;"
+            [disabled]="showLoader">Cancel</button>
+        <button *ngIf="!showLoader; else resLoader" class="btn btn--success" (click)="sendReview()">Yes</button>
+    </div>
+</ng-template> -->
+
+<!-- revRecPO comments modal start -->
+<ng-template #revRecComment>
+    <a class="modal__close" (click)="cuiModalService.hide()"><span class="icon-close"></span></a>
+    <div class="revRecCommentHeader modal__header mr-4">
+        <span class="modal__title">Comments from Revenue Recognition Team</span>
+    </div>
+    <div class="modal__body">
+        <p class="commentContent">Comment: {{rrComment ? rrComment : ''}}</p>
+    </div>
+    <div class="modal__footer">
+        <button class="btn btn--negative" (click)="cuiModalService.hide()">Close</button>
+    </div>
+</ng-template>
+
+
+<ng-template #viewCommentsForSkipPidListModel>
+    <a class="modal__close" (click)="cuiModalService.hide()"><span class="icon-close"></span></a>
+    <div class="revRecCommentHeader modal__header mr-4">
+        <span class="modal__title">Pid list upload skipped. Comments:</span>
+    </div>
+    <div class="modal__body">
+        <p class="commentContent">{{revRecData.skipPidListUpload.comments}}</p>
+    </div>
+    <div class="modal__footer">
+        <button class="btn btn--negative" (click)="cuiModalService.hide()">Close</button>
+    </div>
+</ng-template>
+
+
+<cui-modal></cui-modal>

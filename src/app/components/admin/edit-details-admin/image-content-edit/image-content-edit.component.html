@@ -1,0 +1,119 @@
+<div id="main-content-div" class="container-fluid">
+    <div *ngIf="!menuSubmenuSelected">
+        <p>SELECT A PAGE/STEP TO VIEW MODALS & INFO ICON CONTENTS</p>
+    </div>
+    <div *ngIf="menuSubmenuSelected && menuSubmenuSelected.subMenu && menuSubmenuSelected.subMenu.title === 'NA'">
+        <!-- <p>SELECT A PAGE/STEP in <i>{{menuSubmenuSelected.menu.title | uppercase}}</i> TO VIEW MODALS & INFO ICON CONTENTS</p> -->
+        <p>SELECT A PAGE/STEP TO SEE DETAILS</p>
+    </div>
+    <ng-container *ngIf="menuSubmenuSelected && menuSubmenuSelected.subMenu.title !== 'NA' && imageContentData && imageContentData.length;
+            else noInfoHelper">
+
+        <div class="row one-row" *ngFor="let imageContentRowData of imageContentData; let i = index"
+            [ngClass]="imageContentRowSelected === imageContentRowData.title.replace(' ','-').toLowerCase() ? 'editorOpen' : 'editorClose'">
+            <div class="col-12 title-div" *ngIf="imageContentRowData.recommendations">
+                <h4 class="text-normal">{{imageContentRowData.title}}</h4>
+                <!--TODO Update version dropdown implementation-->
+                <span class="ml-3">
+                    <select disabled id="version">
+                        <option value="version">{{versionDropdownVal}} (Current Version)</option>
+                    </select>
+                </span>
+            </div>
+            <hr>
+            <div class="col-5 img-div">
+                <img (click)="imageClicked(folderPath+imageContentRowData.originalImage)"
+                    src={{folderPath+imageContentRowData.thumbnailImage}}
+                    [ngClass]="{'img-border': imageContentRowSelected === imageContentRowData.title.replace(' ','-').toLowerCase()}">
+            </div>
+            <div class="col-7 one-row__one-row-buttons" *ngIf="imageContentRowData">
+                <label *ngIf="!imageContentRowData.recommendations" class="text-large">{{workflow}} > {{title}} >
+                    {{imageContentRowData.uiTitle ? imageContentRowData.uiTitle : imageContentRowData.title}}</label>
+                <label *ngIf="imageContentRowData.recommendations"
+                    class="text-large">{{imageContentRowData.title}}</label>
+                <label *ngIf="imageContentRowData.updatedOn">Last edited on: {{imageContentRowData.updatedOn | date:'dd
+                    MMMM yyyy'}}</label>
+                <!-- <label *ngIf="imageContentRowData.recommendations">Last edited on: {{imageContentRowData.createdOn | date:'dd MMMM yyyy'}}</label> -->
+
+                <div class="one-row__save-discard-buttons">
+                    <button class="btn btn-small btn--primary"
+                        *ngIf="imageContentRowSelected !== imageContentRowData.title.replace(' ','-').toLowerCase()"
+                        (click)="editClicked(imageContentRowData.title, i)">Edit</button>
+                    <button class="btn btn-small btn--primary btn-publish" (click)="openPublishAsDialog()"
+                        *ngIf="imageContentRowData.recommendations" [disabled]="!isDraftVersionAvailable">Publish
+                        as</button>
+                </div>
+                <div class="one-row__save-discard-buttons"
+                    *ngIf="imageContentRowSelected === imageContentRowData.title.replace(' ','-').toLowerCase() && isEditMode">
+                    <button class="btn btn-small btn--primary" [disabled]="!enableSaveAndDiscard || !desc.length"
+                        (click)="saveClicked(i)">Save</button>
+                    <button class="btn btn-small btn--dark" (click)="onDiscard()">Discard</button>
+                </div>
+                <span *ngIf="menuSubmenuSelected.subMenu.module !== 'recommendation'">
+                    <a *ngIf="imageContentRowSelected !== imageContentRowData.title.replace(' ','-').toLowerCase()"
+                        (click)="previewClicked(i)">Preview</a>
+                </span>
+                <span *ngIf="menuSubmenuSelected.subMenu.module === 'recommendation'">
+                    <a *ngIf="imageContentRowSelected !== imageContentRowData.title.replace(' ','-').toLowerCase()"
+                        (click)="liveProdPreviewClicked()">Live production preview</a>
+                    <span class="half-padding">&#124;</span>
+                    <a *ngIf="imageContentRowSelected !== imageContentRowData.title.replace(' ','-').toLowerCase()"
+                        (click)="draftStatePreviewClicked()"
+                        [ngClass]="isDraftVersionAvailable? '':'draft-disabled'">Draft state preview</a>
+                </span>
+            </div>
+            <div *ngIf="imageContentRowSelected === imageContentRowData.title.replace(' ','-').toLowerCase() && isEditMode
+                && menuSubmenuSelected.subMenu.module !== 'recommendation'" [froalaEditor]="options" class="editor-div"
+                [(froalaModel)]="desc"></div>
+        </div>
+    </ng-container>
+</div>
+
+<ng-template #imageDialog>
+    <div class="flex" *ngIf="clickedImage">
+        <img src={{clickedImage}}>
+        <span id="close" class="icon-close icon-size-17 close" (click)="onClose(dialogRef)"></span>
+    </div>
+</ng-template>
+
+<ng-template #noInfoHelper>
+    <div *ngIf="imageContentData && !imageContentData.length  && stepName !== 'NA' && stepName !== ''">
+        <p>INFORMATION HELPER FOR <i>{{ stepName | uppercase}}</i> IS NOT AVAILABLE</p>
+    </div>
+</ng-template>
+
+<ng-template #dataLostErrorDialog>
+    <div class="custom-header">
+        <div class="modal__title ml-1">Data Lost Error</div>
+        <span id="close" class="icon-close icon-size-20" (click)="onClose(dataLostErrordialogRef)"></span>
+    </div>
+    <div class="modal__body ml-1 mt-1">
+        <p class="modal__body--text">Save data before navigating away from this tab. Do you still want to discard the
+            changes?</p>
+    </div>
+    <div class="modal__footer text-center mt-3">
+        <button class="btn btn--primary" (click)="saveChanges()">No</button>
+        <button class="btn btn--primary" (click)="discardChanges()">Yes</button>
+    </div>
+</ng-template>
+<ng-template id="publish-dialog" #publishDialog>
+    <div class="publish-dialog">
+        <div class="flex flex-between">
+            <h5>Publish as</h5>
+            <span id="close" class="icon-close icon-size-16 qtr-margin-top" (click)="onClose(publishDialogRef)"></span>
+        </div>
+        <hr class="half-margin">
+        <p class="text-small text-normal">Please fill in the details to publish the changes</p>
+        <div class="form-group">
+            <div class="form-group__text">
+                <input #versionip placeholder="Type here" id="version" type="text" [(ngModel)]="version">
+                <label for="version" class="required-field">Version name</label>
+            </div>
+        </div>
+        <div class="pull-right mt-2">
+            <button class="btn btn-small btn--dark" (click)="onClose(publishDialogRef)">Cancel</button>
+            <button class="btn btn-small btn--primary" [disabled]="!versionip.value"
+                (click)="publishChanges()">Publish</button>
+        </div>
+    </div>
+</ng-template>

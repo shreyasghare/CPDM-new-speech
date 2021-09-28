@@ -1,0 +1,21 @@
+.error-component{
+    display: flex; 
+    max-width: 100%;
+    height: 83vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.error-component > div{
+    text-align: center;
+}
+
+.error-component h1{ 
+    color: #284054;
+    font-size: 7rem;
+}
+
+.error-component p{
+    font-size:2rem;
+    margin-bottom: 0.8rem;
+}

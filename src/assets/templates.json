@@ -1,0 +1,32 @@
+[
+    {
+        "generalCompliance": [
+            {
+                "name": "Accessibility",
+                "selected": true
+            },
+            {
+                "name": "Export Compliance",
+                "selected": false
+            },
+            {
+                "name": "Third Party Software Registration",
+                "selected": true
+            },
+            {
+                "name": "Revenue Recognition Checklist",
+                "selected": false
+            },
+            {
+                "name": "Secure Development Lifestyle",
+                "selected": false
+            },
+            {
+                "name": "Smart Licensing",
+                "selected": true
+            }
+        ],
+        "_id": "5d491c624dd6fffa13250c2f",
+        "name": "Default"
+    }
+]

@@ -1,0 +1,14 @@
+.identifyAdr {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    width: 80%;
+    align-items: center;
+    margin: auto;
+
+    div {
+        width: 100%;
+        margin: 1rem 0;
+    }
+}

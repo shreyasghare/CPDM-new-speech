@@ -1,0 +1,18 @@
+<div class="confirm-popup">
+    <div class="confirm-popup__header">         
+        <div class="confirm-popup__header--text"><div class="modal__title mb-1">Confirm action</div></div>
+        <span id="close" [class.disabled]="showLoader" class="icon-close close" (click)="onCancel()"></span>
+    </div>
+    <div class="confirm-popup__content">
+        <div>
+            <p class="confirm-text">Are you sure you want to submit the Engagement request form?</p>
+        </div>
+        <div class="confirm-popup__content__btn mt-3">
+            <button class="btn btn--primary confirm-popup__content__btn--cancel"
+                (click)="onCancel()">No</button>
+            <button class="btn btn--primary confirm-popup__content__btn--confirm"
+                (click)="onConfirm()">Yes</button>
+
+        </div>
+    </div>
+</div>

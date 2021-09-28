@@ -1,0 +1,127 @@
+<ng-container *ngIf="engineeringResponseStatus != undefined && engineeringResponseStatus != 'notApplicable'">
+    <div class="engg-response" *appHasRole="[role.pm]">
+        <ng-container *ngIf="slData!=undefined else spinner">
+            <div class="engg-response__download p-2">
+                <p>Please download and complete the Engineering Response Form.</p>
+                <button class="btn btn--primary" (click)="downloadEnggRespForm(true)">Download</button>
+            </div>
+
+            <div class="engg-response__browse mt-1">
+                <div class="engg-response__browse--text"><p class="p-1">After completion, upload the document.</p></div><hr style=" border-top: 0.4px solid #999999">
+                <div class="custom-dropzone-div">
+                    <custom-dropzone (onUploadClicked)="onUploadEnggRespForm($event)" [docCentralObj]="docCentralObject"
+                        [componentState]="customDropzoneState"></custom-dropzone>
+                </div>
+            </div>
+            <div class="engg-response__submit text-center">
+                <button class="btn btn--success mt-1" (click)="confirmAction('pmSubmit')"
+                    [disabled]="!isSubmitBtnEnabled">Submit</button>
+
+                <!-- <button class="btn btn--success mt-1" (click)="confirmAction('pmSubmit')"
+                    *ngIf="slDataStatus && slDataStatus!='submitted'" [disabled]="!isFileUpdated">Submit</button> -->
+            </div>
+            <div class="engg-response__waiting mt-1" *ngIf="slDataStatus=='submitted' || slDataStatus == 'revised'">
+                <app-holding-status [statusIcon]="'review'" [status]="'Waiting for approval'"
+                    [message]="'Thank you for submitting the Engineering Response Form. The Smart Licensing team will be reviewing the document and provide comments if needed. For any further questions please contact <a href = \'mailto: support@cisco.com\'>support@cisco.com</a>'">
+                </app-holding-status>
+            </div>
+
+            <!-- Display user reviews through custom component -->
+            <div class="engg-response__reviews mt-1" *ngIf="slDataStatus == 'approved' || slDataStatus == 'rejected'">
+                <app-single-review-list [reviews]="engResReviewData" [status]="slDataStatus"
+                    (reSubmit)="reSubmitEnggRespForm()" [workFlow]="'smart-licensing'"></app-single-review-list>
+            </div>
+        </ng-container>
+    </div>
+</ng-container>
+
+<!-- smartLicensingPO role -->
+<ng-container *ngIf="engineeringResponseStatus != undefined && engineeringResponseStatus != 'notApplicable'">
+    <ng-container *appHasRole="[role.smartLicensingPO]">
+        <div class="sl-engResponse gc-content-area" *ngIf="isReviewing!=undefined else spinner">
+            <ng-container *ngIf="!slDataStatus && isReviewing">
+                <app-holding-status [statusIcon]="'review'" [status]="'Please wait'"
+                    [message]="'The Project Manager will submit the Engineering response form.'">
+                </app-holding-status>
+            </ng-container>
+            <ng-container *ngIf="isReviewing && (slDataStatus == 'submitted' || slDataStatus == 'revised')">
+                <div class="sl-engResponse__review">
+                    <div class="pb-1"><i>Please review the Engineering response form submitted from Project Manager</i></div>
+                    <app-holding-status [statusIcon]="'submit'" [status]="'Engineering response form'"
+                        [className]="'light'">
+                        <button class="btn btn--primary" (click)="downloadEnggRespForm()">Download</button>
+                    </app-holding-status>
+                    <div class="sl-engResponse__review--action">
+                        <div><span class="mr-1">Review: </span></div>
+                        <div class="form-group mr-3">
+                            <label class="radio">
+                                <input type="radio" name="approve-reject-engResponse"
+                                    [(ngModel)]="engResponseReviewStatus" value="approved">
+                                <span class="radio__input"></span>
+                                <span class="radio__label hidden-xs">Approve</span>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="radio">
+                                <input type="radio" name="approve-reject-engResponse"
+                                    [(ngModel)]="engResponseReviewStatus" value="rejected">
+                                <span class="radio__input"></span>
+                                <span class="radio__label hidden-xs">Reject</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <!-- smartLicensingPO add comments -->
+                <div class="sl-engResponse__comments mt-1">
+                    <div class="sl-engResponse__comments--title">
+                        <span>Provide Comments</span>
+                        <span *ngIf="engResponseReviewStatus=='approved'"> (if any)</span>
+                        <span class="sl-engResponse__comments--required" *ngIf="engResponseReviewStatus=='rejected'">
+                            *</span>
+                    </div>
+                    <div class="sl-engResponse__comments--comment">
+                        <textarea rows="5" [(ngModel)]="poComment"
+                            [required]="engResponseReviewStatus=='rejected'" (ngModelChange)="checkEmptyString($event)"></textarea>
+                    </div>
+                </div>
+                <!-- Send/Resend review button -->
+                <div class="sl-engResponse__actions">
+                    <button class="btn btn--success" (click)="confirmAction('poReview')"
+                        [disabled]="!engResponseReviewStatus || engResponseReviewStatus=='rejected' && !poComment">{{ slDataStatus=='revised' ? 'Resend review' : 'Send review' }}</button>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="!isReviewing">
+                <div *ngIf="currentReviewStatus">
+                    <app-holding-status [statusIcon]="currentReviewStatus.icon" [status]="currentReviewStatus.status"
+                        [message]="currentReviewStatus.message">
+                        <button class="btn btn--primary" *ngIf="currentReviewStatus.status == 'Rejected'"
+                            (click)="downloadEnggRespForm()">Download engineering response</button>
+                        <button class="btn btn--primary"
+                            (click)="isReviewing = true; engResponseReviewStatus=''; poComment=''"
+                            *ngIf="currentReviewStatus.status == 'Engineering Response Form is revised'">Review</button>
+                        <button class="btn btn--primary" *ngIf="currentReviewStatus.status == 'Approved'"
+                            (click)="downloadEnggRespForm()">Download form</button>
+                    </app-holding-status>
+                </div>
+                <div *ngIf="slDataStatus && slDataStatus != 'submitted'" class="mt-1">
+                    <app-single-review-list [reviews]="engResReviewData" [workFlow]="'smart-licensing'">
+                    </app-single-review-list>
+                </div>
+            </ng-container>
+        </div>
+    </ng-container>
+</ng-container>
+
+<div class="engg-response" *ngIf="engineeringResponseStatus != undefined && engineeringResponseStatus == 'notApplicable'">
+    <div class="flex">
+    <app-holding-status [statusIcon]="engineeringResponse_status.icon" [status]="engineeringResponse_status.status">
+    </app-holding-status>
+    </div>
+</div>
+
+<!-- CUI loader -->
+<ng-template #resLoader>
+    <div style="display: inline-block;">
+        <cui-loader></cui-loader>
+    </div>
+</ng-template>

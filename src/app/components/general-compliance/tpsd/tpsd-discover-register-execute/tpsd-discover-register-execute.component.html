@@ -1,0 +1,98 @@
+<ng-container *ngIf="tpsdRegisterExecuteData || isProjectLinkingError; else spinner">
+    <ng-container *ngIf="tpsdRegisterExecuteData && !isProjectLinkingError; else isTpsdLinkError">
+        <div class="discoverExecuteContainer" *ngFor="let data of tpsdRegisterExecuteData">
+            <div class="discoverExecuteContainer__title"> To manage your product and release, go to
+                <a [ngClass]="tpsUrl? '': 'unavailableText'" href="{{tpsUrl}}" target="_blank">TPSCRM</a>
+            </div>
+            <div class="discoverExecuteContainer__body mt-1">
+                <div>
+                    <div>Product:</div>
+                    <div>{{data.product?.name}}</div>
+                </div>
+                <div>
+                    <div>Release:</div>
+                    <div>{{data.version}}</div>
+                </div>
+                <div class="flex-center-vertical">
+                    <div>State:</div>
+                    <div class="flex-center-vertical">
+                        <div *ngIf="data.state === null; else stateData" class="unavailableText">Unavailable
+                        </div>
+                        <ng-template #stateData>
+                            <span [ngClass]="data.state === 'RED' ? 'text-red' : 'text-green'">
+                                {{data.state}}</span>
+                            <div class="pl-2 flex"><img src={{imgSrc}} /></div>
+                        </ng-template>
+                    </div>
+                </div>
+                <div>
+                    <div>Deviations:</div>
+                    <div *ngIf="data.hasDeviations === null; else deviationData" class="unavailableText">Unavailable
+                    </div>
+                    <ng-template #deviationData>
+                        <div>{{data.hasDeviations? 'Yes' : 'No'}}</div>
+                    </ng-template>
+                </div>
+                <div>
+                    <div>FCS Date:</div>
+                    <div *ngIf="data.fcsDate === null; else fcsData" class="unavailableText">Unavailable</div>
+                    <ng-template #fcsData>
+                        <div>{{data.fcsDate | date:'dd MMMM yyyy'}}</div>
+                    </ng-template>
+                </div>
+            </div>
+            <div *ngIf="data.state === null && data.fcsDate === null && data.hasDeviations === null; else checkBoxFooter"
+                class="discoverExecuteContainer__footer">
+                <p class="text-italic">NOTE: Add an image(s) in <a [ngClass]="tpsUrl? '': 'unavailableText'"
+                     href="{{tpsUrl}}" target="_blank">TPSCRM</a> to display the TPS State,
+                    Deviations & FCS Date </p>
+            </div>
+            <ng-template #checkBoxFooter>
+                <div class="discoverExecuteContainer__footer" *ngIf="approvedObject.state || data.state === 'RED'">
+                    <label class="checkbox">
+                        <input #overrideCheckbox type="checkbox" [checked]="approvedObject.state"
+                            [disabled]="approvedObject.state">
+                        <span class="checkbox__input"></span>
+                        <span class="checkbox__label">Select the check box only if, the project status is not <span
+                                class="text-green text-bold">Green</span> and an approved exception for TPSCRM is in
+                            place</span>
+                    </label>
+                    <div *ngIf="overrideCheckbox.checked || approvedObject.state">
+                        <div class="form-group base-margin-bottom pl-2 mt-1 flex">
+                            <span class="form-group__text">
+                                <textarea #textarea id="textarea-label-default" class="textarea" rows="2" placeholder="Write here"
+                                [(ngModel)]="approvedObject.comments"
+                                [disabled]="iscommentTextAreaDisabled"></textarea>
+                                <label for="textarea-label-default" class="required-field ">Checking the box requires an
+                                    explanation</label>
+                                </span>
+                            <button *ngIf="!isCommentSubmitted && !iscommentTextAreaDisabled; else submittedMsg"
+                                    class="btn btn--primary mt-1"
+                                    [disabled]="!textarea.value.length"
+                                    (click)="overrideReleaseStatus(textarea, overrideCheckbox)">
+                                Submit
+                            </button>
+                            <ng-template #submittedMsg> 
+                                <span class="mt-1 form-group--submitted">
+                                <strong>Submitted</strong><span class="icon-check-outline ml-1"></span></span>
+                            </ng-template>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </div>
+    </ng-container>
+    <ng-template #isTpsdLinkError>
+        <div class="discoverExecuteContainer__error-msg flex mt-1">
+            <div class="flex"><img class="ml-1" src="assets\images\csdl\svg\alert-triangle.svg" /></div>
+            <span class="text-italic ml-1">
+                This TPSCRM ID is not yet linked with a product. Please complete step 1 and try again.
+            </span>
+        </div>
+    </ng-template>
+</ng-container>
+<ng-template #spinner>
+    <div class="absolute-center">
+        <cui-spinner color="default" label="Loading"></cui-spinner>
+    </div>
+</ng-template>

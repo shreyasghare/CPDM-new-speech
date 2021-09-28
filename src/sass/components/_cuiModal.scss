@@ -1,0 +1,67 @@
+.modal{
+    &__content{
+        padding: 1.5rem!important;
+     }
+
+     &__header{
+        margin-bottom: 1.5rem!important;
+     }
+
+     &__dialog{
+         max-width: 60rem!important;
+     }
+}
+
+.bsModalStyle{ 
+    outline: transparent !important;
+    -webkit-animation: none !important;
+    padding: 7% 0% !important;
+}
+.bsModalStyle .modal-content{
+    position: relative;
+    display: block;
+    text-align: center;
+    padding: 0% !important;
+    background-color: #ffffff;
+    color: #58585b;
+    border-radius: 2px;
+    border: 0 none;
+    box-shadow: 0 10px 24px -6px rgba(0, 0, 0, 0.25);
+}
+
+cui-tabs {
+    li > a{
+        background-color: white !important;
+    }
+} 
+
+// overriding classes to fix modal issue ie. blue line border
+.cui .modal {  
+    outline: transparent !important;
+    overflow-y: hidden;
+}
+.cui .modal .modal__content, .cui .modal .modal-content {
+    width:auto !important;
+    // width: 60vw !important;
+    // margin-left:-200px !important;
+    // text-align:left;
+}
+
+.cui .modal--large .modal__dialog, .cui .modal--large .modal-dialog {
+    max-width: 991px !important;
+}
+
+.cui .modal--full .modal__dialog, .cui .modal--full .modal-dialog {
+    max-width: 98vw !important;
+}
+
+#allComplianceItemsSelect > div > div:nth-child(2) > cui-vscroll-viewport{
+    height: 40px !important;
+    left: 0;
+}
+
+.cui .modal .modal-dialog {
+    width: 100%;
+    max-width: 767px;
+    margin: auto;
+}

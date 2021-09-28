@@ -1,0 +1,42 @@
+
+.confirm-popup{
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid gray;
+        &--text {
+            width: 100%;
+        }
+
+        .close {
+            font-size: 2rem;
+            cursor: pointer;
+        }
+    }
+    &__content {
+
+        &__btn {
+            display: flex;
+            align-items: right;
+            justify-content: flex-end;
+ 
+            &--cancel {
+                margin-right: 2rem;
+                background: #495057;
+                color: #fff;
+            }
+            &--confirm{
+                background: #1E4471;
+                color: #fff;
+            }
+        }
+    }
+}
+.confirm-text {
+    font-size: 17px;
+    line-height: 3rem;
+}
+
+.modal__title {
+    font-size: 25px;
+}

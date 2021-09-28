@@ -1,0 +1,71 @@
+.tpsd-create-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  
+    &__content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+        app-holding-status {
+            width: 90%;
+        }
+        &--text {
+            width: 90%;
+        }
+        cui-select {
+            width: 25%;
+            min-width: 20rem;
+            background-color: white;
+        }
+    }
+    &__release-list {
+        display: flex;
+        flex-direction: row;
+    }
+    &__productInfo1 {
+        margin: 0px !important;
+        padding: 0px 0px 5px 10px;
+    }
+    &__input-field {
+        width: 25%;
+        min-width: 20rem;
+        background-color: white;
+        margin-left: 2.5rem;
+
+        .loading-dots {
+            position: absolute;
+            right: -60px;
+            top: 10px;
+        }
+    }
+}
+
+.optionSpacing{
+    padding: 0rem 1rem;
+}
+
+.mandatory-field {
+    &::before {
+        content:"*";
+        color:red;
+    }
+}
+
+.csdl-project-loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.icon-check-outline {
+    color: forestgreen;
+}
+
+.refresh-note {
+    padding-left: 23rem;
+}

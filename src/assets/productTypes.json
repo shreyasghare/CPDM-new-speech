@@ -1,0 +1,18 @@
+[
+    {
+        "_id": "5d4916c04dd6fffa1325047e",
+        "name": "Hardware"
+    },
+    {
+        "_id": "5d4916ec4dd6fffa132504b9",
+        "name": "Hardware/Software"
+    },
+    {
+        "_id": "5d4916d24dd6fffa1325049b",
+        "name": "Software as a Service"
+    },
+    {
+        "_id": "5d4916e24dd6fffa132504ac",
+        "name": "Software on premise"
+    }
+]

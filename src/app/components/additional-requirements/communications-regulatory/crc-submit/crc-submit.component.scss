@@ -1,0 +1,45 @@
+.crc-submit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 10vh;
+    &__content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+        app-holding-status {
+            width: 90%;
+        }
+    }
+    &__footer-note {
+        padding-left: 33%;
+    }
+    &__po-review {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    &__review-action {
+        display: flex;
+        align-items: center;
+        background-color: lightgray;
+        padding: 0.5rem 1rem 0.5rem 7rem;
+        width: 90%;
+        .form-group {
+            display: inline-block;
+            margin-top: 0;
+        }
+    }
+
+    &__submit-comment {
+        margin-left: auto;
+        margin-right: 5rem;
+      }
+  }
+
+  .required-field{
+    color: red;
+  }

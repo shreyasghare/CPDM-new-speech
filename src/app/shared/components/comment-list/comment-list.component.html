@@ -1,0 +1,28 @@
+<div class="comments-list mt-1">
+    <div class="comments-list__title">
+        <span>{{currentUserRole == role.revRecPO ? "Your comments" : "Revenue Recognition Team's comments"}}</span>
+    </div>
+    <div class="comments-list__pending" *ngIf="!comments.length">
+        <span>Pending</span>
+    </div>
+    <!-- List of comments -->
+    <div class="comments-list__comment-list" *ngIf="comments.length" (scroll)="onScroll($event)">
+        <div class="comments-list__comment" *ngFor="let comment of comments">
+            <div class="comments-list__status-container">
+                <div class="comments-list__status-container--body">
+                    <div>Comments by <span class="comments-list__status-container--user">{{ currentUserCecId == comment.cecId ? 'You' : comment.cecId }}</span></div>
+                    <i>On {{comment.timestamp | date: 'dd MMM y'}}</i>
+                </div>
+            </div>
+            <div class="comments-list__comment-container ml-2">{{comment.comment}}</div>
+        </div>
+    </div>
+    <!-- Link to show review history -->
+    <div class="comments-list__commentHistoryLink" *ngIf="comments && comments.length > 1">
+        <span><hr></span>
+        <span class="ml-1 mr-1">Previous comments
+            <span class="icon-small" [ngClass]="scrollEnd ? 'icon-chevron-up' : 'icon-chevron-down'"></span>
+        </span>
+        <span><hr></span>
+    </div>
+</div>

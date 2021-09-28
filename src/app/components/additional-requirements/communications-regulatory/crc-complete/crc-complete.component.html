@@ -1,0 +1,17 @@
+<div class="full-height flex-center-vertical flex-center-horizontal">
+    <div class="holdingScreenContainer">
+        <app-holding-status *ngIf="!(crcData?.crcAssessmentQuestionnaire?.isApplicable) && !(crcData?.crcAssessmentQuestionnaire?.poReviewStatus)"
+            id="banner-screen_NA" [statusIcon]="crcStatus.notApplicable.icon" [status]="crcStatus.notApplicable.status">
+            <div class="mt-2" [innerHTML]="crcStatus.notApplicable.message"></div>
+        </app-holding-status>
+        <app-holding-status *ngIf="!(crcData?.crcAssessmentQuestionnaire?.isApplicable) && crcData?.crcAssessmentQuestionnaire?.poReviewStatus == 'rejected'"
+            id="banner-screen_eop" [statusIcon]="crcStatus.endOfProcess.icon" [status]="crcStatus.endOfProcess.status">
+            <div class="mt-2" [innerHTML]="crcStatus.endOfProcess.message"></div>
+        </app-holding-status>
+        <app-holding-status *ngIf="crcData?.crcAssessmentQuestionnaire?.isApplicable"
+            id="banner-screen_complete" [statusIcon]="crcStatus.completed.icon" [status]="crcStatus.completed.status">
+            <div class="mt-2" [innerHTML]="crcStatus.completed.message"></div>
+        </app-holding-status>
+    </div>
+    
+</div>

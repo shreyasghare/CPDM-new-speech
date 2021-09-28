@@ -1,0 +1,15 @@
+<div>
+    <a class="modal__close pull-right" (click)="onCancel()"><span class="icon-close"></span></a>
+    <div class="modal__header text-center"> <h4>Error Creating Epic in JIRA </h4></div>
+    <div>
+        <div class="main--body  text-center">   
+            <h5 class="text-bold">Contact CPDM Central Administrator</h5>
+            <br>
+            <p class="text-italic">Feature description validation failed</p>
+            <p class="text-italic">{{data.errorMsg}}</p>
+            <div class="text-center">
+                <button type="submit" class="btn btn--primary btn--small mt-2" (click)="onCancel()">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>

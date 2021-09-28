@@ -1,0 +1,25 @@
+[{
+	"adrDetails": {
+		"web": [{
+			"refId": "5d81dd5354365beee9190a84",
+			"name": "WEB 1.2.3 (A)",
+			"description": "Audio Description or Media Alternative (Prerecorded)",
+			"status": "Supports",
+			"comments": [],
+			"lastUpdateTime": "2019-08-15T05:03:47.171Z"
+		},
+		{
+			"refId": "5d81dd5354365beee9190a84",
+			"name": "WEB 1.2.5 (A)",
+			"description": "Media Alternative (Prerecorded)",
+			"status": "Not Supported",
+			"comments": [],
+			"lastUpdateTime": "2019-08-15T05:03:47.171Z"
+		}]
+	},
+	"_id": "5d8310ba54365beee9192385",
+	"projectId": "5d550970079e9f0015a92036",
+	"workflowTimestamp": {
+		"identifiAdr": "2019-08-15T05:03:47.171Z"
+	}
+}]

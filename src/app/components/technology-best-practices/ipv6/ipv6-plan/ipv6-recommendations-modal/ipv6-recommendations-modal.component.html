@@ -1,0 +1,319 @@
+<div class="ipv6-recommendations">
+    <div class="ipv6-recommendations__header">
+        <div class="ipv6-recommendations__header--title">
+            <h4 class="text-normal">IPv6 Recommendations {{version}}</h4>
+            <button class="btn btn--primary ml-2" #filterTableBtn [disabled]="!isRecommendationsLoaded" (click)="toggleFilterDialog()">
+                Filter table <span class="icon-filter"></span>
+            </button>
+        </div>
+        <div class="ipv6-recommendations__header--title" *ngIf="!showFilterTable">
+            <div class="mr-1">
+                <span class="mr-1">Recommendation priority
+                    <span
+                        class="icon-info icon--custom-size" 
+                        [matTooltip]="resForInfoIcon['IPv6_RecommendationType']"
+                        matTooltipPosition="below"
+                        [matTooltipClass]="'tooltipForInfo'"></span> :
+                </span>
+                <span class="ipv6-recommendations__type-list mandatory"><img src="assets/images/icons/svg/star.svg"
+                        alt="star"></span> Mandatory |
+                <span class="ipv6-recommendations__type-list optional"><img src="assets/images/icons/svg/triangle.svg"
+                        alt="triangle"></span> Optional
+            </div>
+            
+        </div>
+    </div>
+    <div class="ipv6-recommendations__filter-table overlay" [class.active]="showFilterTable">
+        <div #filterTableDiv>
+            <table mat-table [dataSource]="filterTableRows" class="mat-elevation-z8 ipv6-recommendations__filter-table--table">
+                <ng-container matColumnDef="Product Type">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <div>
+                            <div>
+                                <mat-checkbox
+                                    color="primary"
+                                    (change)="checkUncheckFilterColumn($event, 'productType')"
+                                    [checked]="tempSelectedFilters.productType.length == savedFilters.productType.length"
+                                    [indeterminate]="tempSelectedFilters.productType.length && tempSelectedFilters.productType.length !== savedFilters.productType.length">Product Type</mat-checkbox>
+                            </div>
+                        </div>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div>
+                            <div>
+                                <mat-checkbox
+                                    color="primary"
+                                    *ngIf="element.productType.name"
+                                    [(ngModel)]="element.productType.selected"
+                                    (ngModelChange)="setTempSelectedFilters()">{{element.productType.name}}</mat-checkbox>
+                            </div>
+                        </div>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Priority">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <div>
+                            <div>
+                                <mat-checkbox
+                                    color="primary"
+                                    (change)="checkUncheckFilterColumn($event, 'priority')"
+                                    [checked]="tempSelectedFilters.priority.length == savedFilters.priority.length"
+                                    [indeterminate]="tempSelectedFilters.priority.length && tempSelectedFilters.priority.length !== savedFilters.priority.length">Priority</mat-checkbox>
+                            </div>
+                        </div>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div>
+                            <div>
+                                <mat-checkbox
+                                    color="primary"
+                                    *ngIf="element.priority.name"
+                                    [(ngModel)]="element.priority.selected"
+                                    (ngModelChange)="setTempSelectedFilters()">{{element.priority.name}}</mat-checkbox>
+                            </div>
+                        </div>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Status">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <div>
+                            <div>
+                                <mat-checkbox
+                                    color="primary"
+                                    (change)="checkUncheckFilterColumn($event, 'status')"
+                                    [checked]="tempSelectedFilters.status.length == savedFilters.status.length"
+                                    [indeterminate]="tempSelectedFilters.status.length && tempSelectedFilters.status.length !== savedFilters.status.length">Status</mat-checkbox>
+                            </div>
+                        </div>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div>
+                            <div>
+                                <mat-checkbox
+                                    color="primary"
+                                    *ngIf="element.status.name"
+                                    [(ngModel)]="element.status.selected"
+                                    (ngModelChange)="setTempSelectedFilters()">{{element.status.name}}</mat-checkbox>
+                            </div>
+                        </div>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="filterTableHeader"></tr>
+                <tr mat-row *matRowDef="let row; columns: filterTableHeader;"></tr>
+            </table>
+        </div>
+        <div class="filter-spinner flex-center" *ngIf="!isFiltersApplied">
+            <cui-spinner color="default" label="Loading"></cui-spinner>
+        </div>
+        <div class="text-right ipv6-recommendations__filter-table--actions" #filterTableActionsDiv>
+            <button class="btn btn--dark" (click)="clearFilters()" [disabled]="!tempSelectedFiltersCount">Clear All</button>
+            <button class="btn btn--primary" (click)="applyFilters()" [disabled]="!filtersChanged">Apply</button>
+        </div>
+    </div>
+    <!--Fix for [DE3037](https://rally1.rallydev.com/#/300796297852ud/iterationstatus?detail=%2Fdefect%2F462502009776&fdp=true?fdp=true): TBPs_While adding too many filter options for TBPs, zooming, few added details are getting displayed behind the headers of the recommendation table-->
+    <div class="row p-0" *ngIf="isFiltersAvailable">
+        <div class="col-11 ">
+            <span class="text-left text-large text-bold">Applied Filters: </span>
+            <span class="text-medium text-bold">Product Type: </span>
+            <span class="text-muted" *ngIf="!selectedFilters.productType.length">NA</span>
+            <ng-container *ngFor="let item of selectedFilters.productType; let last = last">
+                <span class="text-italic">{{item}}{{!last ? ', ' : ''}}</span>
+            </ng-container>
+            <span class="text-medium text-bold"> | Priority: </span>
+            <span class="text-muted" *ngIf="!selectedFilters.priority.length">NA</span>
+            <ng-container *ngFor="let item of selectedFilters.priority; let last = last">
+                <span class="text-italic">{{item}}{{!last ? ', ' : ''}}</span>
+            </ng-container>
+            <span class="text-medium text-bold"> | Status: </span>
+            <span class="text-muted" *ngIf="!selectedFilters.status.length">NA</span>
+            <ng-container *ngFor="let item of selectedFilters.status; let last = last">
+                <span class="text-italic">{{item}}{{!last ? ', ' : ''}}</span>
+            </ng-container>
+        </div>
+        <div class="col-1 ">
+            <button class="btn btn--dark" [disabled]="!isFiltersAvailable" (click)="clearFilters(true); applyFilters();">Clear All</button>
+        </div>
+    </div>
+    <div class="ipv6-recommendations__body" [ngClass]="{'noFilters': !isFiltersAvailable || isReadOnly}">
+        <table matSort [hidden]="!isRecommendationsLoaded" multiTemplateDataRows mat-table [dataSource]="recommendationsDataSource" class="mat-elevation-z8 ipv6-recommendations__table" 
+        [@.disabled]="true" id="matSortCustomeIcon">
+            <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef class="text-center">
+                    <mat-checkbox
+                        color="primary"
+                        (change)="$event ? masterToggle() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()"
+                        [disabled]="isReadOnly"></mat-checkbox>
+                </th>
+                <td mat-cell *matCellDef="let row">
+                    <mat-checkbox
+                        color="primary"
+                        (click)="$event.stopPropagation()"
+                        (change)="$event ? selection.toggle(row) : null"
+                        [checked]="selection.isSelected(row)"
+                        [disabled]="isReadOnly">
+                    </mat-checkbox>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="position">
+                <th mat-header-cell *matHeaderCellDef>
+                    <div class="text-center">
+                        <div>#</div>
+                        <div>({{recommendationsDataSource?.data?.length}})</div>
+                    </div>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <div class="text-center">
+                        <div>{{element.position}}</div>
+                    </div>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="uniqueIdentifier">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                    UID
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <div>
+                        <div>{{element.uniqueIdentifier}}</div>
+                    </div>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef>Recommendation </th>
+                <td mat-cell *matCellDef="let element">
+                    <div>
+                        <div>{{element.description}}</div>
+                    </div>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="productTypes">
+                <th mat-header-cell *matHeaderCellDef>Product Types
+                    <span
+                        class="icon-info icon--custom-size"
+                        (click)="tooltip.toggle()"
+                        matTooltip="Click to view"
+                        matTooltipPosition="below"
+                        [matTooltipClass]="'tooltipForInfo'"></span>
+                    <span
+                        #tooltip="matTooltip"
+                        [matTooltip]="resForInfoIcon['IPv6_ProductTypes']"
+                        matTooltipPosition="below"
+                        [matTooltipClass]="'tooltipForInfo xlarge'"></span>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <div class="ipv6-recommendations__product-types">
+                        <ng-container *ngFor="let type of element.productTypes">
+                            <span class="ipv6-recommendations__type-list {{type.priority}}" *ngIf="(!selectedFilters.productType.length && type.priority !== 'notApplicable') || (selectedFilters.productType.includes(type.name) && type.priority !== 'notApplicable')">
+                                <img *ngIf="type.priority == 'mandatory'" src="assets/images/icons/svg/star.svg" alt="star">
+                                <img *ngIf="type.priority == 'optional'" src="assets/images/icons/svg/triangle.svg" alt="triangle">
+                                <img *ngIf="type.priority == 'notApplicable'" src="assets/images/icons/svg/circle.svg" alt="circle">
+                                {{type.name}}
+                            </span>
+                        </ng-container>
+                    </div>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="priority">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef>Priority 
+                    <span
+                        class="icon-info icon--custom-size" 
+                        [matTooltip]="resForInfoIcon['IPv6_Priority']" matTooltipPosition="below" [matTooltipClass]="'tooltipForInfo'"></span>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <div>
+                        <div>{{priority[element.uniqueIdentifier].name}}</div>
+                    </div>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef>Status
+                    <span
+                        class="icon-info icon--custom-size"
+                        [matTooltip]="resForInfoIcon['IPv6_Status']"
+                        matTooltipPosition="below"
+                        [matTooltipClass]="'tooltipForInfo'"></span>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <div *ngIf="!isReadOnly" class="text-center">
+                        <mat-form-field>
+                            <mat-label>Set status</mat-label>
+                            <mat-select [(ngModel)]="element.status" (ngModelChange)="onChangeTableData(element)">
+                                <mat-option *ngFor="let status of statusArray" [value]="status">
+                                    {{status}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div *ngIf="isReadOnly">{{element.status}}</div>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="comments">
+                <th mat-header-cell *matHeaderCellDef>Comments </th>
+                <td mat-cell *matCellDef="let element" [class.ipv6-recommendations__table__expanded-row]="expandedElement === element"
+                (click)="expandedElement = expandedElement === element ? null : element">
+                    <div>
+                        <div class="text-right">
+                            <img src="{{getImageSrc(element)}}" alt="No Comment" class="cursor-pointer">
+                        </div>
+                    </div>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="expandedComment">
+                <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+                  <div class="ipv6-recommendations__table__element-detail-row" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                    <div class="ipv6-recommendations__table__element-description" [ngClass]="{'active-border': expandedElement}">
+                        <ng-container *ngIf="!isReadOnly">
+                            <mat-form-field class="ipv6-recommendations__table__full-width">
+                                <mat-label>Leave a comment</mat-label>
+                                <textarea matInput [(ngModel)]="element.comment" (ngModelChange)="onChangeTableData(element)" rows="3"></textarea>
+                              </mat-form-field> 
+                            <button class="btn btn--primary" (click)="expandedElement = expandedElement === element ? null : element">Done</button>
+                        </ng-container>
+                        <div *ngIf="isReadOnly">
+                            <strong>Comment: </strong>
+                            <span class="text-muted text-break ">{{element.comment ? element.comment : 'NA'}}</span>
+                        </div>
+                    </div>
+                  </div>
+                </td>
+              </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let element; columns: displayedColumns;" class="ipv6-recommendations__table__element-row"
+            ></tr>
+            <tr mat-row *matRowDef="let row; columns: ['expandedComment']" class="ipv6-recommendations__table__detail-row"></tr>
+        </table>
+        <div class="ipv6-recommendations__body--empty-table-view" *ngIf="isRecommendationsLoaded && !recommendationsDataSource.data.length">
+            <h1>No Data Found For Applied Filter</h1>
+        </div>
+        <ng-container *ngIf="!isRecommendationsLoaded">
+            <div class="flex-center full-height">
+                <cui-spinner color="default" label="Loading"></cui-spinner>
+            </div>
+        </ng-container>
+    </div>
+    <div class="ipv6-recommendations__footer">
+        <div class="ipv6-recommendations__footer__left-content" [class.disabled]="!selection.selected.length">
+            <ng-container *ngIf="!isReadOnly">
+                <mat-form-field class="half-padding-right">
+                    <mat-label>Set status</mat-label>
+                    <mat-select [(ngModel)]="selectedStatusForBulkUpdate">
+                        <mat-option *ngFor="let status of statusArray" [value]="status">
+                            {{status}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <button
+                    class="btn btn--primary"
+                    (click)="updateBulkStatus()"
+                    [disabled]="!selectedStatusForBulkUpdate">Apply</button>
+            </ng-container>
+        </div>
+        <div class="ipv6-recommendations__footer__right-content">
+            <div>
+                <button class="btn btn--dark" (click)="closeModal()">Close</button>
+                <button class="btn btn--primary" (click)="saveIPv6Recommendations()" [disabled]="!enableSavebtn" *ngIf="!isReadOnly">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

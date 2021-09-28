@@ -1,0 +1,62 @@
+<div class="csdl-create">
+    <div class="csdl-create__content">       
+        <app-holding-status [statusIcon]="'submit'" [status]="'Enter a CSDL ID of an existing On-Premise project'">
+            <div class="csdl-create__project mt-2">
+                <form class="form-group csdl-create__existing" (ngSubmit)="getProjectDetails()" [class.disabled] = "currentRole === 'csdlPO'">
+                    <div class="form-group__text mr-1">
+                        <input
+                            id="input-state-default"
+                            type="text"
+                            matInput
+                            placeholder="eg. 123456"
+                            [formControl]="csdlProjectId"
+                            [ngClass]="{'disabled': isDetailsConfirmed || isDataLoading || currentRole == role.csdlPO, 'class-to-hide':isNewCSDLProject}">
+                    </div>
+                    <button type="submit" class="btn btn--primary" [disabled]="!csdlProjectId.valid || isDetailsConfirmed || isDataLoading || currentRole == role.csdlPO">Get details</button>
+                    <div class="loading-dots ml-1" *ngIf="isDataLoading && csdlProjectId.value && !isNewCSDLProject" aria-label="Loading, please wait...">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </form>
+                <div class="csdl-create__existing" *ngIf="isDetailsConfirmed && !isNewCSDLProject">
+                    <span class="mr-1">
+                        <span class="icon-check-outline csdl-create__existing--approved mr-1"></span>
+                        <span>CSDL ID <strong>{{linkedCsdlId}}</strong> linked</span>
+                    </span>
+                    <button class="btn btn--primary" (click)="getProjectDetails()" [disabled]="isDataLoading">
+                        View details
+                    </button>     
+                    <div class="loading-dots ml-1" *ngIf="isDataLoading" aria-label="Loading, please wait...">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        </app-holding-status>
+        <div class="csdl-create__seperator">
+            <div class="text-link text-weight-700 mr-1">OR</div>
+            <div class="csdl-create__seperator--line"></div>
+        </div>
+        <app-holding-status [statusIcon]="'submit'" [status]="'Generate a CSDL ID by creating a new On-Premise project'">
+            <div class="csdl-create__project mt-2">
+                <button class="btn btn--primary" (click)="openCreateProjectModal()" [disabled]="isDetailsConfirmed || currentRole == role.csdlPO">Start</button>
+                <div class="csdl-create__existing" *ngIf="isDetailsConfirmed && isNewCSDLProject">
+                    <span class="mr-1">
+                        <span class="icon-check-outline csdl-create__existing--approved mr-1"></span>
+                        <span>CSDL ID <strong>{{linkedCsdlId}}</strong> linked</span>
+                    </span>
+                    <button class="btn btn--primary" (click)="getProjectDetails()" [disabled]="isDataLoading">
+                        View details
+                    </button>     
+                    <div class="loading-dots ml-1" *ngIf="isDataLoading" aria-label="Loading, please wait...">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        </app-holding-status>
+    </div>
+</div>

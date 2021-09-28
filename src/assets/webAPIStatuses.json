@@ -1,0 +1,7 @@
+[
+    { "value": "Not Selected", "viewValue": "Not Selected" },
+    { "value": "Adopted", "viewValue": "Adopted" },
+    { "value": "Not applicable", "viewValue": "Not applicable" },
+    { "value": "Part of backlog", "viewValue": "Part of backlog" },
+    { "value": "Part of roadmap", "viewValue": "Part of roadmap" }
+  ]

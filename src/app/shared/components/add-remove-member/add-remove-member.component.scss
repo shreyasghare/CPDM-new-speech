@@ -1,0 +1,89 @@
+.custom__label{
+    // margin-top: 2rem;
+    margin: 2rem 0 0 1rem;
+    text-align: left;
+
+    
+    .icon-exit{
+        margin-left: 0.8rem;
+        margin-bottom:0.4rem; 
+    }
+}
+
+span{
+    cursor: pointer;
+}
+
+
+
+div{
+    .row,.loading-dots{
+        height:5.2rem;
+    }
+}
+
+.add-remove {
+    span{
+        font-size: 1.3rem;
+    }
+
+    .icon-exit{
+        margin-left: 0.8rem;
+    }
+
+    .icon-plus{
+        margin-left: 0.8rem;
+    }
+
+    .margin-right{
+        margin-left: 0;
+        margin-right:0.8rem;
+    }
+
+    .show-inline{
+        display: inline-block;
+    }
+
+    .label {
+        background-color: #fff !important;
+    }
+
+    .btn-margin {      
+        margin-top: 5px;
+    }
+}
+.search{
+    padding-top: 3%;
+}
+
+.searchBtn{
+    padding-top: 2%;
+}
+.autoComplete-matInput{
+    width: 95%;
+}
+
+/* Change label color on focused */
+::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+    color: #017cad !important;
+}
+  
+/* underline border color on focused */
+::ng-deep .mat-focused .mat-form-field-underline .mat-form-field-ripple{
+    background-color: #017cad !important;
+}
+::ng-deep cui-modal > div.modal-container {
+    z-index: 999 !important;
+}
+
+.addRemoveModalHeader{
+    margin: 0 0 1.5rem 0;
+    text-align: left !important;
+}
+
+.modal {
+    &__footer {
+        display: flex;
+        justify-content: center;
+    }
+}

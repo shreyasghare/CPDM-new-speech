@@ -1,0 +1,76 @@
+<div class="crc-assesment-modal">
+    <div class="crc-assesment-modal__header">
+        <div class="modal__title">Assessment Questionnaire</div>
+        <div class="required-note" *ngIf="!data.isReadonly">
+            <span class="required-field"></span>
+            <span class="text-danger text-italic ml-1">Required questions</span>
+        </div>
+        <div id="close" class="icon-close icon-size-20 mt-1" (click)="closeModal()"></div>
+    </div>
+    <form [formGroup]="createQuestionnaireForm">
+        <div class="crc-assesment-modal__content">
+            <div class="crc-assesment-modal__content__main">
+                <div>
+                    <ol>
+                        <li *ngFor="let question of questionListFromDb; let i = index">
+                            <div [ngClass]="{'mt-2':i==0}">
+                                <div class="counter__custom-flex">
+                                    <span class="required-field" [ngStyle]="{'visibility': question.answer?.isQuestionAnswered ? 'hidden'  : 'visible'}"></span>
+                                    <span class="li-counter">{{i+1}})</span>
+                                </div>
+                                <div id="questionList" class="required-question-list" [innerHTML]="question.question?.html"></div>
+                            </div>
+                            <ng-container *ngIf="!data.isReadonly">
+                                <div class="form-group form-group--inline" *ngFor="let radio of question.options">
+                                    <label class="radio mb-2">
+                                        <input
+                                        value="{{ radio.value }}"
+                                        type="radio"
+                                        (change)="setQuestionnaireData(question,radio.value)"
+                                        formControlName="formControlValue{{question.questionNumber}}"/>
+                                        <span class="radio__input"></span>
+                                        <span class="radio__label hidden-xs">{{ radio.value }}</span>
+                                    </label>
+                                </div>
+                                <div class="form-group form-group__text" *ngFor="let comment of question.comment">
+                                    <textarea
+                                    class="textarea mt-1 mb-1"
+                                    (change)="onChangeComment(question, $event)"
+                                    formControlName="formControlValue{{question.questionNumber}}"
+                                    placeholder="Type here"></textarea>
+                                </div>
+                            </ng-container>
+                            
+                            <ng-container *ngIf="data.isReadonly">
+                                <div class="mt-1 mb-1" *ngIf="question.answer && question.answer.value">
+                                  <span class="text-italic answer-label">{{ question.answer.value }}</span>
+                                </div>
+                                <div class="mt-1 mb-1" *ngIf="question.answer && question.answer.comment[0] && question.answer.comment[0].text">
+                                  <span class="text-italic answer-label">{{ question.answer.comment[0].text }}</span>
+                                </div>
+                            </ng-container>
+                        </li>
+                    </ol>
+                </div>
+                <ng-container *ngIf="!questionListFromDb || isSpinner">
+                    <div class="overlay">
+                      <div class="absolute-center"><cui-spinner></cui-spinner></div>
+                    </div>
+                </ng-container>
+            </div>
+            <div [ngClass]="data.isReadonly ? 'close-button' : 'crc-assesment-modal__content__field' ">
+                <div class="mt-1" *ngIf="!data.isReadonly">
+                    <span *ngIf="crcQuestionnaireStatus" [ngClass]=" remainingQuestionsCount === 0 ? 'icon-check-outline icon-small' : 'icon-exclamation-triangle icon-small' "></span>
+                    {{crcQuestionnaireStatus}}
+                </div>
+                <div class="crc-assesment-modal__content__footer mt-1">
+                    <button *ngIf="data.isReadonly"class="btn btn--dark close-button" (click)="closeModal()"> Close </button>
+                    <button id="onCancel" *ngIf="!data.isReadonly"class="btn btn--dark" (click)="closeModal()"> Cancel</button>
+                    <button id="onSave" *ngIf="!data.isReadonly" class="btn btn--secondary" (click)="saveQuationnaireList()"> Save </button>
+                </div>
+            </div>
+        </div>
+    </form>
+   
+</div>
+  

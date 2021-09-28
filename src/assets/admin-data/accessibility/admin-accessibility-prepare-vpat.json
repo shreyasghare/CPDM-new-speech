@@ -1,0 +1,15 @@
+{   
+    "success" : true,
+    "metaData" : {
+        "path" : "/assets/images/accessibility/infoHelpers/"
+    },
+    "data" : [
+        {
+            "heading" : "Prepare VPAT Info Icon",
+            "thumbnailImage" : "tn-accessibility-overview-policyOverview.png",
+            "originalImage" : "accessibility-overview-policyOverview.PNG",
+            "updatedAt" : "Tue May 05 2020 17:41:46 GMT+0530 (India Standard Time)",
+            "content" : "This is policy overview content."
+        }
+    ]
+}

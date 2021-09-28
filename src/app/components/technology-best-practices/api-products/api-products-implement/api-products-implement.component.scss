@@ -1,0 +1,37 @@
+// .api-products-impl {
+//     display:flex;
+//     justify-content: center;
+//     align-items: center;
+//     flex-direction: column;
+//     height:100%;
+//     width:100%;
+
+//     &__container{
+//         min-height: 65%;
+//         width: 80%;
+//         align-items: center;
+//         background-color: #fff;
+//         border: 1px solid #b3b5b5;
+
+//         &--header{
+//             display: flex;
+//             background-color:#b3b5b5;
+//             padding: 1rem 2rem;      
+//             flex-wrap: wrap;
+//         }
+
+//         &--action {
+//             display: flex;
+//             flex-grow: 1;
+
+//             label.radio {
+//                 flex-grow: 1;
+//             }
+//         }
+//     }
+// }
+
+// app-holding-status {
+//     width: 80%;
+//     min-height: 30%;
+// }

@@ -1,0 +1,87 @@
+<div class="container-fluid">
+        <div class="top-bar">
+            <div class="top-bar__navigation">
+                <h6 class="section"> <a routerLink="/home">Home</a> 
+                <span class="icon-small icon-chevron-right"></span><a routerLink="/project/{{projectId}}" *ngIf="isUserPm">{{projectName}}</a><span *ngIf="!isUserPm">{{projectName}}</span> <span class="icon-small icon-chevron-right"></span>Accessibility</h6>
+            </div>
+            <div class="top-bar__button">
+                    <button class="btn btn--secondary" (click)="openComponentModal()">Overview</button>
+            </div>
+        </div>
+    
+        <div class="content">
+            <div class="row">
+                <div class="general-compliance__left-pane">
+                    <p class="text-large text-center text-bold mr-6">Accessibility
+                        <span *ngIf="betaFlag===true" ><sup class="betaTag qtr-padding-top text-normal" >BETA</sup></span>
+                    </p> 
+                    <process-sidebar [sidebarData]="sidebarData" (onSidebarSwitch)="switchSidebarTab($event)" (onInfoClick)="showModal($event)"></process-sidebar>
+                </div>
+                <div class="general-compliance__right-pane">
+                    <div class="general-compliance--view">
+                        <div class="general-compliance--view__content">
+                        <div class="dynamic-component">
+                        <!-- all other components -->
+                        <app-identify-adrs *ngIf="sidebarData[0].isActive" [isPmScreen]="isUserPm"></app-identify-adrs>
+                        <app-adr-list-approval *ngIf="sidebarData[1].isActive" [isPmScreen]="isUserPm"></app-adr-list-approval>
+                        <app-implementation *ngIf="sidebarData[2].isActive" [isPMscreen]="isUserPm"></app-implementation>
+                        <app-policy-testing *ngIf="sidebarData[3].isActive" [isPMscreen]="isUserPm"></app-policy-testing>
+                        <app-prepare-vpat *ngIf="sidebarData[4].isActive" [isPMscreen]="isUserPm"></app-prepare-vpat>
+                        <app-release-vpat *ngIf="sidebarData[5].isActive" [isPMscreen]="isUserPm"></app-release-vpat>
+                        <!-- end  -->
+                        </div>
+                    <div class="general-compliance--view__content--footer">
+                        <button class="btn btn--secondary" [ngClass]="{'hide-button': disablePreviousBtn}" (click)="onPreviousClick()"><span class="icon-arrow-up-tail mr-1"></span>{{sideBar.getStepName('previous')}}</button>
+                        <button class="btn btn--secondary" *ngIf="!sidebarData[5].isActive" [disabled]="disableNextBtn" (click)="onNextClick()">{{nextBtnName || sideBar.getStepName('next')}}<span class="icon-arrow-down-tail ml-1"></span></button>
+                    </div>
+                </div>
+                </div>
+             </div>
+            </div>
+        </div>
+    </div>
+<!-- Accessibility-overview-popup-->
+<ng-template #content>
+    <app-accessibility-overview></app-accessibility-overview>
+</ng-template>
+<ng-template #helperContent>
+    <a class="modal__close" (click)="cuiModalService.hide()"><span class="icon-close i-close"></span></a>
+    <div class="modal__header mt-1 ml-1"> <div class="modal__title">{{helperObj.header}}</div></div>
+    <div id="info-helper" class="modal__body">
+        <div class="modalContent pl-1 pr-1 pb-1">
+            <div>
+                <span><b>{{helperObj.subheader1}}</b></span>
+                <div *ngFor="let subcontent of helperObj.subcontent1">
+                    <span style="text-align: left;">{{subcontent.text1}}</span>
+                </div>
+            </div>
+            <div>
+                <span><b>{{helperObj.subheader2}}</b></span>
+                <div *ngFor="let subcontent of helperObj.subcontent2">
+                    <span>{{subcontent.text1}} <a href="https://www.w3.org/TR/WCAG21/" target="_blank">{{subcontent.link}}</a> {{subcontent.text2}}</span>
+                </div>
+            </div>
+            <div>
+                <ol>
+                    <li *ngFor="let subcontent of helperObj.subcontent3"><span><b>{{subcontent.header}}</b></span>-<span>{{subcontent.content}}</span></li>
+                </ol>
+            </div>
+            <div>
+                <div *ngFor="let subcontent of helperObj.subcontent4">
+                    <span>{{subcontent.text1}} <a href="https://www.section508.gov/manage/laws-and-policies" target="_blank">{{subcontent.link}}</a> {{subcontent.text2}}</span>
+                </div>
+            </div>
+            <div>
+                <div *ngFor="let subcontent of helperObj.subcontent5">
+                        <span><b>{{helperObj.subheader5}}:</b></span>
+                    <span>{{subcontent.text1}} <a>{{subcontent.link}}</a>{{subcontent.text2}}</span>
+                </div>
+            </div>
+            <div>
+                <div *ngFor="let subcontent of helperObj.subcontent6">
+                    <span>{{subcontent.content}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+  </ng-template>

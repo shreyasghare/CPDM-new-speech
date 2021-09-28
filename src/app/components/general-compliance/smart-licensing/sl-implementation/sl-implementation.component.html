@@ -1,0 +1,71 @@
+<ng-container *ngIf="implementationStatus != undefined && implementationStatus != 'notApplicable'">
+    <div class="sl_implementation" *ngIf="isStepInitiated; else spinner">
+        <ng-container *appHasRole="[role.smartLicensingPO]">
+            <app-holding-status *ngIf="!isManualTaskComplete && !populateBacklogStatus.isBacklogPopulated"
+                [statusIcon]="'submit'" [status]="'Backlog not populated yet'"
+                [message]="'Please wait for the Project Manager to populate the backlog.'"></app-holding-status>
+            <app-holding-status *ngIf="isManualTaskComplete || populateBacklogStatus.isBacklogPopulated"
+                [statusIcon]="'complete'" [status]="'Backlog populated'"
+                [message]="'The Project Manager has populated the backlog.'"></app-holding-status>
+        </ng-container>
+        <ng-container *appHasRole="[role.pm]">
+            <div class="sl_implementation__title mb-1">There are two types of Smart Agent implementations: Smart Agent
+                <strong>C</strong> and Smart Agent <strong>Java</strong>, each with its own versioning scheme. Depending
+                on
+                the type of agent that you are integrating with, the requirements may be different. For instance, HTTPS
+                client is provided by default with the Smart Agent Java so the platform team is not required to provide
+                it.
+            </div>
+            <div class="sl_implementation__container">
+                <div class="sl_implementation__container--header">
+                    <!-- Populate your product backlog with Smart Licensing Requirements -->
+                    <div class="sl_implementation__container--action">Choose Implementation method
+                        <span class="icon-info icon-small"
+                        [matTooltipClass]="'tooltipForInfo'"
+                        [matTooltip]="getTooltipDesc('Choose Implementation Method')"
+                        matTooltipPosition="after"></span>
+                    </div>
+                    <div class="sl_implementation__container--action">
+                        <label class="radio"
+                            [ngClass]="{'disabled': disableImplementationMethod.manual || populateBacklogStatus.isPopulating}">
+                            <input type="radio" name="implMethod" [(ngModel)]="selectedImplMethod" value="manual">
+                            <span class="radio__input"></span>
+                            <span class="radio__label hidden-xs">Manual</span>
+                        </label>
+                        <label class="radio"
+                            [ngClass]="{'disabled': disableImplementationMethod.pushToRepo || populateBacklogStatus.isPopulating}">
+                            <input type="radio" name="implMethod" [(ngModel)]="selectedImplMethod" value="pushToRepo">
+                            <span class="radio__input"></span>
+                            <span class="radio__label hidden-xs">Push to repository</span>
+                        </label>
+                    </div>
+                </div>
+                <ng-container *ngIf="selectedImplMethod=='manual'">
+                    <app-manual-implementation [templates]="templates" (downloadTemplate)="onDownloadTemplate($event)"
+                        [isTaskComplete]="isManualTaskComplete" (taskComplete)="onCompleteManualImplTask($event)"
+                        [enableAdditionalFields]="enableAdditionalFields">
+                    </app-manual-implementation>
+                </ng-container>
+                <ng-container *ngIf="selectedImplMethod=='pushToRepo' && smartLicensingDetails">
+                    <app-push-to-repository [implementationDetails]="smartLicensingDetails"
+                        [repositories]="repositories" [populateBacklogStatus]="populateBacklogStatus"
+                        (populate)="populateBacklog($event)" [enableAdditionalFields]="enableAdditionalFields">
+                    </app-push-to-repository>
+                </ng-container>
+            </div>
+        </ng-container>
+    </div>
+</ng-container>
+
+<div class="sl_implementation" *ngIf="implementationStatus != undefined && implementationStatus == 'notApplicable'">
+    <div class="flex">
+    <app-holding-status [statusIcon]="slImplementation_status.icon" [status]="slImplementation_status.status">
+    </app-holding-status>
+    </div>
+</div>
+
+<ng-template #spinner>
+    <div class="flex-center full-height">
+        <cui-spinner color="default" label="Loading"></cui-spinner>
+    </div>
+</ng-template>

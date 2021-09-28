@@ -1,0 +1,41 @@
+#addMemnerContainer{
+    padding: 1rem 0rem;
+}
+.userNameSearchBox{
+    padding: 5px 10px;
+}
+
+img.icon {
+    width: 14px;
+    opacity: 0.5;
+    color: #9e9ea2;
+}
+
+span.text-muted.ml-1 {
+    font-style: italic;
+    margin-top: 0.5rem;
+}
+
+.read-only {
+    background-color: #bfbfbf;
+    padding: 6px 7px 2px 7px;
+    color: #636363;
+   }
+
+.autoComplete-matInput{
+    width: 100%;
+}
+.addMemberControl{
+    display: block;
+    margin: auto;
+}
+
+/* Change label color on focused */
+::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+    color: #017cad !important;
+}
+  
+/* underline border color on focused */
+::ng-deep .mat-focused .mat-form-field-underline .mat-form-field-ripple{
+    background-color: #017cad !important;
+}

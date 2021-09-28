@@ -1,0 +1,7 @@
+{
+  "/api": {
+    "target": "https://cpdmcentral-srv-dev.cisco.com",
+    "secure": false,
+    "changeOrigin":true
+  }
+}

@@ -1,0 +1,16 @@
+.owner-labels{
+    text-align: left;
+
+    &__custom-polygon{
+        // clip-path: polygon(50% 0, 100% 1%, 100% 100%, 48% 100%, 0% 50%);
+        cursor: pointer;
+    }
+    .btn {
+        border-radius: 5px !important;
+        cursor: default !important;
+    }
+
+    span {
+        margin-right: 4px;
+    }
+}

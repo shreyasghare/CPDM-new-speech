@@ -1,0 +1,66 @@
+<div class="container-fluid" *ngIf="apiResposnseReady; else spinner">
+    <div class="responsive-table">
+        <div class="project-name-column">
+                    <h6 class="section">
+                          <a id="nav-home" (click)="navigateToHome()">Home</a> <span class="icon-small icon-chevron-right"></span>
+                          {{ projectName }} <span class="labelBackground" *ngIf="projectUID"> Project ID: {{ projectUID }}</span>
+                    </h6>
+                    <div>
+                        <button type="button" class="btn btn--secondary" (click)="goToThinOnline()">
+                            Online commit 
+                            <!-- <span class="icon-cog"></span> -->
+                        </button>
+                        <button (click)="downloadPptxFromApi()" [disabled]="!isPptCommitEnable" class="btn btn--secondary">PPT commit</button>    
+                    </div>
+            </div>
+            <div class="divider--custom"></div>
+        
+    <mat-tab-group  animationDuration="0ms" [(selectedIndex)]="selectedTabIndex" (selectedTabChange)="tabChanged($event)" [selectedIndex]='selectedTabIndex'>
+        <mat-tab label="Applicable Requirements"><br/>
+            <app-compliance-items-table [complianceItems]="complianceItemsSortedData"
+            [complianceItemsSortedData]="complianceItemsSortedData"
+            [selectedTemplate] = "projectTemplate"
+	        ></app-compliance-items-table>
+        </mat-tab>
+        <mat-tab label="Additional Compliance Requirements"><br/>
+            <app-compliance-items-table [complianceItems]="complianceItemsSortedData"
+            [complianceItemsSortedData]="complianceItemsSortedData"
+            [selectedTemplate] = "projectTemplate"
+	        ></app-compliance-items-table>
+        </mat-tab>
+        <mat-tab label="Technology Best Practices"><br/>
+            <app-compliance-items-table [complianceItems]="complianceItemsSortedData"
+            [complianceItemsSortedData]="complianceItemsSortedData"
+            [selectedTemplate] = "projectTemplate"
+	        ></app-compliance-items-table>
+        </mat-tab>
+      </mat-tab-group>    
+        <!-- <app-compliance-items-table [complianceItems]="complianceItemsSortedData"
+            [complianceItemsSortedData]="complianceItemsSortedData"
+            [selectedTemplate] = "projectTemplate"
+	    ></app-compliance-items-table> -->
+    </div>
+
+    <!-- Disabling currently as this is not in scope of MVP1
+        <app-technology-items-table [TechnicalStandardItems]="TechnicalStandardItems"
+    [complianceItems]="complianceItems"
+    [TechnologyItemsSortedData]="TechnologyItemsSortedData"
+    ></app-technology-items-table>-->
+
+    <!-- <div class="row pager-row">
+<cui-pager [page]="0" [limit]="6" [totalItems]="100" [changeLimit]="false" [showPageDetails]="true"
+[bordered]="false" [size]="small" [useIcons]="true" (onPageChanged)="onPageChanged($event)">
+</cui-pager>
+</div> -->
+</div>
+<!-- <div class="footer__fixed">
+    <app-footer></app-footer>
+</div> -->
+
+<!-- CUI Spinner -->
+<ng-template #spinner>
+    <div  id="cuiLoaderContainer" class="absolute-center">
+        <cui-spinner color="default" label="Loading"></cui-spinner> 
+    </div>
+</ng-template>
+<!-- End CUI Spinner -->

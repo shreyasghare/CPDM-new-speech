@@ -1,0 +1,35 @@
+<div class="holding-status {{className}}">
+    <div class="holding-status__icon">
+        <img *ngIf="statusIcon === 'submit'" class="tick-icon" src="assets/images/icons/svg/checklist.svg">
+        <img *ngIf="statusIcon === 'review'" class="tick-icon" src="assets/images/icons/svg/time-left.svg">
+        <img *ngIf="statusIcon === 'complete'" class="tick-icon" src="assets/images/icons/svg/tick-inside-circle.svg">
+        <img *ngIf="statusIcon === 'reject'" class="tick-icon" src="assets/images/icons/svg/reject.svg">
+        <img *ngIf="statusIcon === 'implement'" class="tick-icon" src="assets/images/icons/svg/implement.svg">
+        <img *ngIf="statusIcon === 'language'" class="tick-icon" src="assets/images/icons/svg/language.svg">
+        <img *ngIf="statusIcon === 'chevron'" class="tick-icon" src="assets/images/icons/svg/chevron.svg">
+        <img *ngIf="statusIcon === 'chat'" class="tick-icon" src="assets/images/icons/svg/chat.svg">
+        <img *ngIf="statusIcon=='performingTest'" class="contract-icon" src="assets\images\icons\svg\contract.svg">
+        <span><img *ngIf="statusIcon ==='like'" class="review-icon" src="assets/images/icons/svg/like.svg">
+            <img *ngIf="statusIcon ==='like'" class="ml-1 review-icon review-icon__invert"
+                src="assets/images/icons/svg/like.svg"></span>
+        <img *ngIf="statusIcon === 'notes'" class="tick-icon" src="assets/images/icons/svg/notepad.svg">
+        <img *ngIf="statusIcon === 'files'" class="tick-icon" src="assets/images/icons/svg/files.svg">
+        <img *ngIf="statusIcon === 'check'" class="tick-icon" src="assets/images/icons/svg/check-mark.svg">
+        <img *ngIf="statusIcon === 'edit'" class="tick-icon" src="assets/images/icons/svg/file-edit.svg">
+        <img *ngIf="statusIcon === 'wait'" class="tick-icon" src="assets/images/icons/svg/hourglass.svg">
+        <img *ngIf="statusIcon === 'chooseAction'" class="tick-icon" src="assets/images/icons/svg/Choose action dark.png">
+        <img *ngIf="statusIcon === 'cancel'" class="tick-icon" src="assets/images/icons/svg/cancel.svg">
+        <img *ngIf="statusIcon === 'notApplicable'" class="tick-icon" src="assets/images/icons/svg/not-applicable.svg">
+        <img *ngIf="statusIcon === 'globe'" class="tick-icon" src="assets/images/icons/svg/globe.svg">
+        <img *ngIf="statusIcon === 'service'" class="tick-icon" src="assets/images/icons/svg/services.svg">
+    </div>
+    <div class="holding-status__container ml-2">
+        <div class="holding-status__container--status">
+            <h3 class="holding-status__container--status-text" *ngIf="status" [innerHTML]="status"></h3>
+        </div>
+        <div *ngIf="message" class="holding-status__container--message">
+            <p [innerHTML]="message"></p>
+        </div>
+        <ng-content></ng-content>
+    </div>
+</div>

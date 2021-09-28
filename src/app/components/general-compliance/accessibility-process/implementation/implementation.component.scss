@@ -1,0 +1,246 @@
+.login {
+    display: flex;
+    flex-direction: row;
+    &__infoIcon {
+        cursor: pointer; 
+        margin: 0.5rem 0;
+    }
+}
+.sendDetails {
+     display:flex;
+     justify-content: center;
+     align-items: center;
+     flex-direction: column; 
+     width:100%;
+     padding: 6rem 3rem;
+    app-holding-status {
+        width: 80%;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem 3rem;
+        background-color: #c6c7ca;
+        margin: auto;
+    }
+  
+}
+
+
+.main {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.pMimplementation {
+    padding: 1rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    &__container {
+        width: 80%;
+        align-items: center;
+        background-color: #fff;
+        border: 1px solid #b3b5b5;
+        &--header {
+            display: flex;
+            background-color:#b3b5b5;
+            padding: 1rem 2rem;      
+            flex-wrap: wrap;
+        }
+        &--action {
+            display: flex;
+            flex-grow: 1;
+
+            label.radio {
+                flex-grow: 1;
+            }
+        }
+        &--body {
+            padding:1rem;
+            display:flex;
+            justify-content: center;
+        }
+    }
+}
+
+.pMSendimpl {
+    padding: 1rem;
+    height: 80%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    &__container {
+        min-height: 75%;
+        width: 80%;
+        align-items: center;
+        background-color: #fff;
+        border: 1px solid #b3b5b5;
+        &--header {
+            background-color:#b3b5b5;
+            padding: 1rem;      
+        }
+        &--body {
+            padding:2rem;
+        }
+    }
+}
+
+.successtext {
+    display: flex;
+    align-items: center;
+    padding-left: 10px
+}
+
+.pOImplementation {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height:100%;
+    width:100%;
+    app-holding-status {
+        width: 80%;
+    }
+    &__container {
+        background-color: #c6c7ca;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height:50%;
+        width:80%;
+        &--header {
+            padding: 2rem;
+        }
+        &--body {
+            width: 60%;
+            & > p{
+                padding: 1rem;
+                font-size:large;
+                text-align: center;
+                line-height: 3rem;
+                margin: 0 !important;
+            }
+        }     
+    }
+    &__container1 {
+        background-color:white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items:center;
+        max-height:30%;
+        width:80%;
+        &--header {
+            height: 35px;
+            width: 100%;
+            padding: 0.5rem;
+            background-color: #c6c7ca !important;
+            & > p {
+                font-weight:bold;
+                padding: 5px;
+                font-size:large;
+                text-align: left;
+                margin: 0 !important;
+            }
+        }
+        &--body {
+            height: 65%;
+            width: 100%;
+        }     
+    }
+}
+.row {
+    padding:0.5rem;
+    & > .col-4 {
+        text-align: end;
+    }
+}
+p {
+    margin: 0;
+    padding: 0;
+}
+.icon-close {
+    font-size: x-large;
+}
+.btn--small {
+    max-width: none !important;
+}
+h4 {
+    padding:1.5rem;
+}
+textarea {
+    resize: none;
+    width: 80% !important;
+}
+.modal__body {
+    max-height:50vh; 
+    overflow-y: auto;
+    display:flex;
+    justify-content: center;
+    text-align:left;
+    &--content {
+        width: 70%;
+        display:flex;
+        justify-content: center;
+        flex-direction: column;
+        & > p {
+            text-align: right;
+        }
+    }
+    & > p {
+        padding:1rem;
+    }
+}
+.error-populate {    
+    color:red;
+}
+.impl-icon {
+    margin-top: 1rem;
+    width: 8rem;
+    opacity: 0.40;
+}
+.success-populate {
+    height: 2rem;
+    width: 2.5rem;
+    opacity: 0.25;
+    padding-top: 6px;
+}
+option:checked {
+    display: none;
+}
+.loading_dots {
+    width: 80% !important;
+}
+.main-spinner {
+    height: 100% !important;
+}
+.implementation-dialog {
+    height: auto;
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        h4 {
+            padding: 0;
+            margin: 0;
+        }
+    }
+    &__main-content {
+        margin-top: 2rem;
+        text-align: center;
+        height: 12rem;
+    }
+    &__footer {
+        text-align: center;
+        margin-top: 2rem;
+    }
+}
+
+.align-center {
+    align-items: center;
+}

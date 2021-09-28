@@ -1,0 +1,25 @@
+<ng-container *ngIf="!showLoader; else spinner">
+    <div class="ec-submit-assign-classify full-height flex-center-vertical flex-center-horizontal">
+        <div class="ec-submit-assign-classify__body">
+            <h5 class="ec-submit-assign-classify__heading">
+                {{headerText}} 
+                <a [href]="cmtUrl" target="_blank">{{linkText}}</a>
+            </h5>
+            <div class="ec-submit-assign-classify__content p-2">
+                <ul>
+                    <li>Request Number: <span class="text-link ml-1">{{ECAssignedData && ECAssignedData.eprProjectId ? ECAssignedData.eprProjectId : '-'}}</span></li>
+                    <li>Project Manager Name: <span class="text-link ml-1">{{ECAssignedData && ECAssignedData.product_mgr_name ? ECAssignedData.product_mgr_name : '-'}}</span></li>
+                    <li>Product Name: <span class="text-link ml-1">{{ECAssignedData && ECAssignedData.product_name ? ECAssignedData.product_name : '-'}}</span></li>
+                    <li>Case Status: <span class="text-link ml-1"><strong>{{ECAssignedData && ECAssignedData.caseStatus ? ECAssignedData.caseStatus : '-'}}</strong></span></li>
+                    <li>FCS Date: <span class="text-link ml-1">{{ECAssignedData && ECAssignedData.fcs_date ? ECAssignedData.fcs_date : '-'}}</span></li>
+                    <li>Assigned to: <span class="text-link ml-1">{{ECAssignedData && ECAssignedData.assignedTo ? ECAssignedData.assignedTo : '-'}}</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</ng-container>
+<ng-template #spinner>
+    <div class="absolute-center">
+        <cui-spinner color="default" label="Loading"></cui-spinner>
+    </div>
+</ng-template>

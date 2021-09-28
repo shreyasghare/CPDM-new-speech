@@ -1,0 +1,31 @@
+<div class="acceptorOwnerModelHeaderDiv__header">
+    <div class="modal__title mb-1">Add Comment</div>
+    <span class="icon-close icon-medium" (click)="commentPopUpClose()"></span>
+</div>
+<form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
+    <div id="remarkTextBoxContainer" class="form-group base-margin-bottom">
+        <!-- <div class="form-group__text">
+            <textarea id="textarea-state-default" type="text" formControlName="comment"
+                class="form-control textarea" rows="5" placeholder="Write here"
+                [ngClass]="{ 'is-invalid': f.comment.errors  && (f.comment.dirty || f.comment.touched) }">
+            </textarea>
+            <div *ngIf="f.comment.errors  && (f.comment.dirty || f.comment.touched)" class="invalid-feedback">
+                <div *ngIf="f.comment.errors.required">Comment is required</div>
+            </div>
+        </div> -->
+        <div class="form-group base-margin-bottom" 
+            [ngClass]="{ 'form-group form-group--error': f.comment.errors  && (f.comment.dirty || f.comment.touched) }">
+            <div class="form-group__text">
+                <textarea id="textarea-state-default" rows="5" type="text" formControlName="comment"
+                    placeholder="Write here"></textarea>
+                <div *ngIf="f.comment.errors  && (f.comment.dirty || f.comment.touched)" class="invalid-feedback">
+                    <span class="err-msg" *ngIf="f.comment.errors.required">Comment is required</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="acceptorOwnerButtonContainer" class="mt-2">
+        <button type="button" class="btn btn--dark" (click)="commentPopUpClose()">Cancel</button>
+        <button type="submit" class="btn btn--secondary" [disabled]="f.comment.errors">Save</button>
+    </div>
+</form>

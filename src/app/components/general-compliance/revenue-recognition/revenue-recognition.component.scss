@@ -1,0 +1,16 @@
+.content{
+    // overflow: hidden !important;
+
+    .left-pane-rinitiate{
+        align-items: center;
+        height: 6%;
+
+        .reinitiate {
+            cursor: pointer;
+        }
+    }
+    .info-icon {
+        margin-top: 0.5rem;
+        cursor: pointer;
+    }
+}

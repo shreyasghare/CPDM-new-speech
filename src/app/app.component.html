@@ -1,0 +1,18 @@
+<div class="content-fluid">
+<main>
+<app-navbar></app-navbar>
+<!-- Dyanamic routes -->
+<router-outlet></router-outlet> 
+</main> 
+</div>
+<custom-toast></custom-toast>
+<cui-modal></cui-modal>
+
+<ng-container *ngIf="showSpinner || showLoader">
+<div class="overlay">
+    <div class="absolute-center">
+        <cui-spinner *ngIf="showSpinner" color="info" label="Loading"></cui-spinner>
+        <cui-loader *ngIf="showLoader" color="info" label="Loading"></cui-loader>
+    </div>
+</div>
+</ng-container>

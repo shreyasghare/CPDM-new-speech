@@ -1,0 +1,42 @@
+.custom-dialog {
+    &__body {
+        &__file {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 10px 0;
+
+            &--input {
+                outline: none;
+            }
+            span {
+                display: block;
+            }
+        }
+
+        ol {
+            span {
+                text-decoration: underline;
+                cursor: pointer;
+            }
+        }
+
+        ol > li::marker {
+            font-weight: bold;
+        }
+
+        &__message {
+            // padding: 7px 0 7px 0;
+
+            span {
+                display: block;
+            }
+
+            &--download {
+                display: inline !important;
+                cursor: pointer;
+                text-decoration: underline;
+            }
+        }
+    }
+}

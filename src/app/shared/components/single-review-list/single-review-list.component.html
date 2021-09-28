@@ -1,0 +1,57 @@
+<div class="single-review-list">
+    <div class="single-review-list__title">
+        <span *ngIf="workFlow == 'smart-licensing'" class="single-review-list__title__text">{{currentUserRole == role.smartLicensingPO ? "Review and comments" : "Policy Owner Review"}}</span>
+        <span *ngIf="workFlow == 'accessibility'" class="single-review-list__title__text">{{currentUserRole == role.pm ? "Accessibility Team Review" : "Your Comments" }}</span>
+
+        <span *ngIf="status == 'rejected' && workFlow == 'smart-licensing'">
+            <button class="btn btn--primary" (click)="resubmitEnggRespForm()" [disabled]="disableReSubmit">Re-submit</button>
+        </span>
+    </div>
+    <div class="single-review-list__pending" *ngIf="(!reviews || (reviews && !reviews.length)) && workFlow == 'smart-licensing'">
+        <span>Pending</span>
+    </div>
+
+    <!-- List of reviews -->
+    <div class="single-review-list__review-list" *ngIf="reviews && reviews.length" 
+    (scroll)="onScroll($event)" [ngClass]="{'sl-height-scss': workFlow == 'smart-licensing', 'accessibility-height-scss': workFlow == 'accessibility'}">
+        <div class="single-review-list__review" *ngFor="let review of reviews">
+            <div class="single-review-list__status-container" *ngIf="review.status == 'none' && workFlow == 'smart-licensing'">
+                <div class="single-review-list__status-container--body">
+                    <div>
+                       <b>Status</b>
+                    </div>
+                    <span>-</span>
+                </div>
+            </div>
+            <div class="single-review-list__status-container" *ngIf="review.status !== 'none'">
+                <div class="single-review-list__status-container--body">
+                    <!-- <div class="commentStatus"> -->
+                       <!-- <b>{{review.status == 'approved' ? 'Approved by ' : 'Rejected by '}} -->
+                        <span><b>Status : {{review.status == 'approved' ? 'Approved' : 'Rejected'}}   
+                            <!-- <span class="single-review-list__status-container--user">{{ currentUserCecId == review.cecId ? 'You' : review.cecId }}</span> -->
+                        </b></span>
+                        <span>User ID : {{review.cecId}}</span>
+                        <span>On {{review.timestamp | date: 'dd MMM y'}}</span>
+                    <!-- </div> -->
+                </div>
+            </div>
+            <div class="single-review-list__review-container" *ngIf="review.status == 'none' && workFlow == 'smart-licensing'">
+                <span><b>Comments : </b></span>
+                <span class="ml-1">-</span>
+            </div>
+            <div class="single-review-list__review-container" *ngIf="review.status !== 'none'">
+                <span><b>Comments : </b></span>
+                <span class="ml-1">{{review.comment ? review.comment : '---'}}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Link to show review history -->
+    <div class="single-review-list__reviewHistoryLink" *ngIf="reviews && reviews.length > 1 && workFlow == 'smart-licensing'">
+        <span><hr></span>
+        <span class="ml-1 mr-1">Previous reviews
+            <span class="icon-small" [ngClass]="scrollEnd ? 'icon-chevron-up' : 'icon-chevron-down'"></span>
+        </span>
+        <span><hr></span>
+    </div>
+</div>

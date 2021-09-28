@@ -1,0 +1,40 @@
+.push-to-repo {
+    .success-populate {
+        margin-top: 5px;
+        height: 2rem;
+        width: 2.5rem;
+        opacity: 0.25;
+        padding-top: 6px;
+    }
+
+    .align-center {
+        align-self: center;
+    }
+}
+
+.implementation-dialog {
+    height: auto;
+    &__header{
+        display: flex;
+        justify-content: space-between;
+        h4{
+            padding: 0;
+            margin: 0;
+        }
+    }
+
+    &__main-content{
+        margin-top: 2rem;
+        text-align: center;
+        height: 12rem;
+    }
+
+    &__footer{
+        text-align: center;
+        margin-top: 2.5rem;
+    }
+}
+
+.modal__title {
+    font-size: 24px;
+}

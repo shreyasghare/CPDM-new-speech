@@ -1,0 +1,20 @@
+.manual-implementation {
+    display: flex;
+    flex-direction: column;
+    height: 85%;
+    width: 90%;
+    margin: auto;
+
+    &__note-section {
+        text-align: left;
+        &--note {
+            display: block;
+            margin: auto;
+            font-style: italic;
+
+            span {
+                text-decoration: underline;
+            }
+        }
+    }
+}
